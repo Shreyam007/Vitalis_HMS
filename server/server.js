@@ -50,16 +50,17 @@ async function connectDB() {
   const uri = process.env.MONGODB_URI;
   try {
     if (!uri) throw new Error('No MONGODB_URI provided');
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 2000 });
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 1500 });
     console.log('MongoDB connected');
     await seedInitialUsers();
   } catch (err) {
+    console.warn('MongoDB Atlas connection timed out/failed. Switching to fallback database server...');
     try {
       const { MongoMemoryServer } = await import('mongodb-memory-server');
       const mongod = await MongoMemoryServer.create();
       const memUri = mongod.getUri();
       await mongoose.connect(memUri);
-      console.log('MongoDB connected');
+      console.log('MongoDB connected (fallback server)');
       await seedInitialUsers();
     } catch (memErr) {
       console.error('Failed to connect to MongoDB:', memErr.message);

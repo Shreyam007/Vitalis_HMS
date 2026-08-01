@@ -10,20 +10,26 @@ import Invoice from '../models/Invoice.js';
 
 export const seedInitialUsers = async () => {
   try {
-    // 1. Seed Admin Account
-    const adminCount = await User.countDocuments({ role: 'admin' });
-    if (adminCount === 0) {
-      const hashedPassword = await bcrypt.hash('admin123', 12);
+    const adminPass = await bcrypt.hash('admin123', 12);
+    const doctorPass = await bcrypt.hash('doctor123', 12);
+    const patientPass = await bcrypt.hash('patient123', 12);
+
+    // 1. Seed / Reset Admin Account
+    let adminUser = await User.findOne({ email: 'admin@vitalis.hms' });
+    if (!adminUser) {
       await User.create({
         name: 'Chief Admin',
         email: 'admin@vitalis.hms',
-        password: hashedPassword,
+        password: adminPass,
         role: 'admin'
       });
-      console.log('Seeded admin: admin@vitalis.hms / admin123');
+    } else {
+      adminUser.password = adminPass;
+      await adminUser.save();
     }
+    console.log('Admin account ready: admin@vitalis.hms / admin123');
 
-    // 2. Seed Doctor Accounts (8 Doctors)
+    // 2. Seed / Reset Doctor Accounts (8 Doctors)
     const doctorsData = [
       { name: 'Dr. Sarah Jenkins', email: 'doctor@vitalis.hms', spec: 'Cardiology', qual: 'MD, FACC', exp: 14, dept: 'Cardiology Ward', fee: 200, room: 'Room 302' },
       { name: 'Dr. Kabir Sen', email: 'kabir.sen@vitalis.hms', spec: 'Cardiology', qual: 'MD, DM', exp: 11, dept: 'OPD-1 Cardiology', fee: 180, room: 'Room 214' },
@@ -35,14 +41,17 @@ export const seedInitialUsers = async () => {
       { name: 'Dr. Priya Sundaram', email: 'priya.sundaram@vitalis.hms', spec: 'Neurology', qual: 'DM (Neurology)', exp: 13, dept: 'Neurology Ward-B', fee: 240, room: 'Room 408' }
     ];
 
-    const defaultPassword = await bcrypt.hash('doctor123', 12);
     for (const d of doctorsData) {
       let user = await User.findOne({ email: d.email });
       if (!user) {
-        user = await User.create({ name: d.name, email: d.email, password: defaultPassword, role: 'doctor' });
+        user = await User.create({ name: d.name, email: d.email, password: doctorPass, role: 'doctor' });
+      } else {
+        user.password = doctorPass;
+        await user.save();
       }
-      const existingDoc = await Doctor.findOne({ userId: user._id });
-      if (!existingDoc) {
+
+      let doc = await Doctor.findOne({ userId: user._id });
+      if (!doc) {
         const docIdNum = Math.floor(1000 + Math.random() * 9000);
         await Doctor.create({
           userId: user._id,
@@ -58,8 +67,9 @@ export const seedInitialUsers = async () => {
         });
       }
     }
+    console.log('8 Doctor accounts ready: password doctor123');
 
-    // 3. Seed Patient Accounts (10 Patients)
+    // 3. Seed / Reset Patient Accounts (10 Patients)
     const patientsData = [
       { name: 'Ananya Sharma', email: 'patient@vitalis.hms', dob: '1996-04-12', gender: 'female', phone: '+91 98201 44920', bg: 'O+', patId: 'PAT-08841', wb: 'WB-08841', alg: ['Penicillin'], cond: ['Mild Asthma', 'Hypertension'] },
       { name: 'Rahul Verma', email: 'rahul.verma@vitalis.hms', dob: '1988-11-23', gender: 'male', phone: '+91 97110 39201', bg: 'A+', patId: 'PAT-19204', wb: 'WB-19204', alg: ['Sulfonamides'], cond: ['Type 2 Diabetes'] },
@@ -73,14 +83,17 @@ export const seedInitialUsers = async () => {
       { name: 'Siddharth Joshi', email: 'siddharth.joshi@vitalis.hms', dob: '1994-05-19', gender: 'male', phone: '+91 98910 88201', bg: 'A+', patId: 'PAT-92018', wb: 'WB-92018', alg: ['Pollen'], cond: ['Rhinitis'] }
     ];
 
-    const patientPass = await bcrypt.hash('patient123', 12);
     for (const p of patientsData) {
       let user = await User.findOne({ email: p.email });
       if (!user) {
         user = await User.create({ name: p.name, email: p.email, password: patientPass, role: 'patient' });
+      } else {
+        user.password = patientPass;
+        await user.save();
       }
-      const existingPat = await Patient.findOne({ userId: user._id });
-      if (!existingPat) {
+
+      let pat = await Patient.findOne({ userId: user._id });
+      if (!pat) {
         await Patient.create({
           userId: user._id,
           patientId: p.patId,
@@ -95,15 +108,16 @@ export const seedInitialUsers = async () => {
         });
       }
     }
+    console.log('10 Patient accounts ready: password patient123');
 
-    // 4. Seed Clinical Records, Appointments & Invoices
+    // 4. Seed / Reset Clinical Records & Appointments
     const primaryDoc = await Doctor.findOne();
     const primaryPat = await Patient.findOne({ patientId: 'PAT-08841' });
 
     if (primaryDoc && primaryPat) {
-      const existingApt = await Appointment.findOne({ patientId: primaryPat._id });
-      if (!existingApt) {
-        const apt1 = await Appointment.create({
+      let apt1 = await Appointment.findOne({ appointmentId: 'APT-92041' });
+      if (!apt1) {
+        apt1 = await Appointment.create({
           appointmentId: 'APT-92041',
           patientId: primaryPat._id,
           doctorId: primaryDoc._id,
@@ -114,8 +128,11 @@ export const seedInitialUsers = async () => {
           status: 'confirmed',
           queuePosition: 1
         });
+      }
 
-        const apt2 = await Appointment.create({
+      let apt2 = await Appointment.findOne({ appointmentId: 'APT-84092' });
+      if (!apt2) {
+        apt2 = await Appointment.create({
           appointmentId: 'APT-84092',
           patientId: primaryPat._id,
           doctorId: primaryDoc._id,
@@ -126,7 +143,10 @@ export const seedInitialUsers = async () => {
           status: 'pending',
           queuePosition: 2
         });
+      }
 
+      let rec = await MedicalRecord.findOne({ recordId: 'REC-10492' });
+      if (!rec) {
         await MedicalRecord.create({
           recordId: 'REC-10492',
           patientId: primaryPat._id,
@@ -137,7 +157,10 @@ export const seedInitialUsers = async () => {
           vitals: { bloodPressure: '138/88', heartRate: 78, temperature: 98.4, weightKg: 68, oxygenSaturation: 99 },
           clinicalNotes: 'ECG shows normal sinus rhythm. Advised low sodium diet, daily walking, and started Metoprolol 25mg daily.'
         });
+      }
 
+      let rx = await Prescription.findOne({ prescriptionId: 'RX-80291' });
+      if (!rx) {
         await Prescription.create({
           prescriptionId: 'RX-80291',
           patientId: primaryPat._id,
@@ -151,18 +174,10 @@ export const seedInitialUsers = async () => {
           notes: 'Avoid high-cholesterol foods, re-check lipid profile in 30 days.',
           status: 'active'
         });
+      }
 
-        await TestReport.create({
-          reportId: 'TR-40291',
-          patientId: primaryPat._id,
-          doctorId: primaryDoc._id,
-          title: 'Comprehensive Lipid & Cardiac Panel',
-          category: 'Pathology',
-          fileUrl: '/uploads/sample-lipid-report.pdf',
-          fileName: 'Lipid_Panel_08841.pdf',
-          notes: 'Total Cholesterol: 215 mg/dL, HDL: 48 mg/dL, LDL: 138 mg/dL.'
-        });
-
+      let inv1 = await Invoice.findOne({ invoiceId: 'INV-2026-084' });
+      if (!inv1) {
         await Invoice.create({
           invoiceId: 'INV-2026-084',
           patientId: primaryPat._id,
@@ -175,22 +190,9 @@ export const seedInitialUsers = async () => {
           ],
           status: 'unpaid'
         });
-
-        await Invoice.create({
-          invoiceId: 'INV-2026-042',
-          patientId: primaryPat._id,
-          amount: 650,
-          lineItems: [
-            { description: 'Routine Blood Glucose & HbA1c Panel', amount: 450 },
-            { description: 'Phlebotomy Sample Collection Fee', amount: 200 }
-          ],
-          status: 'paid',
-          paymentDate: new Date('2026-07-20'),
-          paymentMethod: 'Credit Card'
-        });
       }
     }
-    console.log('Seeding process verified cleanly.');
+    console.log('Seeding verification & password sync complete.');
   } catch (err) {
     console.error('Seeding error:', err.message);
   }
