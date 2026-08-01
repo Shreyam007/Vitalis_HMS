@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Appointment Booking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "primary-fixed": "#e1e2e9",
+                        "on-secondary-fixed": "#00201a",
+                        "surface-container-high": "#e7e9e5",
+                        "on-secondary-container": "#157160",
+                        "outline": "#76777b",
+                        "surface-bright": "#f9faf6",
+                        "on-tertiary-container": "#7080c5",
+                        "surface-variant": "#e2e3df",
+                        "secondary-container": "#a0f2dc",
+                        "on-background": "#1a1c1a",
+                        "primary-container": "#191c21",
+                        "surface-dim": "#d9dad7",
+                        "on-surface-variant": "#45474b",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "primary": "#000000",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container": "#edeeea",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#c4c6cd",
+                        "tertiary": "#000000",
+                        "on-primary-fixed": "#191c21",
+                        "tertiary-container": "#001452",
+                        "inverse-surface": "#2e312f",
+                        "surface-container-low": "#f3f4f0",
+                        "on-secondary-fixed-variant": "#005143",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#44474d",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1a1c1a",
+                        "surface-container-highest": "#e2e3df",
+                        "outline-variant": "#c6c6cb",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface": "#f9faf6",
+                        "tertiary-fixed": "#dde1ff",
+                        "secondary": "#076b5a",
+                        "background": "#f9faf6",
+                        "on-tertiary-fixed": "#001452",
+                        "surface-tint": "#5c5e64",
+                        "on-primary-container": "#81848a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "row-height-std": "48px",
+                        "row-height-compact": "32px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "label-stamp": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-md": ["Instrument Sans"],
+                        "body-lg": ["Work Sans"],
+                        "body-md": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #F2F3EF;
+            color: #1a1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .ecg-line {
+            background: radial-gradient(circle, #076b5a 10%, transparent 10%) repeat-x;
+            background-size: 8px 1px;
+            height: 1px;
+            width: 100%;
+        }
+        .active-dot {
+            box-shadow: 0 0 8px 1px rgba(7, 107, 90, 0.6);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- SideNavBar (Left Rail) -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary-container flex flex-col items-center py-margin border-r border-outline-variant z-50">
+<!-- Brand Logo/Header -->
+<div class="mb-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-surface-container-lowest text-[32px]">format_size</span>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 flex flex-col gap-2 w-full">
+<!-- Dashboard -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary hover:text-on-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-mono text-[9px] uppercase">Dash</span>
+</div>
+<!-- Patients -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary hover:text-on-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">personal_injury</span>
+<span class="font-label-mono text-[9px] uppercase">Patients</span>
+</div>
+<!-- Vitals (Active) -->
+<div class="relative bg-surface text-primary border-l-4 border-secondary py-4 w-full flex flex-col items-center justify-center">
+<span class="material-symbols-outlined">ecg_heart</span>
+<span class="font-label-mono text-[9px] uppercase">Visits</span>
+<!-- Glowing dot indicator -->
+<div class="absolute right-2 top-2 w-1.5 h-1.5 bg-secondary rounded-full active-dot"></div>
+</div>
+<!-- Records -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary hover:text-on-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">folder_managed</span>
+<span class="font-label-mono text-[9px] uppercase">Docs</span>
+</div>
+<!-- Staff -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary hover:text-on-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-label-mono text-[9px] uppercase">Staff</span>
+</div>
+</nav>
+<!-- Settings & CTA -->
+<div class="mt-auto flex flex-col gap-4 items-center w-full">
+<div class="text-outline-variant hover:text-secondary cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<div class="w-12 h-12 bg-error text-white flex items-center justify-center rounded-lg cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">emergency</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-[88px] min-h-screen flex flex-col">
+<!-- Top Chartbar Header -->
+<header class="flex justify-between items-center w-full px-gutter h-[80px] bg-surface border-b border-outline-variant">
+<div class="flex flex-col">
+<h1 class="font-display-md text-display-md tracking-tight text-primary">Book a visit</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mt-1">Search by specialization, pick a slot, confirm.</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-secondary-container px-4 py-2 rounded-full border border-secondary text-secondary font-label-mono text-label-mono">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+                    PATIENT WARD
+                </div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">help_outline</span>
+</div>
+<div class="w-10 h-10 rounded-full border border-outline-variant bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional medical profile headshot of a female chief medical officer in a clean white coat with a stethoscope around her neck. The portrait is high-detail with soft studio lighting and a neutral grey medical office background, maintaining a sterile and professional hospital atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwrqTwxoUqBnSi_Ea0N13-3VW3RQ-gHS3UBAkoOYvLhAsUgh753AUv344vNqgBIuadANWputYPkYQsaKIkao0KvymNWpFYRAw8KZ3JeNxV3lH4jZGmFHI8fDa-t4YXO5DIdvZj8RwoDU5TleUSPS8Wu0ZnwmU7DkdcCdHAMSkvGDKkaVMDr91O49jC6p9TX_H9m6oNLF6izz6h-RMzDtLWCRew6G3A0lfd5wIDRCQJoMMuCuaS8v4"/>
+</div>
+</div>
+</header>
+<!-- Progress Tracker -->
+<section class="px-gutter py-8 bg-[#F2F3EF]">
+<div class="max-w-4xl mx-auto flex items-center justify-between relative">
+<!-- Progress Line Back -->
+<div class="absolute top-4 left-0 w-full h-[1px] bg-outline-variant -z-10"></div>
+<!-- Step 1 (Completed) -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center text-sm">
+<span class="material-symbols-outlined scale-75">check</span>
+</div>
+<span class="font-label-mono text-[10px] text-secondary uppercase tracking-widest">1 Specialization</span>
+</div>
+<!-- Step 2 (Active) -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface border-2 border-primary text-primary flex items-center justify-center font-bold text-sm">
+                        2
+                    </div>
+<span class="font-label-mono text-[10px] text-primary uppercase tracking-widest font-semibold">2 Doctor &amp; Slot</span>
+</div>
+<!-- Step 3 (Upcoming) -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface border-2 border-outline-variant text-outline-variant flex items-center justify-center text-sm">
+                        3
+                    </div>
+<span class="font-label-mono text-[10px] text-outline-variant uppercase tracking-widest">3 Confirm</span>
+</div>
+</div>
+</section>
+<!-- Divider with ECG -->
+<div class="px-gutter flex items-center gap-4 py-2">
+<div class="h-[1px] flex-1 bg-outline-variant opacity-50"></div>
+<span class="material-symbols-outlined text-secondary opacity-40 scale-75">ecg_heart</span>
+<div class="h-[1px] flex-1 bg-outline-variant opacity-50"></div>
+</div>
+<!-- Main Interaction Area -->
+<section class="flex-1 px-gutter py-6 flex gap-gutter overflow-hidden">
+<!-- Left Column: Doctor Selection -->
+<div class="w-[40%] flex flex-col gap-4">
+<div class="bg-white border border-outline-variant rounded-sm flex flex-col h-full overflow-hidden">
+<header class="p-4 border-t-[3px] border-secondary border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h2 class="font-display-md text-body-lg text-primary">Cardiology (4 available)</h2>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">filter_list</span>
+</header>
+<div class="flex-1 overflow-y-auto divide-y divide-outline-variant">
+<!-- Dr Row (Selected) -->
+<div class="p-4 bg-tertiary-fixed border-l-4 border-tertiary flex gap-4 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-secondary flex items-center justify-center font-bold font-display-md">
+                                SJ
+                            </div>
+<div class="flex-1">
+<h3 class="font-display-md text-primary">Dr. Sarah Jenkins</h3>
+<div class="flex flex-wrap gap-x-3 mt-1">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">14Y EXP</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">FEE: $120</span>
+<span class="font-label-mono text-[10px] text-secondary uppercase flex items-center">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.9
+                                    </span>
+</div>
+</div>
+</div>
+<!-- Dr Row -->
+<div class="p-4 hover:bg-surface-container-low flex gap-4 cursor-pointer transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center font-bold font-display-md">
+                                MR
+                            </div>
+<div class="flex-1">
+<h3 class="font-display-md text-primary">Dr. Marcus Reed</h3>
+<div class="flex flex-wrap gap-x-3 mt-1">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">8Y EXP</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">FEE: $90</span>
+<span class="font-label-mono text-[10px] text-secondary uppercase flex items-center">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.7
+                                    </span>
+</div>
+</div>
+</div>
+<!-- Dr Row -->
+<div class="p-4 hover:bg-surface-container-low flex gap-4 cursor-pointer transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center font-bold font-display-md">
+                                AL
+                            </div>
+<div class="flex-1">
+<h3 class="font-display-md text-primary">Dr. Anna Lawson</h3>
+<div class="flex flex-wrap gap-x-3 mt-1">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">20Y EXP</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">FEE: $180</span>
+<span class="font-label-mono text-[10px] text-secondary uppercase flex items-center">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 5.0
+                                    </span>
+</div>
+</div>
+</div>
+<!-- Dr Row -->
+<div class="p-4 hover:bg-surface-container-low flex gap-4 cursor-pointer transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center font-bold font-display-md">
+                                KV
+                            </div>
+<div class="flex-1">
+<h3 class="font-display-md text-primary">Dr. Kevin Vora</h3>
+<div class="flex flex-wrap gap-x-3 mt-1">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">6Y EXP</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">FEE: $85</span>
+<span class="font-label-mono text-[10px] text-secondary uppercase flex items-center">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.5
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Scheduling -->
+<div class="w-[60%] flex flex-col gap-4">
+<div class="bg-white border border-outline-variant rounded-sm flex flex-col h-full">
+<header class="p-4 border-t-[3px] border-secondary border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h2 class="font-display-md text-body-lg text-primary">Schedule &amp; Slots</h2>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="font-label-mono text-label-mono uppercase">Oct 2023</span>
+</div>
+</header>
+<div class="flex-1 p-6 flex flex-col gap-8">
+<!-- Date Strip -->
+<div class="flex justify-between gap-4">
+<div class="flex-1 flex flex-col items-center p-3 border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded-sm">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Mon</span>
+<span class="font-display-md text-lg">10</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-3 border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded-sm">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Tue</span>
+<span class="font-display-md text-lg">11</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-3 bg-primary text-white cursor-pointer rounded-sm">
+<span class="font-label-mono text-[10px] uppercase opacity-70">Wed</span>
+<span class="font-display-md text-lg">12</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-3 border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded-sm">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Thu</span>
+<span class="font-display-md text-lg">13</span>
+</div>
+<div class="flex-1 flex flex-col items-center p-3 border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer rounded-sm">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Fri</span>
+<span class="font-display-md text-lg">14</span>
+</div>
+</div>
+<!-- Slots Grid -->
+<div class="flex flex-col gap-4">
+<h3 class="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Available Slots</h3>
+<div class="grid grid-cols-4 gap-3">
+<!-- Morning -->
+<button class="py-3 border border-outline-variant text-outline-variant font-label-mono text-xs line-through cursor-not-allowed">08:00 AM</button>
+<button class="py-3 border border-outline-variant text-outline-variant font-label-mono text-xs line-through cursor-not-allowed">08:30 AM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">09:00 AM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">09:30 AM</button>
+<!-- Selected Slot -->
+<button class="py-3 bg-secondary text-white font-label-mono text-xs border border-secondary">10:00 AM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">10:30 AM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">11:00 AM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">11:30 AM</button>
+<!-- Afternoon -->
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">01:00 PM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">01:30 PM</button>
+<button class="py-3 border border-outline-variant text-outline-variant font-label-mono text-xs line-through cursor-not-allowed">02:00 PM</button>
+<button class="py-3 border border-[#C4C8BE] hover:border-primary transition-colors text-primary font-label-mono text-xs">02:30 PM</button>
+</div>
+</div>
+<!-- Sticky Summary / Button -->
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<div class="flex justify-between items-end mb-6">
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Consultation with</span>
+<span class="font-display-md text-primary">Dr. Sarah Jenkins</span>
+</div>
+<div class="text-right">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Time &amp; Date</span>
+<div class="font-display-md text-primary">Wed 12 Oct • 10:00 AM</div>
+</div>
+</div>
+<button class="w-full bg-secondary hover:bg-[#0c594b] text-white py-5 flex items-center justify-center gap-2 font-label-mono font-bold uppercase tracking-[0.1em] transition-all rounded-sm active:scale-[0.98]">
+                                Confirm Booking
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer / Status Bar -->
+<footer class="h-8 bg-surface-container-low border-t border-outline-variant px-gutter flex items-center justify-between text-[10px] font-label-mono text-on-surface-variant uppercase">
+<div class="flex gap-4">
+<span>Meridian OS v4.2.0</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> System Live</span>
+</div>
+<div>
+                Unit 04-A / Terminal 21
+            </div>
+</footer>
+</main>
+<!-- Micro-interaction for Slot Selection -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            if (!btn.disabled && !btn.classList.contains('line-through') && !btn.classList.contains('bg-secondary')) {
+                btn.addEventListener('click', () => {
+                    // Logic to show selected state would go here in a full app
+                    console.log('Slot selected');
+                });
+            }
+        });
+    </script>
+</body></html>

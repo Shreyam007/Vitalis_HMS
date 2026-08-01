@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS - Reports &amp; Export</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#45474b",
+                    "primary-container": "#191c21",
+                    "surface-bright": "#f9faf6",
+                    "primary-fixed": "#e1e2e9",
+                    "on-background": "#1a1c1a",
+                    "tertiary-fixed": "#dde1ff",
+                    "on-surface": "#1a1c1a",
+                    "error-container": "#ffdad6",
+                    "outline-variant": "#c6c6cb",
+                    "on-tertiary-fixed": "#001452",
+                    "secondary": "#076b5a",
+                    "on-secondary-fixed": "#00201a",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#005143",
+                    "on-primary": "#ffffff",
+                    "secondary-container": "#a0f2dc",
+                    "on-primary-fixed": "#191c21",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#e2e3df",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#7080c5",
+                    "surface": "#f9faf6",
+                    "primary-fixed-dim": "#c4c6cd",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#44474d",
+                    "inverse-on-surface": "#f0f1ed",
+                    "inverse-primary": "#c4c6cd",
+                    "secondary-fixed": "#a0f2dc",
+                    "tertiary-fixed-dim": "#b7c4ff",
+                    "surface-tint": "#5c5e64",
+                    "surface-container-high": "#e7e9e5",
+                    "outline": "#76777b",
+                    "surface-container-low": "#f3f4f0",
+                    "surface-dim": "#d9dad7",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#157160",
+                    "primary": "#000000",
+                    "on-tertiary-fixed-variant": "#314283",
+                    "surface-variant": "#e2e3df",
+                    "surface-container": "#edeeea",
+                    "tertiary": "#000000",
+                    "background": "#f9faf6",
+                    "tertiary-container": "#001452",
+                    "secondary-fixed-dim": "#84d6c1",
+                    "on-primary-container": "#81848a",
+                    "inverse-surface": "#2e312f",
+                    "rust": "#B1631F",
+                    "indigo-clinical": "#3A4B8C"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "row-height-compact": "32px",
+                    "margin": "24px",
+                    "row-height-std": "48px",
+                    "gutter": "16px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "display-md": ["Instrument Sans", "sans-serif"],
+                    "label-mono": ["IBM Plex Mono", "monospace"],
+                    "display-lg": ["Instrument Sans", "sans-serif"],
+                    "label-stamp": ["IBM Plex Mono", "monospace"],
+                    "body-lg": ["Work Sans", "sans-serif"],
+                    "body-md": ["Work Sans", "sans-serif"]
+            },
+            "fontSize": {
+                    "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ecg-sparkline::after {
+            content: " ";
+            display: inline-block;
+            width: 24px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg width='24' height='12' viewBox='0 0 24 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6H4L6 2L10 10L14 0L18 6H24' stroke='%23DBDED6' stroke-width='1'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .die-cut-active {
+            background-color: #F2F3EF !important;
+            opacity: 1 !important;
+        }
+        .active-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #076b5a;
+            box-shadow: 0 0 4px #076b5a;
+        }
+    </style>
+</head>
+<body class="bg-[#F2F3EF] text-on-background font-body-md min-h-screen">
+<!-- SideNavBar (The Anchor) -->
+<nav class="fixed left-0 top-0 h-full w-[80px] bg-primary flex flex-col items-center py-6 z-50 border-r border-outline-variant">
+<!-- Logo -->
+<div class="mb-12 flex flex-col items-center">
+<span class="font-display-md text-display-md font-bold text-on-primary tracking-tighter">M</span>
+<span class="font-label-mono text-[8px] text-on-primary-container mt-1">v2.0</span>
+</div>
+<!-- Nav Items -->
+<div class="flex flex-col w-full gap-2">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center h-16 w-full text-on-primary-container opacity-60 hover:bg-primary-container hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-mono text-[9px] mt-1">DASH</span>
+</a>
+<!-- Patients -->
+<a class="flex flex-col items-center justify-center h-16 w-full text-on-primary-container opacity-60 hover:bg-primary-container hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person_search">person_search</span>
+<span class="font-label-mono text-[9px] mt-1">PTNT</span>
+</a>
+<!-- Wards -->
+<a class="flex flex-col items-center justify-center h-16 w-full text-on-primary-container opacity-60 hover:bg-primary-container hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="bed">bed</span>
+<span class="font-label-mono text-[9px] mt-1">WARD</span>
+</a>
+<!-- Staff -->
+<a class="flex flex-col items-center justify-center h-16 w-full text-on-primary-container opacity-60 hover:bg-primary-container hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="font-label-mono text-[9px] mt-1">STAF</span>
+</a>
+<!-- Inventory -->
+<a class="flex flex-col items-center justify-center h-16 w-full text-on-primary-container opacity-60 hover:bg-primary-container hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-mono text-[9px] mt-1">INVT</span>
+</a>
+<!-- Settings / Active (Settings is usually the catch-all for Admin/Reports in many HMS configurations or the last tab) -->
+<!-- According to instructions: "Admin nav rail is active". Settings tab will be used as the anchor. -->
+<a class="relative flex flex-col items-center justify-center h-16 w-full text-on-primary bg-surface-container-highest after:content-[''] after:absolute after:left-0 after:top-1/4 after:h-1/2 after:w-1 after:bg-secondary after:rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-mono text-[9px] mt-1">ADMN</span>
+<div class="active-dot absolute bottom-3 rounded-full"></div>
+</a>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-[80px] right-0 h-24 bg-surface flex justify-between items-center px-6 border-b border-outline-variant z-40">
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<h1 class="font-display-lg text-display-lg font-bold text-primary tracking-tight">Reports</h1>
+<div class="bg-rust text-white px-3 py-1 rounded-sm flex items-center gap-2">
+<span class="text-[8px]">●</span>
+<span class="font-label-mono text-[10px] font-bold">ADMIN WARD</span>
+</div>
+</div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mt-1">MODULE 08 — ADMINISTRATIVE EXPORTS</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-white border border-outline-variant pl-10 pr-4 py-2 font-label-mono text-[11px] w-64 focus:outline-none focus:border-primary transition-all" placeholder="SEARCH SYSTEM LOGS..." type="text"/>
+</div>
+<div class="flex items-center gap-4 border-l border-outline-variant pl-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">notifications</button>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="font-label-mono text-[11px] font-bold">DR. ARISTOTLE</p>
+<p class="font-label-mono text-[9px] text-on-surface-variant">CHIEF REGISTRAR</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[80px] pt-24 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Breadcrumbs & Status -->
+<div class="flex items-center justify-between mb-8 pb-4 border-b border-outline-variant">
+<div class="flex items-center font-label-mono text-[10px] text-on-surface-variant tracking-wider uppercase">
+<span>Admin</span>
+<span class="mx-2">/</span>
+<span class="text-primary font-bold">Data Management</span>
+<span class="mx-2">/</span>
+<span class="text-primary font-bold">Reports &amp; Export</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-mono text-[10px] text-on-surface-variant">SYSTEM STATUS: <span class="text-secondary font-bold">STABLE</span></span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+</div>
+</div>
+<!-- Header Section with ECG sparkline -->
+<div class="mb-10">
+<h2 class="font-display-md text-display-md text-primary mb-2 flex items-center">
+                    Available Exports
+                    <span class="ecg-sparkline ml-2 opacity-50"></span>
+</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">Select a clinical or financial domain to generate a CSV export. All exports are logged with a timestamp and user ID for auditing purposes.</p>
+</div>
+<!-- Bento-style Grid of Report Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Daily Appointments (Teal Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-secondary p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="document">description</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_APP_01</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Daily Appointments</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Detailed list of all scheduled, completed, and canceled patient consultations.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>2023-11-01</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span>2023-11-30</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+<!-- Card 2: Monthly Revenue (Indigo Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-indigo-clinical p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-indigo-clinical" data-icon="chart">insert_chart</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_FIN_08</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Monthly Revenue</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Aggregate financial data covering billing, insurance claims, and pharmacy sales.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>2023-10-01</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span>2023-10-31</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+<!-- Card 3: Doctor Performance (Rust Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-rust p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-rust" data-icon="folder">folder_shared</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_HR_05</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Doctor Performance</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Patient load, surgery success rates, and average consultation durations.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>2023-01-01</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span>2023-12-31</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+<!-- Card 4: Patient Statistics (Teal Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-secondary p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="chart">monitoring</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_DATA_22</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Patient Statistics</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Demographic analysis, re-admission rates, and diagnostic trends.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>2023-09-01</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span>2023-11-20</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+<!-- Card 5: Billing Summary (Indigo Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-indigo-clinical p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-indigo-clinical" data-icon="document">receipt_long</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_BILL_12</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Billing Summary</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Breakdown of outstanding balances, insurance payouts, and taxes.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>2023-11-15</span>
+<span class="material-symbols-outlined text-[12px]">arrow_right_alt</span>
+<span>2023-11-21</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+<!-- Card 6: Inventory/Stock (Rust Border) -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-rust p-6 rounded-sm flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-surface-container-low border border-outline-variant">
+<span class="material-symbols-outlined text-rust" data-icon="folder">inventory</span>
+</div>
+<span class="font-label-stamp text-label-stamp text-on-surface-variant border border-outline-variant px-1 -rotate-2">REF_INV_99</span>
+</div>
+<h3 class="font-display-md text-xl text-primary mb-2">Inventory/Stock</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Current stock levels for pharmacy, medical supplies, and PPE equipment.</p>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-3">
+<p class="font-label-mono text-[9px] text-on-surface-variant mb-2 uppercase tracking-tighter">Target Range</p>
+<div class="flex items-center justify-between font-label-mono text-[11px] font-bold">
+<span>CURRENT</span>
+<span class="material-symbols-outlined text-[12px]">history</span>
+<span>REAL-TIME</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-primary text-primary font-label-mono text-[11px] py-3 hover:bg-primary hover:text-white transition-all">
+                            EXPORT CSV →
+                        </button>
+</div>
+</div>
+</div>
+<!-- Audit Footer -->
+<div class="mt-16 pt-8 border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 bg-white border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">verified_user</span>
+</div>
+<div>
+<p class="font-label-mono text-[12px] font-bold">COMPLIANCE NOTICE</p>
+<p class="font-body-md text-on-surface-variant text-[13px] max-w-sm">All exported records are encrypted and compliant with HIPAA and GDPR data protection regulations.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="p-4 bg-white border border-outline-variant flex flex-col justify-center">
+<p class="font-label-mono text-[9px] text-on-surface-variant">TOTAL EXPORTS (24H)</p>
+<p class="font-display-md text-xl text-primary">142</p>
+</div>
+<div class="p-4 bg-white border border-outline-variant flex flex-col justify-center">
+<p class="font-label-mono text-[9px] text-on-surface-variant">SERVER UPTIME</p>
+<p class="font-display-md text-xl text-secondary">99.9%</p>
+</div>
+<div class="p-4 bg-white border border-outline-variant flex flex-col justify-center">
+<p class="font-label-mono text-[9px] text-on-surface-variant">LAST BACKUP</p>
+<p class="font-display-md text-xl text-rust">04:12 AM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

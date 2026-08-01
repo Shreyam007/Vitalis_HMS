@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Doctor Directory</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=Instrument+Sans:wght@600;700&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dde1ff",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "on-tertiary-container": "#7080c5",
+                        "surface-container-highest": "#e2e3df",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#e1e2e9",
+                        "tertiary-container": "#001452",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-surface-variant": "#45474b",
+                        "on-primary-fixed-variant": "#44474d",
+                        "inverse-surface": "#2e312f",
+                        "primary-container": "#191c21",
+                        "outline-variant": "#c6c6cb",
+                        "on-background": "#1a1c1a",
+                        "background": "#f2f3ef", /* Custom Paper Grey */
+                        "on-secondary-container": "#157160",
+                        "inverse-primary": "#c4c6cd",
+                        "secondary-container": "#a0f2dc",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-high": "#e7e9e5",
+                        "surface-tint": "#5c5e64",
+                        "on-secondary-fixed": "#00201a",
+                        "tertiary": "#000000",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary": "#14171c",
+                        "outline": "#76777b",
+                        "on-tertiary-fixed": "#001452",
+                        "on-primary-container": "#81848a",
+                        "surface-variant": "#e2e3df",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "surface-dim": "#d9dad7",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-primary-fixed": "#191c21",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f9faf6",
+                        "on-secondary-fixed-variant": "#005143",
+                        "secondary": "#076b5a",
+                        "surface-container-low": "#f3f4f0",
+                        "surface": "#f9faf6",
+                        "on-surface": "#1a1c1a",
+                        "surface-container": "#edeeea",
+                        "rust-active": "#b1631f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "margin": "24px",
+                        "row-height-std": "48px",
+                        "row-height-compact": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-stamp": ["IBM Plex Mono"],
+                        "body-lg": ["Work Sans"],
+                        "display-lg": ["Instrument Sans"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "body-md": ["Work Sans"],
+                        "display-md": ["Instrument Sans"]
+                    },
+                    "fontSize": {
+                        "label-stamp": ["10px", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "display-lg": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-mono": ["11px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-md": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f2f3ef;
+            color: #1a1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .ecg-sparkline {
+            height: 1px;
+            background: #dbded6;
+            position: relative;
+            margin: 20px 0;
+        }
+        .ecg-sparkline::after {
+            content: 'heart_check';
+            font-family: 'Material Symbols Outlined';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #f2f3ef;
+            padding: 0 10px;
+            color: #c6c6cb;
+            font-size: 16px;
+        }
+        /* Custom Table Styling */
+        .clinical-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .clinical-table th {
+            text-align: left;
+            border-bottom: 2px solid #14171c;
+            padding: 12px 16px;
+        }
+        .clinical-table td {
+            padding: 16px;
+            border-bottom: 1px solid #dbded6;
+        }
+        /* Die-cut effect for SideNav */
+        .active-tab-diecut {
+            position: relative;
+            background: #f2f3ef;
+            border-left: 4px solid #b1631f !important;
+            margin-right: -1px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-x-hidden">
+<!-- SIDE NAVIGATION RAIL -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary flex flex-col py-margin items-center border-r border-outline-variant z-50">
+<div class="mb-10 text-surface-container-lowest font-display-md">
+<span class="material-symbols-outlined text-[32px]">health_and_safety</span>
+</div>
+<nav class="flex flex-col gap-2 w-full">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-mono text-[9px] uppercase">Dash</span>
+</a>
+<!-- Patients -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">personal_injury</span>
+<span class="font-label-mono text-[9px] uppercase">Patients</span>
+</a>
+<!-- Doctors (ACTIVE) -->
+<a class="active-tab-diecut flex flex-col items-center justify-center text-rust-active py-4 gap-1 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+<span class="font-label-mono text-[9px] uppercase">Doctors</span>
+</a>
+<!-- Vitals -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">ecg_heart</span>
+<span class="font-label-mono text-[9px] uppercase">Vitals</span>
+</a>
+<!-- Records -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">folder_managed</span>
+<span class="font-label-mono text-[9px] uppercase">Records</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-[9px] uppercase">Settings</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col items-center gap-6">
+<button class="bg-rust-active text-white p-2 rounded-full shadow-none hover:opacity-90">
+<span class="material-symbols-outlined">emergency</span>
+</button>
+<div class="w-10 h-10 bg-surface-container-highest rounded-sm border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a professional medical administrator in a clean hospital environment, lighting is sharp and clinical, high contrast black and white style with a teal accent." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABPvBI9nW6nPuwuGzqmdSmrYjoFjclMmlR4IX8sz90cJYF2UdQ-5Zn9jyDHXVC_n-xa1aTW_-DE4qYwPvP6ip12W8jIZk6fzAyBH5TXyQB_CeqwvBRjQBaj58WjhuTmeTY7ouaCijVcm7azp77bGmvZWyg6vF0UWfrmfkzT1LcPuLQ6ir3ZmHNY8bW5s3pfirJ96L9xRHbnB3n-_vQz-8pKb0yqNrlPKeC8uB_Vn4BydqB49dzg44"/>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[88px] flex-1 flex flex-col min-h-screen">
+<!-- HEADER / CHARTBAR -->
+<header class="h-[80px] px-margin flex items-center justify-between border-b border-outline-variant bg-white sticky top-0 z-40">
+<div class="flex items-center gap-6">
+<div>
+<h1 class="font-display-md text-display-md text-primary leading-tight">Doctor Directory</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant">42 REGISTERED PHYSICIANS</p>
+</div>
+<div class="px-3 py-1 border border-rust-active rounded-full flex items-center gap-2">
+<span class="w-2 h-2 bg-rust-active rounded-full"></span>
+<span class="font-label-mono text-[10px] text-rust-active font-bold tracking-widest">ADMIN WARD</span>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex items-center gap-2 mr-4">
+<span class="material-symbols-outlined text-outline">notifications</span>
+<span class="material-symbols-outlined text-outline">help_outline</span>
+</div>
+<button class="bg-primary text-white font-label-mono text-label-mono px-6 py-3 flex items-center gap-2 hover:bg-black transition-colors uppercase">
+                    + Add Doctor <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</header>
+<!-- FILTERS & SEARCH -->
+<section class="px-margin py-6 bg-surface-container-low border-b border-outline-variant">
+<div class="flex flex-wrap items-center gap-4">
+<!-- Search Input -->
+<div class="relative flex-1 max-w-md">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant font-label-mono text-label-mono focus:ring-0 focus:border-primary outline-none uppercase placeholder:text-outline-variant" placeholder="SEARCH BY NAME OR ID..." type="text"/>
+</div>
+<!-- Specialization Dropdown -->
+<div class="relative">
+<select class="appearance-none bg-white border border-outline-variant font-label-mono text-label-mono px-4 py-2 pr-10 focus:ring-0 focus:border-primary outline-none uppercase cursor-pointer">
+<option>All Specializations</option>
+<option>Cardiology</option>
+<option>Orthopedics</option>
+<option>Pediatrics</option>
+<option>Neurology</option>
+<option>General Physician</option>
+</select>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined pointer-events-none text-lg">expand_more</span>
+</div>
+<!-- Availability Toggle -->
+<div class="flex items-center gap-3 bg-white border border-outline-variant px-4 py-2">
+<span class="font-label-mono text-label-mono uppercase text-on-surface-variant">Available Only</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-8 h-4 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-secondary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+</label>
+</div>
+<button class="ml-auto font-label-mono text-label-mono text-primary flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-lg">filter_alt</span> RESET FILTERS
+                </button>
+</div>
+</section>
+<!-- TABLE CONTENT -->
+<section class="p-margin flex-1">
+<div class="bg-white border border-outline-variant overflow-hidden">
+<table class="clinical-table">
+<thead class="bg-white">
+<tr>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Doctor</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Specialization</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Experience</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Fee</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Availability</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Rating</th>
+<th class="font-label-mono text-label-mono font-bold text-primary uppercase">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up clinical portrait of Dr. Sarah Jenkins, professional and friendly cardiologist, hospital setting, neutral soft lighting, high-end medical photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADD-FduZ8mM16kZzEgEbzNFtW7H_UXzHtl-LAjMhvEveURBrXGrOkhTixClYeIjDcGUS-HvBUH7mK_qu-uoXg1o8euyOUwfY_p3vT_M_lLXQMFpfxCr7zhGewDbqGFV69-5gfK7K_fqGCz2gzJk67VGUSoi5E-0EHEr0frVvC2rmWbNAmN5tkXw5VtyjQHYWr6o7uCVYUfUD4LxvVCXtnR0jZsIUHu4GWvMrklfY5U85r60PCPDkI"/>
+</div>
+<div>
+<div class="font-bold">Dr. Sarah Jenkins</div>
+<div class="font-label-mono text-[10px] text-outline">UID: CRD-9901</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">Cardiology</td>
+<td>14Y EXP</td>
+<td class="font-label-mono">$120.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> AVAILABLE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">4.9</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up clinical portrait of Dr. Marcus Reed, experienced orthopedic surgeon, neutral hospital background, professional tone, crisp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADqQi7GBIIUbCcsJdacbge-WVwG79RaRNNZJvYCm6zH6NOzQ5gAY0bb9lAJfRscI5ksK3ipSutDLTWjOj1vaEsdeqXocLlK83q5JPkwboxpqnMvODghRy_A43qEMwPsuQmuVz1OhFGn8ntsfQ3NiT1B_Ph1XVjtOpA90OBxkyrlu54Fc41gC0VjPnc4O9TQIRpur13Ts3c2YFBPs6QjlBIB6vHCcsMi9j4xi0V4681WuE8_0rE6DY"/>
+</div>
+<div>
+<div class="font-bold">Dr. Marcus Reed</div>
+<div class="font-label-mono text-[10px] text-outline">UID: ORT-4402</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">Orthopedics</td>
+<td>8Y EXP</td>
+<td class="font-label-mono">$90.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-on-error-container uppercase">
+<span class="w-1.5 h-1.5 bg-error rounded-full"></span> ON LEAVE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">4.7</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Clinical portrait of Dr. Anna Lawson, senior pediatrician, gentle lighting, hospital office background, high resolution, clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-65MAz46VX6XBzJugnDXRG8HEffd4Y0-xccesKWBBnoXF33MT2kdfqpYhUl46-advlMG2fbp5sTKGDS9diNXxmQkmpu-EjnQeatr8LoM4LyIlMyknHIEwa1WOYKyrvSQO4IO85Vg_vcmpHO9UPSZVth3ne-oJTv_JRmj2jWZl7i_f8H0EWhh_fcyC9sw0FuSV5u1Ti8nccZQAAXtrGxTZozBuajXoqXU7de-R-Cy8m6VMhJUA7eA"/>
+</div>
+<div>
+<div class="font-bold">Dr. Anna Lawson</div>
+<div class="font-label-mono text-[10px] text-outline">UID: PED-1120</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">Pediatrics</td>
+<td>20Y EXP</td>
+<td class="font-label-mono">$180.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> AVAILABLE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">5.0</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+<!-- ECG Divider Break in Table -->
+<tr>
+<td class="py-0 px-0" colspan="7">
+<div class="ecg-sparkline mx-4"></div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Portrait of Dr. Kevin Vora, neurologist, modern lab background, cool professional lighting, minimalist hospital style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXI3mDb5Huu5P04u2ntK7LZ30-FBb2c9SU1tlxOCGiGlChQe0JrDxvclST4UiNMCxVOGXEWLkomtZFghHhaGC1R6i_oH33IP7WOnS1dpCiUIpnfcOVcTODTCrxvDF_JMy9XiXroBvbb99cG5uO9GQpMoLz0GstoJ8FLbSW_zcsVH6VZeJpmB1CV-KjCL1ZGeMddsqyDzKPmIGPI6hgJVPjmSyBncKdocsT3nKMFr1krJKIsNbgPXU"/>
+</div>
+<div>
+<div class="font-bold">Dr. Kevin Vora</div>
+<div class="font-label-mono text-[10px] text-outline">UID: NEU-6601</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">Neurology</td>
+<td>6Y EXP</td>
+<td class="font-label-mono">$85.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> AVAILABLE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">4.5</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of Dr. Elena Sofia, General Physician, clean clinic environment, daylight lighting, clinical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIARIR6aX_oY3GX9Kmac-su389GUvfDSsI8KFWKf2Bzud97jBQhwR1qJ1iqpM2lZllMUAzRVFF2FS0v8oQrzxh4aw9UHK0tGsPpUk4vPZ0_KGv8ieGjujmKvypz0a6wd-sF6occcOk8KZ9X7uWQRwr4TrCYESIST951InH77iUpZ_juVu2bmAwUAjOrdjBXNMzQj-VBw9j_V8TH_LCkz-7-XE9_xeifYHzq8qGwj6eN01IoLJ6uTk"/>
+</div>
+<div>
+<div class="font-bold">Dr. Elena Sofia</div>
+<div class="font-label-mono text-[10px] text-outline">UID: GEN-3021</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">General Physician</td>
+<td>12Y EXP</td>
+<td class="font-label-mono">$110.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> AVAILABLE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">4.8</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-background transition-colors group">
+<td>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up clinical portrait of Dr. Julian Thorne, cardiologist, hospital environment, high contrast, monochrome medical theme with subtle color." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtYbxkjRlpZ8x-OwC2KP713KeShN93uaOSSQ5ePKC2VKsuZ8mx0GMPWIW6w274VqMOf3FvHNw2HnLuQEFKDcC8k8DMZd7mUH5TCY_G60mKvDnfQWNL7fn1lYmXIT6WdzQHfdQKvcoWwoLVSmTm4veYG0z1LrFNiHwDoWe0UIzwvuZQD4X2dFnWgjJHWyz9SifREVTyqV-qkk_tHPcRZSPesQa5PhPwnAiSi_rFcxlZ-lsWWTnso6s"/>
+</div>
+<div>
+<div class="font-bold">Dr. Julian Thorne</div>
+<div class="font-label-mono text-[10px] text-outline">UID: CRD-2210</div>
+</div>
+</div>
+</td>
+<td class="font-label-mono uppercase text-xs">Cardiology</td>
+<td>10Y EXP</td>
+<td class="font-label-mono">$130.00</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-error-container text-on-error-container uppercase">
+<span class="w-1.5 h-1.5 bg-error rounded-full"></span> ON LEAVE
+                                </span>
+</td>
+<td>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-rust-active" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-mono font-bold">4.6</span>
+</div>
+</td>
+<td>
+<div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">EDIT</button>
+<button class="font-label-mono text-[10px] border border-outline px-2 py-1 hover:bg-primary hover:text-white transition-colors">VIEW</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PAGINATION / STATUS FOOTER -->
+<div class="mt-6 flex items-center justify-between font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
+<div>SHOWING 1-6 OF 42 PHYSICIANS</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span> PREV
+                    </button>
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold border-b border-primary">01</span>
+<span class="hover:text-primary cursor-pointer">02</span>
+<span class="hover:text-primary cursor-pointer">03</span>
+<span>...</span>
+<span class="hover:text-primary cursor-pointer">07</span>
+</div>
+<button class="flex items-center gap-1 hover:text-primary transition-colors">
+                        NEXT <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- FLOATING MICRO-INTERACTION ELEMENTS (Atmospheric) -->
+<div class="fixed bottom-6 right-6 flex flex-col gap-3 pointer-events-none">
+<div class="bg-primary text-white p-3 rounded-full opacity-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[40px]">ecg_heart</span>
+</div>
+</div>
+<script>
+        // Micro-interactions: Row highlight and Sparkline subtle pulse
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.borderLeft = '2px solid #14171c';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.borderLeft = 'none';
+            });
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-1', 'ring-primary');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-1', 'ring-primary');
+        });
+    </script>
+</body></html>

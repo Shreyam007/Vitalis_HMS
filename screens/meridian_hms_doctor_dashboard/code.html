@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS — Physician Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#45474b",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e2e3df",
+                    "inverse-primary": "#c4c6cd",
+                    "outline-variant": "#c6c6cb",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#001452",
+                    "primary-fixed-dim": "#c4c6cd",
+                    "surface": "#f9faf6",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f0f1ed",
+                    "secondary": "#076b5a",
+                    "on-secondary-fixed-variant": "#005143",
+                    "tertiary-fixed-dim": "#b7c4ff",
+                    "outline": "#76777b",
+                    "primary-container": "#191c21",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#e1e2e9",
+                    "inverse-surface": "#2e312f",
+                    "secondary-fixed-dim": "#84d6c1",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#7080c5",
+                    "on-secondary-fixed": "#00201a",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1a1c1a",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#dde1ff",
+                    "tertiary": "#000000",
+                    "surface-container-highest": "#e2e3df",
+                    "on-primary-fixed-variant": "#44474d",
+                    "surface-container-low": "#f3f4f0",
+                    "surface-container-high": "#e7e9e5",
+                    "secondary-fixed": "#a0f2dc",
+                    "surface-tint": "#5c5e64",
+                    "background": "#f2f3ef",
+                    "secondary-container": "#a0f2dc",
+                    "on-secondary-container": "#157160",
+                    "surface-dim": "#d9dad7",
+                    "tertiary-container": "#001452",
+                    "on-tertiary-fixed-variant": "#314283",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#f9faf6",
+                    "on-background": "#1a1c1a",
+                    "surface-container": "#edeeea",
+                    "on-primary-fixed": "#191c21",
+                    "on-primary-container": "#81848a",
+                    "primary": "#000000",
+                    "ward-indigo": "#3A4B8C",
+                    "ward-amber": "#D97706",
+                    "ward-rust": "#B45309",
+                    "paper": "#F2F3EF"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "8px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "row-height-compact": "32px",
+                    "margin": "24px",
+                    "gutter": "16px",
+                    "row-height-std": "48px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "display-md": ["Instrument Sans"],
+                    "display-lg": ["Instrument Sans"],
+                    "label-mono": ["IBM Plex Mono"],
+                    "body-md": ["Work Sans"],
+                    "label-stamp": ["IBM Plex Mono"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .stamp-badge {
+            transform: rotate(-2deg);
+            display: inline-flex;
+            padding: 2px 8px;
+            border-width: 1.5px;
+            text-transform: uppercase;
+        }
+        .ecg-line {
+            width: 100%;
+            height: 1px;
+            background: #DBDED6;
+            position: relative;
+        }
+        .ecg-icon {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #F2F3EF;
+            padding: 0 12px;
+        }
+        .die-cut-active {
+            border-left: 4px solid #3A4B8C;
+            background-color: #f9faf6 !important;
+        }
+        .glowing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #3A4B8C;
+            box-shadow: 0 0 8px #3A4B8C;
+        }
+        body { background-color: #F2F3EF; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Side Navigation Rail -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary border-r border-outline-variant flex flex-col items-center py-margin z-50">
+<div class="mb-10">
+<span class="font-display-md text-display-md text-surface-container-lowest tracking-tight">M</span>
+</div>
+<nav class="flex flex-col w-full gap-2">
+<!-- Active Tab: Queue (Patients in JSON maps to Queue intent) -->
+<a class="relative flex flex-col items-center justify-center py-4 gap-1 text-ward-indigo bg-surface border-l-4 border-ward-indigo rounded-l-none transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="personal_injury">personal_injury</span>
+<span class="font-label-mono text-label-mono uppercase">Queue</span>
+<div class="absolute right-2 top-2 glowing-dot"></div>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-mono text-label-mono uppercase">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="ecg_heart">ecg_heart</span>
+<span class="font-label-mono text-label-mono uppercase">Vitals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="folder_managed">folder_managed</span>
+<span class="font-label-mono text-label-mono uppercase">Recs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-mono text-label-mono uppercase">Set</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col items-center gap-6">
+<button class="bg-error text-white p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+</button>
+<div class="w-10 h-10 border border-outline-variant rounded-full bg-surface overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional medical headshot of a middle-aged male doctor with a serene, focused expression. He is wearing a crisp white lab coat over a dark blue shirt. The background is a clean, softly lit hospital corridor with modern clinical equipment slightly blurred in the distance. The lighting is high-key and professional, creating an atmosphere of trust and clinical excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1Qt4kK1W3_FksIWT8_ZIFek1HxtwIxB0OaLoU6fEdCPOHjpKQhbI2Ux7UJfXVHvtYz7cNksB_WOheAtWCxX7CYpuwBVo-esqEPSWgWlqF-isjbtgmU1C9Dy5Pa2XvCduEcQPDibUw4RhxqEhkW-hk2BIx-34Vc1sPeQCkpGxqaX07QB70qcaGkGzq5G3YqiSEe4ObXppWS1AaZNYQCEg-To5nS-MO1gu65_rLQWbHdhHUY4ARR2A"/>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[88px] p-margin min-h-screen">
+<!-- Chartbar Header -->
+<header class="flex justify-between items-end mb-8 pb-4 border-b border-outline-variant">
+<div class="space-y-1">
+<h1 class="font-display-md text-display-md text-primary">Dr. Kabir Sen — Cardiology</h1>
+<div class="flex items-center gap-gutter font-label-mono text-label-mono text-on-surface-variant">
+<span>Thursday 6 Aug 2026</span>
+<span>•</span>
+<span>Room 214</span>
+<span>•</span>
+<span>6 patients today</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-ward-indigo text-white rounded-full flex items-center gap-2">
+<span class="w-2 h-2 bg-white rounded-full"></span>
+<span class="font-label-mono text-[10px] uppercase tracking-widest font-bold">Doctor Ward</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Top Stat Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-ward-indigo p-gutter">
+<p class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">In queue</p>
+<p class="font-display-lg text-display-lg text-primary">3</p>
+</div>
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-secondary p-gutter">
+<p class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Completed today</p>
+<p class="font-display-lg text-display-lg text-primary">2</p>
+</div>
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-ward-amber p-gutter">
+<p class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Avg. consult time</p>
+<p class="font-display-lg text-display-lg text-primary">18m</p>
+</div>
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-ward-rust p-gutter">
+<p class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Next free slot</p>
+<p class="font-display-lg text-display-lg text-primary">6:00 PM</p>
+</div>
+</div>
+<!-- Section Divider with ECG -->
+<div class="relative py-8">
+<div class="ecg-line"></div>
+<div class="ecg-icon flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'wght' 200;">ecg_heart</span>
+<span class="font-label-mono text-label-mono uppercase font-bold tracking-tighter">Today's queue</span>
+</div>
+</div>
+<!-- Patient Queue Table -->
+<section class="bg-white border border-outline-variant mb-8 overflow-hidden">
+<div class="grid grid-cols-12 gap-gutter px-gutter py-3 border-b border-outline-variant bg-surface font-label-mono text-label-mono uppercase text-on-surface-variant">
+<div class="col-span-3">Patient</div>
+<div class="col-span-2">ID Tag</div>
+<div class="col-span-2">Time</div>
+<div class="col-span-3">Reason</div>
+<div class="col-span-2 text-right">Status / Action</div>
+</div>
+<!-- Row 1 (Current) -->
+<div class="grid grid-cols-12 gap-gutter px-gutter h-row-height-std items-center border-b border-outline-variant hover:bg-surface transition-colors">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-ward-indigo/10 flex items-center justify-center text-ward-indigo font-bold text-xs">AS</div>
+<span class="font-body-lg text-body-lg">Anita Sharma</span>
+</div>
+<div class="col-span-2 font-label-mono text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 w-fit">PID-40922</div>
+<div class="col-span-2 font-label-mono">14:30 (Current)</div>
+<div class="col-span-3 text-on-surface-variant">Routine Checkup</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="stamp-badge border-secondary text-secondary font-label-stamp">Confirmed</span>
+<button class="bg-secondary text-white font-label-mono text-label-mono px-3 py-2 hover:bg-on-secondary-container transition-colors uppercase">Start visit →</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-gutter px-gutter h-row-height-std items-center border-b border-outline-variant hover:bg-surface transition-colors">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-ward-amber/10 flex items-center justify-center text-ward-amber font-bold text-xs">RK</div>
+<span class="font-body-lg text-body-lg">Rohan Kapoor</span>
+</div>
+<div class="col-span-2 font-label-mono text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 w-fit">PID-12845</div>
+<div class="col-span-2 font-label-mono text-on-surface-variant">15:15</div>
+<div class="col-span-3 text-on-surface-variant">Follow-up: Hypertensive Crisis</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="stamp-badge border-outline text-outline font-label-stamp">Pending</span>
+<button class="text-outline border border-outline font-label-mono text-label-mono px-3 py-2 hover:bg-surface-variant transition-colors uppercase">View chart</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 gap-gutter px-gutter h-row-height-std items-center hover:bg-surface transition-colors">
+<div class="col-span-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">PL</div>
+<span class="font-body-lg text-body-lg">Priya Luthra</span>
+</div>
+<div class="col-span-2 font-label-mono text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 w-fit">PID-99231</div>
+<div class="col-span-2 font-label-mono text-on-surface-variant">16:00</div>
+<div class="col-span-3 text-on-surface-variant">ECG Interpretation</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="stamp-badge border-secondary text-secondary font-label-stamp">Confirmed</span>
+<button class="text-outline border border-outline font-label-mono text-label-mono px-3 py-2 hover:bg-surface-variant transition-colors uppercase">View chart</button>
+</div>
+</div>
+</section>
+<!-- Bottom Row: Prescription & Diagnosis -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Quick Prescription -->
+<div class="bg-white border border-outline-variant p-gutter">
+<h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="medication">medication</span>
+                    Quick Prescription
+                </h3>
+<div class="space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-mono text-[10px] text-on-surface-variant uppercase">Patient</label>
+<div class="relative">
+<input class="w-full h-10 bg-white border border-outline-variant px-3 font-body-md focus:border-primary focus:ring-0 transition-all" type="text" value="Anita Sharma"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-[10px] text-on-surface-variant uppercase">Medicine</label>
+<input class="w-full h-10 bg-white border border-outline-variant px-3 font-body-md focus:border-primary focus:ring-0 transition-all" placeholder="Amlodipine 5mg" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-mono text-[10px] text-on-surface-variant uppercase">Dosage</label>
+<input class="w-full h-10 bg-white border border-outline-variant px-3 font-body-md focus:border-primary focus:ring-0 transition-all" placeholder="1-0-1 (Post meal)" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-[10px] text-on-surface-variant uppercase">Duration</label>
+<input class="w-full h-10 bg-white border border-outline-variant px-3 font-body-md focus:border-primary focus:ring-0 transition-all" placeholder="15 Days" type="text"/>
+</div>
+</div>
+<button class="w-full bg-secondary text-white font-label-mono py-3 uppercase tracking-wider hover:bg-on-secondary-container transition-all">
+                        Issue prescription →
+                    </button>
+</div>
+</div>
+<!-- Diagnosis Note -->
+<div class="bg-white border border-outline-variant p-gutter flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="description">description</span>
+                        Diagnosis Note
+                    </h3>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Last Edited: 14:35</span>
+</div>
+<div class="flex-1 bg-[#F6ECDC] p-gutter border-l-4 border-ward-rust">
+<div class="flex items-center gap-3 mb-4">
+<span class="font-label-mono text-[10px] bg-white px-2 py-0.5 border border-outline-variant text-ward-rust">CLINICAL OBSERVATION</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant">PATIENT: AS-40922</span>
+</div>
+<p class="font-label-mono text-body-md leading-relaxed text-on-surface">
+                        Patient presents with intermittent palpitations and mild chest discomfort on exertion. Blood pressure readings show sustained elevation (145/95). Recommended immediate 24-hour Holter monitoring. Possible adjustment to ACE inhibitors required pending lab results. Heart sounds are regular but s2 is prominent at the base. No peripheral edema noted.
+                    </p>
+</div>
+<div class="mt-4 flex justify-end">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+<span class="font-label-mono text-label-mono uppercase">Add notation</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Subtle ECG pulse animation
+        const ecgIcon = document.querySelector('.ecg-icon span');
+        if (ecgIcon) {
+            setInterval(() => {
+                ecgIcon.style.opacity = '0.4';
+                setTimeout(() => {
+                    ecgIcon.style.opacity = '1';
+                }, 200);
+            }, 3000);
+        }
+    </script>
+</body></html>

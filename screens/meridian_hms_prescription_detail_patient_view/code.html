@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prescription Detail - Meridian HMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=Work+Sans:wght@400;500&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Dancing+Script:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e2e3df",
+                        "surface-tint": "#5c5e64",
+                        "surface-dim": "#d9dad7",
+                        "surface-container-high": "#e7e9e5",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-tertiary-container": "#7080c5",
+                        "inverse-primary": "#c4c6cd",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#a0f2dc",
+                        "inverse-surface": "#2e312f",
+                        "tertiary-container": "#001452",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-primary-fixed": "#191c21",
+                        "on-surface": "#1a1c1a",
+                        "background": "#f9faf6",
+                        "secondary": "#076b5a",
+                        "outline-variant": "#c6c6cb",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#00201a",
+                        "primary": "#000000",
+                        "surface": "#f9faf6",
+                        "tertiary": "#000000",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "primary-fixed": "#e1e2e9",
+                        "outline": "#76777b",
+                        "on-primary-container": "#81848a",
+                        "on-secondary-container": "#157160",
+                        "on-primary-fixed-variant": "#44474d",
+                        "surface-bright": "#f9faf6",
+                        "surface-container-low": "#f3f4f0",
+                        "on-secondary-fixed-variant": "#005143",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#191c21",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-background": "#1a1c1a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e3df",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#45474b",
+                        "on-tertiary-fixed": "#001452",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeea",
+                        "tertiary-fixed": "#dde1ff",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "paper-grey": "#F2F3EF",
+                        "ink-charcoal": "#14171C",
+                        "ward-teal": "#0F6E5D",
+                        "hairline": "#DBDED6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "8px",
+                        "full": "12px"
+                    },
+                    "spacing": {
+                        "row-height-compact": "32px",
+                        "row-height-std": "48px",
+                        "margin": "24px",
+                        "gutter": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display-md": ["Instrument Sans"],
+                        "body-md": ["Work Sans"],
+                        "label-stamp": ["IBM Plex Mono"],
+                        "body-lg": ["Work Sans"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"],
+                        "signature": ["Dancing Script"]
+                    },
+                    "fontSize": {
+                        "display-md": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-stamp": ["10px", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "label-mono": ["11px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "display-lg": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #F2F3EF;
+            color: #14171C;
+        }
+        .ecg-divider {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 1px;
+            background-color: #DBDED6;
+            position: relative;
+        }
+        .ecg-icon {
+            position: absolute;
+            left: 24px;
+            background-color: #ffffff;
+            padding: 0 8px;
+            color: #0F6E5D;
+            font-size: 14px;
+        }
+        .prescription-paper {
+            background-color: #ffffff;
+            border: 1px solid #DBDED6;
+            box-shadow: none;
+            position: relative;
+        }
+        .die-cut-active {
+            background-color: #F2F3EF;
+            border-top: 1px solid #DBDED6;
+            border-bottom: 1px solid #DBDED6;
+            border-left: 1px solid #DBDED6;
+            margin-right: -1px;
+            z-index: 10;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body-md overflow-hidden">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r border-outline-variant bg-surface-container-low flex flex-col py-margin z-50">
+<div class="px-6 mb-10">
+<h1 class="font-display-md text-display-md font-bold text-primary">Meridian HMS</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant">Ward 4B - Bed 12</p>
+</div>
+<nav class="flex-1">
+<div class="space-y-1">
+<!-- Nav Item: Dashboard -->
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="clinical_notes">clinical_notes</span>
+<span class="font-label-mono text-label-mono">Dashboard</span>
+</a>
+<!-- Nav Item: Vitals -->
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-mono text-label-mono">Vitals</span>
+</a>
+<!-- Nav Item: Medical Records (ACTIVE) -->
+<a class="flex items-center px-6 py-3 die-cut-active text-secondary font-bold relative group" href="#">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<span class="material-symbols-outlined mr-3" data-icon="folder_managed">folder_managed</span>
+<span class="font-label-mono text-label-mono">Medical Records</span>
+</a>
+<!-- Nav Item: Lab Results -->
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="biotech">biotech</span>
+<span class="font-label-mono text-label-mono">Lab Results</span>
+</a>
+<!-- Nav Item: Settings -->
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-mono text-label-mono">Settings</span>
+</a>
+</div>
+</nav>
+<div class="px-6">
+<button class="w-full bg-ink-charcoal text-white font-label-mono text-label-mono py-3 flex items-center justify-center rounded uppercase tracking-widest hover:opacity-90 transition-opacity">
+                Admit Record <span class="ml-2">→</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 h-screen overflow-y-auto flex flex-col bg-paper-grey">
+<!-- Header / Chartbar -->
+<header class="w-full h-24 border-b border-hairline bg-white flex items-center justify-between px-margin sticky top-0 z-40">
+<div class="flex flex-col">
+<h2 class="font-display-md text-display-md text-primary tracking-tight">Prescription — 12 Jul 2026</h2>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Dr. Kabir Sen · Cardiology</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="bg-secondary-fixed text-on-secondary-container px-3 py-1 font-label-mono text-label-mono rounded-full border border-secondary-container">
+                    Patient Ward
+                </span>
+<div class="flex gap-2">
+<button class="bg-surface-container border border-outline-variant p-2 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</button>
+<button class="bg-surface-container border border-outline-variant p-2 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Prescription Content Area -->
+<div class="flex-1 p-margin flex flex-col items-center">
+<!-- Action Bar -->
+<div class="w-full max-w-4xl flex justify-end gap-3 mb-6">
+<button class="px-4 py-2 border border-hairline text-on-surface-variant font-label-mono text-label-mono hover:bg-white transition-colors tracking-widest uppercase">
+                    Request Refill
+                </button>
+<button class="px-4 py-2 bg-ward-teal text-white font-label-mono text-label-mono hover:opacity-90 transition-opacity flex items-center gap-2 tracking-widest uppercase">
+                    Download PDF <span>→</span>
+</button>
+</div>
+<!-- The Prescription Card -->
+<div class="w-full max-w-4xl prescription-paper p-10 min-h-[800px] flex flex-col relative">
+<!-- Hospital Letterhead -->
+<div class="text-center mb-10">
+<h3 class="font-label-mono text-body-lg font-bold tracking-tighter uppercase mb-1">Meridian General Hospital</h3>
+<p class="font-label-mono text-label-mono text-on-surface-variant">Central Medical Unit · Ward 4B · Sector 08</p>
+<div class="mt-4 flex justify-center">
+<div class="h-[1px] w-32 bg-hairline"></div>
+</div>
+</div>
+<!-- Patient Meta Section -->
+<div class="flex justify-between border-b border-hairline pb-4 mb-8 font-label-mono text-label-mono">
+<div>
+<span class="text-on-surface-variant uppercase">Patient:</span>
+<span class="font-bold ml-2">Ananya Iyer</span>
+</div>
+<div>
+<span class="text-on-surface-variant uppercase">ID:</span>
+<span class="font-bold ml-2">MR-08841</span>
+</div>
+<div>
+<span class="text-on-surface-variant uppercase">Date:</span>
+<span class="font-bold ml-2">12 JUL 2026</span>
+</div>
+</div>
+<!-- Rx Symbol -->
+<div class="mb-6">
+<span class="text-display-lg font-display-md text-primary opacity-20 select-none">Rx</span>
+</div>
+<!-- Medications Table -->
+<div class="border border-hairline mb-10">
+<div class="grid grid-cols-12 bg-surface-container-low font-label-mono text-label-mono border-b border-hairline py-3 px-4 text-on-surface-variant">
+<div class="col-span-4">MEDICINE NAME</div>
+<div class="col-span-2">DOSAGE</div>
+<div class="col-span-3">FREQUENCY</div>
+<div class="col-span-3">DURATION</div>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-12 font-label-mono text-body-md py-4 px-4 border-b border-hairline hover:bg-surface-container-lowest transition-colors">
+<div class="col-span-4 font-bold">Amlodipine Besylate</div>
+<div class="col-span-2">5mg</div>
+<div class="col-span-3">Once Daily (Morning)</div>
+<div class="col-span-3">90 Days</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 font-label-mono text-body-md py-4 px-4 hover:bg-surface-container-lowest transition-colors">
+<div class="col-span-4 font-bold">Metformin</div>
+<div class="col-span-2">500mg</div>
+<div class="col-span-3">Twice Daily (After Meals)</div>
+<div class="col-span-3">30 Days</div>
+</div>
+</div>
+<!-- ECG Pulse Divider -->
+<div class="ecg-divider mb-10">
+<span class="ecg-icon material-symbols-outlined">ecg_heart</span>
+</div>
+<!-- Clinical Notes -->
+<div class="mb-12">
+<h4 class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-3">Clinical Instructions</h4>
+<p class="font-body-md text-on-surface leading-relaxed max-w-2xl">
+                        Monitor blood pressure daily at home. Maintain a low-sodium diet and report any persistent fatigue or swelling in the ankles. Metformin to be taken strictly after breakfast and dinner to avoid gastric discomfort. Follow up for lipid profile and HBA1C testing in 4 weeks.
+                    </p>
+</div>
+<!-- Spacer -->
+<div class="flex-1"></div>
+<!-- Footer / Signature -->
+<div class="flex justify-between items-end border-t border-hairline pt-8">
+<div class="flex flex-col gap-1">
+<div class="w-16 h-16 opacity-50">
+<img class="object-contain w-full h-full -rotate-6" data-alt="A monochromatic hospital stamp with 'CERTIFIED' text and the Meridian HMS logo, styled as a physical ink stamp with slight rotation and grit texture, ink-charcoal color." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkZMHkfulBSIz8K_zlo2Sm5D5-ZvFsX8P2msnFXoTXZHgXPDOtrql4xK7YxSA0uk4SmV-NyRQC9BBOPt2QP4FqCD8aKbFd58TtFQgwVmRKSxFqG3ERTFltQUYrYBQERdrvN4uQOYBCCx4LUk5qPBmdYFU-VzU5Pt5Czb7gv_fiKLARE_B_2RzvYUhwpJg8Qv38tt0z8spOQOOCpDd6DTTnEkDv8v5B2OGZNoVhpWAqCGzYR6U2z2g"/>
+</div>
+<span class="font-label-mono text-[9px] text-on-surface-variant uppercase">Validated via Meridian HMS Security Protocol</span>
+</div>
+<div class="text-right flex flex-col items-end">
+<div class="mb-2 relative">
+<!-- Signature Placeholder -->
+<span class="font-signature text-display-md text-ink-charcoal transform -rotate-2 select-none opacity-80">Kabir Sen</span>
+<div class="w-48 h-[1px] bg-ink-charcoal mt-2"></div>
+</div>
+<span class="font-label-mono text-label-mono font-bold uppercase">Dr. Kabir Sen</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant">Chief Resident, Cardiology</span>
+</div>
+</div>
+<!-- Stamp Badge Overlay -->
+<div class="absolute top-24 right-10 border-[1.5px] border-secondary text-secondary font-label-mono text-label-stamp px-4 py-2 uppercase -rotate-6 opacity-30 select-none">
+                    Digital Duplicate
+                </div>
+</div>
+<!-- Auxiliary Info -->
+<div class="w-full max-w-4xl mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 pb-margin">
+<div class="bg-white border border-hairline p-6 flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+<div>
+<h5 class="font-label-mono text-label-mono font-bold uppercase mb-1">Pharmacy Instructions</h5>
+<p class="font-body-md text-on-surface-variant">This prescription is digitally signed and valid at any Meridian-affiliated pharmaceutical outlet. Present the MR-08841 identifier at the counter.</p>
+</div>
+</div>
+<div class="bg-white border border-hairline p-6 flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary" data-icon="help">help</span>
+<div>
+<h5 class="font-label-mono text-label-mono font-bold uppercase mb-1">Support Contact</h5>
+<p class="font-body-md text-on-surface-variant">Need clarification on your treatment plan? Use the in-app chat or call Ward 4B Nursing Desk at ext. 4209.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions for industrial UI feel
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('opacity-70');
+                button.style.transform = 'translateY(1px)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('opacity-70');
+                button.style.transform = 'translateY(0)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('opacity-70');
+                button.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

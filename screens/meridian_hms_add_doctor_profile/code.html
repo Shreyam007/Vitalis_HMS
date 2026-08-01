@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=Work+Sans:wght@400;500&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for clinical feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f9faf6; }
+        ::-webkit-scrollbar-thumb { background: #DBDED6; border-radius: 0px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c6c6cb; }
+
+        /* Multi-select chip styling */
+        .day-chip.active {
+            background-color: #3A4B8C;
+            color: white;
+            border-color: #3A4B8C;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-secondary-fixed": "#00201a",
+                        "secondary": "#076b5a",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9faf6",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-primary-container": "#81848a",
+                        "on-background": "#1a1c1a",
+                        "inverse-surface": "#2e312f",
+                        "primary-fixed": "#e1e2e9",
+                        "on-tertiary-fixed": "#001452",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#7080c5",
+                        "on-surface": "#1a1c1a",
+                        "tertiary-fixed": "#dde1ff",
+                        "surface-bright": "#f9faf6",
+                        "surface-container-highest": "#e2e3df",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "secondary-container": "#a0f2dc",
+                        "surface-container-low": "#f3f4f0",
+                        "outline-variant": "#c6c6cb",
+                        "on-secondary-fixed-variant": "#005143",
+                        "on-primary-fixed": "#191c21",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#000000",
+                        "on-surface-variant": "#45474b",
+                        "surface-dim": "#d9dad7",
+                        "surface-container": "#edeeea",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#5c5e64",
+                        "primary": "#000000",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "surface-variant": "#e2e3df",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-high": "#e7e9e5",
+                        "outline": "#76777b",
+                        "inverse-primary": "#c4c6cd",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#191c21",
+                        "on-secondary-container": "#157160",
+                        "background": "#f9faf6",
+                        "tertiary-container": "#001452",
+                        "on-primary-fixed-variant": "#44474d",
+                        "rust-admin": "#A44A3F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "row-height-compact": "32px",
+                        "row-height-std": "48px",
+                        "margin": "24px",
+                        "base": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-md": ["Instrument Sans"],
+                        "body-lg": ["Work Sans"],
+                        "label-stamp": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"],
+                        "body-md": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["11px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "display-md": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "label-stamp": ["10px", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary-container">
+<!-- THE SIDE NAV RAIL -->
+<nav class="fixed left-0 top-0 h-full w-[88px] bg-primary flex flex-col py-margin items-center border-r border-outline-variant z-50">
+<!-- Logo -->
+<div class="mb-10 text-surface-container-lowest font-display-md flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<!-- Nav Items -->
+<div class="flex flex-col w-full gap-2 overflow-y-auto">
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-mono text-label-mono uppercase">DASH</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined">personal_injury</span>
+<span class="font-label-mono text-label-mono uppercase">PAT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined">ecg_heart</span>
+<span class="font-label-mono text-label-mono uppercase">VIT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined">folder_managed</span>
+<span class="font-label-mono text-label-mono uppercase">REC</span>
+</div>
+<!-- Active Item: Staff (Rust) -->
+<div class="relative bg-surface text-rust-admin border-l-4 border-rust-admin py-4 flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-label-mono text-label-mono uppercase">STAFF</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-label-mono uppercase">SET</span>
+</div>
+</div>
+<!-- Emergency CTA -->
+<div class="mt-auto pt-4">
+<button class="w-12 h-12 bg-error text-white rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined">emergency</span>
+</button>
+</div>
+</nav>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[88px] min-h-screen flex flex-col">
+<!-- CHART BAR / TOP NAV -->
+<header class="w-full h-row-height-std px-gutter flex justify-between items-center bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant leading-none">MODULE 2 · STAFF MANAGEMENT · NEW ENTRY</span>
+<h1 class="font-display-md text-display-md text-primary mt-1">Add doctor profile</h1>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-rust-admin/10 border border-rust-admin text-rust-admin">
+<span class="w-2 h-2 rounded-full bg-rust-admin"></span>
+<span class="font-label-mono text-label-mono uppercase">Admin Ward</span>
+</div>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">notifications</span>
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- CANVAS -->
+<div class="flex-1 p-margin flex justify-center">
+<div class="w-full max-w-4xl">
+<!-- MAIN RECORD CARD -->
+<div class="bg-white border border-outline-variant border-t-[3px] border-t-rust-admin shadow-none p-8 flex flex-col gap-8">
+<div class="flex items-start gap-8">
+<!-- Photo Upload Placeholder -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-[100px] h-[100px] border-2 border-dashed border-outline-variant flex flex-col items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:scale-110 transition-transform">photo_camera</span>
+</div>
+<span class="font-label-mono text-[10px] tracking-widest text-on-surface-variant uppercase">UPLOAD PHOTO</span>
+</div>
+<!-- Header Info Meta -->
+<div class="flex-1 border-l border-outline-variant pl-8 py-2">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">info</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">REQUIRED: ALL CLINICAL CREDENTIALS &amp; CONTACTS</span>
+</div>
+<p class="font-body-md text-on-surface-variant max-w-md">
+                                Enter complete practitioner data for internal routing and patient portal indexing. Profile becomes active upon administrative verification.
+                            </p>
+</div>
+</div>
+<!-- CLINICAL DIVIDER -->
+<div class="relative w-full h-px bg-outline-variant flex items-center justify-center">
+<div class="absolute bg-white px-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base">ecg_heart</span>
+<span class="font-label-mono text-label-mono text-outline uppercase tracking-wider">Practitioner Details</span>
+</div>
+</div>
+<!-- FORM GRID -->
+<form class="grid grid-cols-2 gap-x-gutter gap-y-6">
+<!-- Full Name -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Full Name</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="Dr. Enter Name" type="text"/>
+</div>
+<!-- Specialization Dropdown -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Specialization</label>
+<select class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary appearance-none">
+<option>Cardiology</option>
+<option>Neurology</option>
+<option>General Surgery</option>
+<option>Pediatrics</option>
+<option>Oncology</option>
+</select>
+</div>
+<!-- Qualification -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Qualification</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="e.g. MD, PhD" type="text"/>
+</div>
+<!-- Years of Experience -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Years of Experience</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="00" type="number"/>
+</div>
+<!-- Consultation Fee -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Consultation Fee ($)</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="0.00" type="text"/>
+</div>
+<!-- Available Days (Multi-select) -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Available Days</label>
+<div class="flex flex-wrap gap-1.5">
+<button class="day-chip active border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors" type="button">Mon</button>
+<button class="day-chip active border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors" type="button">Tue</button>
+<button class="day-chip border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors hover:bg-surface-container-low" type="button">Wed</button>
+<button class="day-chip active border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors" type="button">Thu</button>
+<button class="day-chip active border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors" type="button">Fri</button>
+<button class="day-chip border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors hover:bg-surface-container-low" type="button">Sat</button>
+<button class="day-chip border border-outline-variant px-2 py-1 text-[10px] font-label-mono uppercase transition-colors hover:bg-surface-container-low" type="button">Sun</button>
+</div>
+</div>
+<!-- Available Time Range -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Available Time Range</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center gap-2 border border-outline-variant px-3 py-1.5 bg-white rounded-lg">
+<span class="font-label-mono text-[10px] text-outline">FROM</span>
+<input class="border-none p-0 focus:ring-0 bg-transparent text-sm w-full font-label-mono" type="time" value="09:00"/>
+</div>
+<div class="flex items-center gap-2 border border-outline-variant px-3 py-1.5 bg-white rounded-lg">
+<span class="font-label-mono text-[10px] text-outline">TO</span>
+<input class="border-none p-0 focus:ring-0 bg-transparent text-sm w-full font-label-mono" type="time" value="17:00"/>
+</div>
+</div>
+</div>
+<!-- Phone -->
+<div class="flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Phone</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="+1 (000) 000-0000" type="tel"/>
+</div>
+<!-- Email -->
+<div class="col-span-2 flex flex-col gap-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase">Email Address</label>
+<input class="border border-outline-variant px-3 py-2 bg-white focus:border-primary focus:ring-0 rounded-lg font-body-md text-primary" placeholder="practitioner@meridianhms.org" type="email"/>
+</div>
+</form>
+<!-- BOTTOM ACTIONS -->
+<div class="mt-8 flex items-center justify-between border-t border-outline-variant pt-8">
+<button class="px-6 py-3 font-label-mono text-label-mono uppercase text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors">
+                            CANCEL
+                        </button>
+<button class="bg-primary text-white px-8 py-3 font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-3 hover:bg-on-surface-variant active:scale-[0.98] transition-all">
+                            SAVE DOCTOR PROFILE <span class="text-lg">→</span>
+</button>
+</div>
+</div>
+<!-- SYSTEM FOOTNOTE -->
+<div class="mt-6 flex justify-center gap-6 opacity-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">shield_lock</span>
+<span class="font-label-mono text-[9px] uppercase">HIPAA COMPLIANT STORAGE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">history</span>
+<span class="font-label-mono text-[9px] uppercase">AUDIT LOG RECORDED</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for day chips
+        document.querySelectorAll('.day-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('active');
+            });
+        });
+
+        // Mock interaction for save button
+        const saveBtn = document.querySelector('button.bg-primary');
+        saveBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            saveBtn.innerHTML = 'VERIFYING...';
+            setTimeout(() => {
+                saveBtn.innerHTML = 'PROFILE SAVED ✓';
+                saveBtn.classList.remove('bg-primary');
+                saveBtn.classList.add('bg-secondary');
+                setTimeout(() => {
+                    saveBtn.innerHTML = 'SAVE DOCTOR PROFILE →';
+                    saveBtn.classList.add('bg-primary');
+                    saveBtn.classList.remove('bg-secondary');
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body></html>

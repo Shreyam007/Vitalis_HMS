@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Meridian HMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100..900&family=Instrument+Sans:wght@100..900&family=Work+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#314283",
+                    "surface-container": "#edeeea",
+                    "outline-variant": "#c6c6cb",
+                    "on-secondary-fixed": "#00201a",
+                    "surface-container-low": "#f3f4f0",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#191c21",
+                    "surface": "#f9faf6",
+                    "inverse-primary": "#c4c6cd",
+                    "on-tertiary-container": "#7080c5",
+                    "on-primary-container": "#81848a",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#44474d",
+                    "tertiary-fixed-dim": "#b7c4ff",
+                    "on-primary-fixed": "#191c21",
+                    "on-tertiary-fixed": "#001452",
+                    "tertiary-fixed": "#dde1ff",
+                    "outline": "#76777b",
+                    "surface-dim": "#d9dad7",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#a0f2dc",
+                    "on-secondary-container": "#157160",
+                    "on-surface-variant": "#45474b",
+                    "secondary": "#076b5a",
+                    "on-background": "#1a1c1a",
+                    "inverse-on-surface": "#f0f1ed",
+                    "surface-bright": "#f9faf6",
+                    "error": "#ba1a1a",
+                    "on-surface": "#1a1c1a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#e1e2e9",
+                    "primary": "#000000",
+                    "on-secondary-fixed-variant": "#005143",
+                    "background": "#f9faf6",
+                    "surface-container-high": "#e7e9e5",
+                    "inverse-surface": "#2e312f",
+                    "primary-fixed-dim": "#c4c6cd",
+                    "tertiary": "#000000",
+                    "tertiary-container": "#001452",
+                    "surface-tint": "#5c5e64",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#84d6c1",
+                    "surface-variant": "#e2e3df",
+                    "secondary-container": "#a0f2dc",
+                    "surface-container-highest": "#e2e3df",
+                    "clinical-paper": "#F2F3EF",
+                    "clinical-border": "#DBDED6",
+                    "ward-teal": "#0F6E5D",
+                    "ink-charcoal": "#14171C",
+                    "doctor-indigo": "#3A4B8C",
+                    "admin-rust": "#B1631F",
+                    "clinical-grey": "#5B6058"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "16px",
+                    "margin": "24px",
+                    "row-height-compact": "32px",
+                    "row-height-std": "48px"
+            },
+            "fontFamily": {
+                    "label-stamp": ["IBM Plex Mono"],
+                    "display-lg": ["Instrument Sans"],
+                    "display-md": ["Instrument Sans"],
+                    "body-md": ["Work Sans"],
+                    "label-mono": ["IBM Plex Mono"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .perforation-pattern {
+            background-image: repeating-linear-gradient(90deg, #DBDED6, #DBDED6 2px, transparent 2px, transparent 4px);
+            height: 4px;
+            width: 100%;
+        }
+        .stamp-rotate {
+            transform: rotate(-2deg);
+        }
+        .die-cut-tab {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%);
+        }
+        .custom-radio:checked + label {
+            background-color: #F2F3EF;
+            border-color: #14171C;
+        }
+        body {
+            background-color: #F2F3EF;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-gutter">
+<!-- Login Container -->
+<main class="w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Main Card -->
+<div class="bg-surface-container-lowest border border-clinical-border rounded-lg overflow-hidden flex flex-col">
+<!-- Perforation Top Edge -->
+<div class="perforation-pattern"></div>
+<div class="p-margin space-y-8">
+<!-- 1. Brand Mark Section -->
+<header class="flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-ward-teal die-cut-tab flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-white text-[24px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<h1 class="font-display-md text-display-md text-primary tracking-tight">Meridian HMS</h1>
+<p class="font-label-mono text-label-mono text-clinical-grey uppercase mt-1">Hospital Management System</p>
+</header>
+<!-- 2. Role Selection -->
+<section class="space-y-3">
+<h2 class="font-label-mono text-label-mono text-clinical-grey uppercase tracking-widest">Sign in as</h2>
+<div class="grid grid-cols-3 gap-2">
+<!-- Patient Tile -->
+<div class="relative">
+<input checked="" class="hidden peer" id="role-patient" name="role" type="radio"/>
+<label class="flex flex-col items-center justify-center p-3 border border-clinical-border rounded-[3px] cursor-pointer transition-all hover:bg-surface-container-low peer-checked:bg-clinical-paper peer-checked:border-ink-charcoal" for="role-patient">
+<div class="w-2 h-2 rounded-full bg-ward-teal mb-2"></div>
+<span class="font-label-mono text-label-mono text-on-surface">PATIENT</span>
+</label>
+</div>
+<!-- Doctor Tile -->
+<div class="relative">
+<input class="hidden peer" id="role-doctor" name="role" type="radio"/>
+<label class="flex flex-col items-center justify-center p-3 border border-clinical-border rounded-[3px] cursor-pointer transition-all hover:bg-surface-container-low peer-checked:bg-clinical-paper peer-checked:border-ink-charcoal" for="role-doctor">
+<div class="w-2 h-2 rounded-full bg-doctor-indigo mb-2"></div>
+<span class="font-label-mono text-label-mono text-on-surface">DOCTOR</span>
+</label>
+</div>
+<!-- Admin Tile -->
+<div class="relative">
+<input class="hidden peer" id="role-admin" name="role" type="radio"/>
+<label class="flex flex-col items-center justify-center p-3 border border-clinical-border rounded-[3px] cursor-pointer transition-all hover:bg-surface-container-low peer-checked:bg-clinical-paper peer-checked:border-ink-charcoal" for="role-admin">
+<div class="w-2 h-2 rounded-full bg-admin-rust mb-2"></div>
+<span class="font-label-mono text-label-mono text-on-surface">ADMIN</span>
+</label>
+</div>
+</div>
+</section>
+<!-- 3. Form Fields -->
+<form class="space-y-5" onsubmit="return false;">
+<div class="space-y-2">
+<label class="block font-label-mono text-label-mono text-clinical-grey uppercase" for="email">Email address</label>
+<input class="w-full h-row-height-std px-3 bg-surface-container-lowest border border-clinical-border focus:border-ink-charcoal focus:ring-0 rounded-none font-body-md text-body-md placeholder:text-outline-variant transition-all" id="email" placeholder="staff_id@meridian.hms" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="block font-label-mono text-label-mono text-clinical-grey uppercase" for="password">Credential access</label>
+<div class="relative">
+<input class="w-full h-row-height-std px-3 bg-surface-container-lowest border border-clinical-border focus:border-ink-charcoal focus:ring-0 rounded-none font-body-md text-body-md placeholder:text-outline-variant transition-all" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- 4. CTA Button -->
+<button class="w-full h-row-height-std bg-ward-teal text-white font-label-mono text-body-md font-semibold tracking-wider flex items-center justify-center gap-2 hover:bg-[#0c594b] active:scale-[0.98] transition-all rounded-[4px] uppercase mt-4" type="submit">
+                        Sign in <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- 5. Footer -->
+<footer class="pt-4 border-t border-clinical-border flex items-center justify-between">
+<a class="font-label-mono text-label-mono text-clinical-grey underline decoration-clinical-border underline-offset-4 hover:text-on-surface transition-colors" href="#">FORGOT PASSWORD</a>
+<div class="stamp-rotate px-2 py-1 border-[1.5px] border-admin-rust/40 bg-admin-rust/5 rounded-sm">
+<span class="font-label-stamp text-label-stamp text-admin-rust flex items-center gap-1">
+<span class="text-[6px]">●</span> JWT · SECURE
+                        </span>
+</div>
+</footer>
+</div>
+</div>
+<!-- Ambient Background Branding -->
+<div class="mt-8 flex justify-center opacity-30 pointer-events-none">
+<div class="flex items-center gap-4">
+<span class="font-label-mono text-[9px] text-clinical-grey tracking-[0.3em] uppercase">Meridian HMS Clinical Portal v4.2.0</span>
+<div class="h-[1px] w-12 bg-clinical-border"></div>
+<div class="flex gap-1">
+<div class="w-1 h-1 bg-ward-teal"></div>
+<div class="w-1 h-1 bg-doctor-indigo"></div>
+<div class="w-1 h-1 bg-admin-rust"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input[type="email"], input[type="password"]');
+            
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.querySelector('label').style.color = '#14171C';
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.querySelector('label').style.color = '#5B6058';
+                });
+            });
+
+            // Password visibility toggle
+            const togglePass = document.querySelector('button .material-symbols-outlined');
+            if (togglePass) {
+                togglePass.parentElement.addEventListener('click', () => {
+                    const passInput = document.getElementById('password');
+                    if (passInput.type === 'password') {
+                        passInput.type = 'text';
+                        togglePass.innerText = 'visibility_off';
+                    } else {
+                        passInput.type = 'password';
+                        togglePass.innerText = 'visibility';
+                    }
+                });
+            }
+        });
+    </script>
+</body></html>

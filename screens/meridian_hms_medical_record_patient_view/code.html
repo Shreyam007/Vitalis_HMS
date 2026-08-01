@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS — Ananya Iyer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#001452",
+                        "surface-container-high": "#e7e9e5",
+                        "secondary-container": "#a0f2dc",
+                        "primary": "#000000",
+                        "on-primary-fixed": "#191c21",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-error-container": "#93000a",
+                        "background": "#f2f3ef",
+                        "surface-container-low": "#f3f4f0",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "inverse-primary": "#c4c6cd",
+                        "primary-fixed": "#e1e2e9",
+                        "on-background": "#1a1c1a",
+                        "primary-container": "#191c21",
+                        "outline": "#76777b",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "on-primary-container": "#81848a",
+                        "inverse-surface": "#2e312f",
+                        "on-secondary-fixed-variant": "#005143",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-tertiary-fixed": "#001452",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e2e3df",
+                        "tertiary": "#000000",
+                        "on-secondary-container": "#157160",
+                        "inverse-on-surface": "#f0f1ed",
+                        "tertiary-fixed": "#dde1ff",
+                        "outline-variant": "#dbded6",
+                        "error": "#ba1a1a",
+                        "surface-container": "#edeeea",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9faf6",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "surface-bright": "#f9faf6",
+                        "surface-dim": "#d9dad7",
+                        "on-secondary-fixed": "#00201a",
+                        "surface-container-highest": "#e2e3df",
+                        "on-primary-fixed-variant": "#44474d",
+                        "on-tertiary-container": "#7080c5",
+                        "surface-tint": "#5c5e64",
+                        "on-surface-variant": "#45474b",
+                        "on-surface": "#1a1c1a",
+                        "secondary": "#076b5a",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "ward-teal": "#0f6e5d",
+                        "ward-indigo": "#3f51b5",
+                        "ward-rust": "#a0522d",
+                        "ward-amber": "#ffbf00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "base": "4px",
+                        "row-height-std": "48px",
+                        "row-height-compact": "32px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"],
+                        "body-lg": ["Work Sans"],
+                        "display-md": ["Instrument Sans"],
+                        "body-md": ["Work Sans"],
+                        "label-stamp": ["IBM Plex Mono"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .die-cut-tab {
+            position: relative;
+            background: #f2f3ef !important;
+            border-top: 1px solid #dbded6;
+            border-bottom: 1px solid #dbded6;
+            border-left: 1px solid #dbded6;
+            margin-right: -1px;
+            z-index: 50;
+            border-radius: 9999px 0 0 9999px;
+        }
+        .stamp-badge {
+            transform: rotate(-2deg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border-width: 1.5px;
+            text-transform: uppercase;
+        }
+        .ecg-sparkline {
+            width: 48px;
+            height: 16px;
+            stroke: #dbded6;
+            stroke-width: 1.5;
+            fill: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar (The Rail) -->
+<aside class="flex flex-col h-full fixed left-0 top-0 z-40 h-screen w-64 border-r border-outline-variant bg-surface-container-low">
+<div class="p-6">
+<h1 class="font-display-md text-display-md font-bold text-primary tracking-tighter">Meridian HMS</h1>
+<p class="font-label-mono text-label-mono text-outline uppercase mt-1">Dr. Aris Thorne</p>
+</div>
+<nav class="flex-1 mt-4">
+<div class="space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-6 py-3 font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="clinical_notes">clinical_notes</span>
+                    Patients
+                </a>
+<!-- Active "Records" State (Mapping logic: Patients/Consultations/Records) -->
+<div class="die-cut-tab flex items-center gap-3 px-6 py-3 font-bold text-ward-teal">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-mono text-label-mono">Records</span>
+</div>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-6 py-3 font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                    Consultations
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-6 py-3 font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+                    Ward Map
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-6 py-3 font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                    Inventory
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-6 py-3 font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                    Reports
+                </a>
+</div>
+</nav>
+<div class="p-6 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-label-mono text-label-mono uppercase tracking-widest hover:opacity-90 transition-opacity">
+                NEW CHART →
+            </button>
+<div class="mt-6 space-y-4">
+<a class="flex items-center gap-3 text-outline hover:text-primary transition-colors font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 text-outline hover:text-primary transition-colors font-label-mono text-label-mono" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                    Log Out
+                </a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (The Chartbar) -->
+<header class="flex justify-between items-center w-full pl-64 pr-margin h-16 fixed top-0 z-30 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-4 px-6">
+<h2 class="font-display-md text-display-md text-primary">Medical record — Ananya Iyer</h2>
+<div class="h-4 w-px bg-outline-variant"></div>
+<p class="font-label-mono text-label-mono text-outline">MR-08841 · O+ · DOB 14 Mar 1998</p>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-ward-teal bg-secondary-container text-secondary text-[10px] font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-ward-teal"></span> Patient Ward
+            </span>
+</div>
+<div class="flex items-center gap-4 pr-margin">
+<div class="flex gap-2">
+<button class="px-4 py-1.5 border border-outline-variant font-label-mono text-[10px] hover:bg-surface-container-high transition-colors">ADMIT</button>
+<button class="px-4 py-1.5 border border-outline-variant font-label-mono text-[10px] hover:bg-surface-container-high transition-colors">DISCHARGE</button>
+</div>
+<div class="flex gap-3 text-outline">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="history">history</span>
+</div>
+<div class="w-8 h-8 rounded bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional medical headshot of a female Chief Medical Officer in a clinical setting. The lighting is bright and sterile, emphasizing a modern light-mode HMS aesthetic with clean white backgrounds and subtle teal accents. High-quality corporate photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGNXlnl59SFdUl0Lzp2wmCddbN_HPfzsPCH7AitVjyYj0wUmWPAzah-XfLu99ZOWyQdHB4z8Bx2AVCBsFSB3btdohRF7tS68fXzazTEYFGpM1b_B5A4m8yz_HlcC8jYsOW38i8wZJNNHBpLR7Gpfk4vp2li5SyVZPrphwHm8R9Cd_czHudkfuoDcMUfX4eHDnKiriGAw3yaGcblIpGmK9sA8Fm8DeO4rr-XqseoA4tkhgrc5C63Wc"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="p-margin max-w-7xl mx-auto space-y-8">
+<!-- Record Chips Row -->
+<div class="flex gap-4 overflow-x-auto pb-2">
+<div class="flex-none flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full">
+<span class="w-2 h-2 rounded-full bg-ward-teal"></span>
+<span class="font-label-mono text-label-mono text-on-surface">3 Prescriptions</span>
+</div>
+<div class="flex-none flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full">
+<span class="w-2 h-2 rounded-full bg-ward-indigo"></span>
+<span class="font-label-mono text-label-mono text-on-surface">5 Consultations</span>
+</div>
+<div class="flex-none flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full">
+<span class="w-2 h-2 rounded-full bg-ward-rust"></span>
+<span class="font-label-mono text-label-mono text-on-surface">2 Test Reports</span>
+</div>
+<div class="flex-none flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full">
+<span class="w-2 h-2 rounded-full bg-ward-amber"></span>
+<span class="font-label-mono text-label-mono text-on-surface">1 Allergy Noted</span>
+</div>
+</div>
+<!-- Consultation History Card -->
+<section class="bg-surface-container-lowest border border-outline-variant border-t-4 border-t-ward-teal overflow-hidden">
+<div class="px-6 py-4 flex justify-between items-center border-b border-outline-variant">
+<h3 class="font-display-md text-display-md text-primary">Consultation history</h3>
+<span class="material-symbols-outlined text-outline" data-icon="clinical_notes">clinical_notes</span>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-3 font-label-mono text-label-mono text-outline uppercase">Date</th>
+<th class="px-6 py-3 font-label-mono text-label-mono text-outline uppercase">Physician</th>
+<th class="px-6 py-3 font-label-mono text-label-mono text-outline uppercase">Diagnosis</th>
+<th class="px-6 py-3 font-label-mono text-label-mono text-outline uppercase">Notes</th>
+<th class="px-6 py-3 font-label-mono text-label-mono text-outline uppercase text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-label-mono text-body-md">12 OCT 2023</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Dr. Samuel Wright</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Acute Bronchitis</td>
+<td class="px-6 py-4 font-body-md text-outline">Patient reports persistent dry cough...</td>
+<td class="px-6 py-4 text-right">
+<button class="text-ward-teal font-label-mono text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Open</button>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-label-mono text-body-md">28 SEP 2023</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Dr. Aris Thorne</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Routine Checkup</td>
+<td class="px-6 py-4 font-body-md text-outline">Vitals stable. Recommended vitamin D...</td>
+<td class="px-6 py-4 text-right">
+<button class="text-ward-teal font-label-mono text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Open</button>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors group">
+<td class="px-6 py-4 font-label-mono text-body-md">15 AUG 2023</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Dr. Helena Vane</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Allergic Rhinitis</td>
+<td class="px-6 py-4 font-body-md text-outline">Seasonal triggers identified.</td>
+<td class="px-6 py-4 text-right">
+<button class="text-ward-teal font-label-mono text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Open</button>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- Section Divider -->
+<div class="relative flex items-center py-4">
+<div class="flex-grow border-t border-outline-variant"></div>
+<div class="mx-4 flex items-center gap-3">
+<svg class="ecg-sparkline" viewbox="0 0 48 16">
+<polyline points="0,8 10,8 12,2 16,14 18,8 24,8 26,0 30,16 32,8 48,8"></polyline>
+</svg>
+<span class="font-label-mono text-label-mono text-outline uppercase">Prescriptions</span>
+<svg class="ecg-sparkline transform rotate-180" viewbox="0 0 48 16">
+<polyline points="0,8 10,8 12,2 16,14 18,8 24,8 26,0 30,16 32,8 48,8"></polyline>
+</svg>
+</div>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- Prescription Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant border-t-4 border-t-ward-teal p-6 relative overflow-hidden group hover:bg-white transition-colors">
+<div class="absolute top-4 right-4">
+<span class="stamp-badge border-ward-teal text-ward-teal font-label-stamp text-label-stamp">Active</span>
+</div>
+<h4 class="font-display-md text-display-md text-primary mb-2">Metformin 500mg</h4>
+<p class="font-label-mono text-label-mono text-outline uppercase mb-4">Anti-diabetic</p>
+<div class="flex flex-col gap-1">
+<span class="font-body-md text-on-surface">1-0-1 | Oral</span>
+<span class="font-body-md text-outline">30 Days Duration</span>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-label-mono text-[9px] text-outline uppercase">Refills: 02 Remaining</span>
+<span class="material-symbols-outlined text-outline group-hover:text-ward-teal transition-colors" data-icon="medication">medication</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant border-t-4 border-t-ward-teal p-6 relative overflow-hidden group hover:bg-white transition-colors">
+<div class="absolute top-4 right-4">
+<span class="stamp-badge border-ward-teal text-ward-teal font-label-stamp text-label-stamp">Active</span>
+</div>
+<h4 class="font-display-md text-display-md text-primary mb-2">Amoxicillin 250mg</h4>
+<p class="font-label-mono text-label-mono text-outline uppercase mb-4">Antibiotic</p>
+<div class="flex flex-col gap-1">
+<span class="font-body-md text-on-surface">1-1-1 | Post Meal</span>
+<span class="font-body-md text-outline">7 Days Duration</span>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-label-mono text-[9px] text-outline uppercase">Emergency Supply Only</span>
+<span class="material-symbols-outlined text-outline group-hover:text-ward-teal transition-colors" data-icon="medication_liquid">medication_liquid</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant border-t-4 border-t-ward-teal p-6 relative overflow-hidden group hover:bg-white transition-colors opacity-75">
+<div class="absolute top-4 right-4">
+<span class="stamp-badge border-outline-variant text-outline font-label-stamp text-label-stamp">Completed</span>
+</div>
+<h4 class="font-display-md text-display-md text-primary mb-2">Cetirizine 10mg</h4>
+<p class="font-label-mono text-label-mono text-outline uppercase mb-4">Antihistamine</p>
+<div class="flex flex-col gap-1">
+<span class="font-body-md text-on-surface">0-0-1 | Bedtime</span>
+<span class="font-body-md text-outline">15 Days Duration</span>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-label-mono text-[9px] text-outline uppercase">Ended 14 Sep 2023</span>
+<span class="material-symbols-outlined text-outline" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Empty space for scroll -->
+<div class="h-16"></div>
+</div>
+</main>
+<script>
+        // Micro-interaction for tactile button presses
+        document.querySelectorAll('button, .die-cut-tab').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'translateY(1px)';
+                el.style.borderWidth = '1.5px';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'translateY(0px)';
+                el.style.borderWidth = el.classList.contains('border-t-4') ? '1px' : ''; // keep special borders
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Tonal stacking hover logic for cards
+        const cards = document.querySelectorAll('.bg-surface-container-lowest');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (!card.classList.contains('die-cut-tab')) {
+                    card.style.backgroundColor = '#ffffff';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                if (!card.classList.contains('die-cut-tab')) {
+                    card.style.backgroundColor = '';
+                }
+            });
+        });
+    </script>
+</body></html>

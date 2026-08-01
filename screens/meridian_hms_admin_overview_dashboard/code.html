@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Admin Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100..900&family=Instrument+Sans:wght@100..900&family=Work+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .stamp-badge {
+            transform: rotate(-2deg);
+            display: inline-block;
+            padding: 2px 8px;
+            border: 1.5px solid currentColor;
+        }
+        .ecg-line {
+            height: 1px;
+            background: #DBDED6;
+            position: relative;
+            width: 100%;
+        }
+        .ecg-spark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #F2F3EF;
+            padding: 0 12px;
+        }
+        /* Custom scrollbar for high-density feel */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f2f3ef; }
+        ::-webkit-scrollbar-thumb { background: #d9dad7; border-radius: 3px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#c4c6cd",
+                        "surface": "#f2f3ef",
+                        "surface-container-low": "#f3f4f0",
+                        "surface-bright": "#f9faf6",
+                        "primary-fixed": "#e1e2e9",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-surface-variant": "#45474b",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "on-secondary-container": "#157160",
+                        "on-primary-fixed-variant": "#44474d",
+                        "on-tertiary-container": "#7080c5",
+                        "on-surface": "#1a1c1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "secondary-fixed": "#a0f2dc",
+                        "outline": "#76777b",
+                        "on-tertiary-fixed": "#001452",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#dde1ff",
+                        "primary-container": "#191c21",
+                        "surface-container-highest": "#e2e3df",
+                        "inverse-on-surface": "#f0f1ed",
+                        "on-primary-fixed": "#191c21",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dad7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c6c6cb",
+                        "background": "#f2f3ef",
+                        "on-secondary-fixed": "#00201a",
+                        "on-background": "#1a1c1a",
+                        "on-primary-container": "#81848a",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#a0f2dc",
+                        "surface-tint": "#5c5e64",
+                        "surface-container-high": "#e7e9e5",
+                        "on-secondary-fixed-variant": "#005143",
+                        "surface-variant": "#e2e3df",
+                        "surface-container": "#edeeea",
+                        "tertiary": "#000000",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "tertiary-container": "#001452",
+                        "primary": "#000000",
+                        "secondary": "#076b5a",
+                        "rust": "#b1631f",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2e312f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "row-height-compact": "32px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "row-height-std": "48px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Instrument Sans"],
+                        "display-md": ["Instrument Sans"],
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "label-stamp": ["IBM Plex Mono"],
+                        "label-mono": ["IBM Plex Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex min-h-screen">
+<!-- Side Navigation Rail -->
+<nav class="fixed left-0 top-0 h-screen w-[80px] bg-primary-container z-50 flex flex-col items-center py-margin border-r-[1px] border-outline-variant">
+<div class="mb-8 flex flex-col items-center">
+<div class="text-surface-container-lowest font-display-md text-display-md font-bold tracking-tight">M</div>
+<div class="text-on-primary-container font-label-mono text-[9px] uppercase tracking-widest mt-1">HMS</div>
+</div>
+<div class="flex-1 flex flex-col gap-2 w-full">
+<!-- Navigation Items -->
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant transition-colors duration-150 flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-mono text-[9px] uppercase">Patients</span>
+</a>
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant transition-colors duration-150 flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined mb-1">medical_services</span>
+<span class="font-label-mono text-[9px] uppercase">Doctors</span>
+</a>
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant transition-colors duration-150 flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-mono text-[9px] uppercase">Schedules</span>
+</a>
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant transition-colors duration-150 flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span class="font-label-mono text-[9px] uppercase">Inventory</span>
+</a>
+<!-- Active State: Admin (Rust active as per prompt override for this specific view) -->
+<a class="bg-surface text-rust border-l-4 border-rust flex flex-col items-center justify-center py-4 transition-all duration-75" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-mono text-[9px] uppercase font-bold">Admin</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col w-full gap-2">
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+</a>
+<a class="text-on-primary-fixed-variant hover:bg-primary-fixed-variant flex flex-col items-center justify-center py-4" href="#">
+<span class="material-symbols-outlined">logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-[80px] flex-1 flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="h-row-height-std fixed top-0 right-0 left-[80px] z-40 bg-surface border-b-[1px] border-outline-variant flex justify-between items-center px-margin">
+<div class="flex items-center gap-6">
+<div class="font-display-md text-display-md font-bold uppercase tracking-tighter text-primary">Meridian HMS</div>
+<div class="h-6 w-[1px] bg-outline-variant"></div>
+<nav class="flex gap-4">
+<a class="text-rust border-b-2 border-rust font-bold font-label-mono text-[12px] h-row-height-std flex items-center px-2" href="#">OVERVIEW</a>
+<a class="text-on-surface-variant font-medium font-label-mono text-[12px] hover:text-primary transition-colors h-row-height-std flex items-center px-2" href="#">ER-1</a>
+<a class="text-on-surface-variant font-medium font-label-mono text-[12px] hover:text-primary transition-colors h-row-height-std flex items-center px-2" href="#">WARD-B</a>
+<a class="text-on-surface-variant font-medium font-label-mono text-[12px] hover:text-primary transition-colors h-row-height-std flex items-center px-2" href="#">ICU-4</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2 mr-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">history</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 text-label-mono font-label-mono uppercase rounded-lg hover:opacity-90 transition-opacity">
+                    ADMIT PATIENT →
+                </button>
+</div>
+</header>
+<!-- Canvas -->
+<section class="mt-row-height-std p-margin space-y-6 max-w-[1400px]">
+<!-- Chartbar Title -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary uppercase">Admin overview</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant mt-1">Meridian General Hospital · Thursday 6 Aug 2026</p>
+</div>
+<div class="flex items-center bg-rust/10 text-rust border border-rust px-3 py-1 rounded-full text-label-mono font-bold">
+<span class="mr-2">●</span> ADMIN WARD
+                </div>
+</div>
+<!-- Stat Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Total Doctors -->
+<div class="bg-white p-4 border border-outline-variant border-t-[3px] border-t-rust flex flex-col justify-between">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Total Doctors</span>
+<div class="text-[36px] font-bold text-primary mt-2">42</div>
+</div>
+<!-- Total Patients -->
+<div class="bg-white p-4 border border-outline-variant border-t-[3px] border-t-secondary flex flex-col justify-between">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Total Patients</span>
+<div class="text-[36px] font-bold text-primary mt-2">3,184</div>
+</div>
+<!-- Today's Appointments -->
+<div class="bg-white p-4 border border-outline-variant border-t-[3px] border-t-on-tertiary-fixed-variant flex flex-col justify-between">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Today's Appointments</span>
+<div class="text-[36px] font-bold text-primary mt-2">96</div>
+</div>
+<!-- Monthly Revenue -->
+<div class="bg-white p-4 border border-outline-variant border-t-[3px] border-t-rust flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Monthly Revenue</span>
+<span class="font-label-mono text-secondary text-[10px]">↑ 9%</span>
+</div>
+<div class="text-[36px] font-bold text-primary mt-2">₹18.4L</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Appointments by Dept -->
+<div class="bg-white p-gutter border border-outline-variant flex flex-col min-h-[340px]">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-secondary text-[18px]">analytics</span>
+<h2 class="font-display-md text-[18px] uppercase">Appointments by department</h2>
+</div>
+<div class="flex-1 flex items-end justify-between px-4 pb-2">
+<!-- Bars -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-secondary group-hover:opacity-80 transition-opacity" style="height: 120px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">CARDIO</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-on-tertiary-fixed-variant group-hover:opacity-80 transition-opacity" style="height: 85px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">ORTHO</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-secondary group-hover:opacity-80 transition-opacity" style="height: 140px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">PEDS</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-on-tertiary-fixed-variant group-hover:opacity-80 transition-opacity" style="height: 60px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">NEURO</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-secondary group-hover:opacity-80 transition-opacity" style="height: 95px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">ENT</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-on-tertiary-fixed-variant group-hover:opacity-80 transition-opacity" style="height: 110px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">GASTRO</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-secondary group-hover:opacity-80 transition-opacity" style="height: 50px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">ONCO</span>
+</div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 bg-on-tertiary-fixed-variant group-hover:opacity-80 transition-opacity" style="height: 130px;"></div>
+<span class="font-label-mono text-[9px] text-on-surface-variant rotate-[-45deg] origin-top-left -ml-2">DERM</span>
+</div>
+</div>
+</div>
+<!-- Doctor Performance -->
+<div class="bg-white p-gutter border border-outline-variant flex flex-col min-h-[340px]">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-rust text-[18px]">group</span>
+<h2 class="font-display-md text-[18px] uppercase">Doctor performance (bookings)</h2>
+</div>
+<div class="flex-1 space-y-8 mt-4">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>DR. KABIR SEN</span>
+<span>92%</span>
+</div>
+<div class="w-full bg-surface h-4">
+<div class="bg-secondary h-full" style="width: 92%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>DR. ARIS THORNE</span>
+<span>78%</span>
+</div>
+<div class="w-full bg-surface h-4">
+<div class="bg-on-tertiary-fixed-variant h-full" style="width: 78%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>DR. VIKRAM SETHI</span>
+<span>64%</span>
+</div>
+<div class="w-full bg-surface h-4">
+<div class="bg-rust h-full" style="width: 64%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Heartbeat Divider -->
+<div class="py-6 overflow-hidden">
+<div class="ecg-line flex items-center">
+<div class="ecg-spark flex items-center gap-4">
+<svg class="text-rust" fill="none" height="20" viewbox="0 0 40 20" width="40">
+<path d="M0 10H10L13 2L17 18L21 6L23 10H40" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+<span class="font-label-mono text-label-mono tracking-[0.2em] font-bold text-on-surface-variant whitespace-nowrap">PENDING CONFIRMATIONS</span>
+<svg class="text-rust" fill="none" height="20" viewbox="0 0 40 20" width="40">
+<path d="M0 10H10L13 2L17 18L21 6L23 10H40" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Table Card -->
+<div class="bg-white border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant">
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Patient</th>
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Doctor</th>
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Requested</th>
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Fee</th>
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-mono text-[10px] text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="Close-up professional portrait of a senior man with salt-and-pepper hair, looking dignified and calm. The lighting is soft studio light in a clinical setting. Minimalist aesthetic with high contrast and neutral grey tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlrKErj5LXTfVVmqHhcfTyyMQNoxzkN2Sl1ak2H25Xq6Ph2g0zr74dlTtEBbOpboxNgzaOjifBIzijYJVwdn7fdRUrU-yD0NTrbe9RXMc8IeZyebDFrGAU9wLpoG6YGfi8vdHrYEZzlAYk5CeahVK5Sfgckmm8yjTrObZUtg9n54s5BfnsWZWn_PCgGWZNoRPCty0lgd-NrOsxBstJVfO7jaeZTnfNIxvnS6EE1G8Uu26zQd6KVtQ"/>
+<span class="font-body-lg text-primary">Arthur J. Sterling</span>
+</div>
+</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">DR. KABIR SEN</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">06 AUG 14:30</td>
+<td class="px-6 py-5 font-label-mono font-bold text-primary">₹1,200</td>
+<td class="px-6 py-5">
+<span class="stamp-badge border-[#F59E0B] text-[#F59E0B] font-label-stamp uppercase">PENDING</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary font-label-mono text-[11px] uppercase border border-primary/20 px-3 py-1.5 hover:bg-primary hover:text-white transition-all rounded">Review</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="Portrait of a young woman with a focused expression, wearing a neutral-toned high-quality fabric garment. Clean aesthetic with professional medical record style photography. Soft lighting emphasizing clarity and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD--4g-LFMWw-k1_nyrAoHSL7aFNuCljFKHaWcBO8qsgCr8Vfq1IdcQsIb9OUwkgOqTiOm1j2SM-OBiuP0_xfPe7KKrBekmCfK3PEGfT4NHTz1TwQ6JvcVj-lU4VOwcrqfdCm9XCsOn88qcJh4jggkZcIrbAE1AVitKG3F8ttJaKhWxcdhdGuwIfkSVIEYYgHAB1UZ99v0I3vNTLCJF8yz_6pYIlIDJ_eqH0ycmw5nuVPCxUYotjHg"/>
+<span class="font-body-lg text-primary">Sarah Miller</span>
+</div>
+</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">DR. ARIS THORNE</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">06 AUG 15:00</td>
+<td class="px-6 py-5 font-label-mono font-bold text-primary">₹800</td>
+<td class="px-6 py-5">
+<span class="stamp-badge border-error text-error font-label-stamp uppercase">CANCELLED</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary font-label-mono text-[11px] uppercase border border-primary/20 px-3 py-1.5 hover:bg-primary hover:text-white transition-all rounded">Review</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-bold text-[12px]">JC</div>
+<span class="font-body-lg text-primary">James Chen</span>
+</div>
+</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">DR. VIKRAM SETHI</td>
+<td class="px-6 py-5 font-label-mono text-on-surface-variant">06 AUG 15:45</td>
+<td class="px-6 py-5 font-label-mono font-bold text-primary">₹1,500</td>
+<td class="px-6 py-5">
+<span class="stamp-badge border-[#F59E0B] text-[#F59E0B] font-label-stamp uppercase">PENDING</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary font-label-mono text-[11px] uppercase border border-primary/20 px-3 py-1.5 hover:bg-primary hover:text-white transition-all rounded">Review</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<script>
+        // Micro-interactions for stamps and rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                const badge = row.querySelector('.stamp-badge');
+                if (badge) badge.style.transform = 'rotate(0deg) scale(1.05)';
+            });
+            row.addEventListener('mouseleave', () => {
+                const badge = row.querySelector('.stamp-badge');
+                if (badge) badge.style.transform = 'rotate(-2deg) scale(1)';
+            });
+        });
+
+        // Simulating ECG pulse on heartbeats
+        const ecgPaths = document.querySelectorAll('.ecg-spark svg path');
+        ecgPaths.forEach(path => {
+            path.style.strokeDasharray = '100';
+            path.style.strokeDashoffset = '100';
+            path.animate([
+                { strokeDashoffset: '100' },
+                { strokeDashoffset: '0' },
+                { strokeDashoffset: '-100' }
+            ], {
+                duration: 2000,
+                iterations: Infinity,
+                easing: 'linear'
+            });
+        });
+    </script>
+</body></html>

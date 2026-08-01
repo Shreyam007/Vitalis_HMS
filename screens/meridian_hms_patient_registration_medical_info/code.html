@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Patient Self-Registration | Meridian HMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100..900&family=Instrument+Sans:wght@100..900&family=Work+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#005143",
+                        "primary": "#000000",
+                        "on-primary-fixed": "#191c21",
+                        "primary-fixed": "#e1e2e9",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-low": "#f3f4f0",
+                        "background": "#f9faf6",
+                        "outline": "#76777b",
+                        "on-secondary-fixed": "#00201a",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e2e3df",
+                        "secondary-fixed": "#a0f2dc",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-primary-fixed-variant": "#44474d",
+                        "tertiary-fixed": "#dde1ff",
+                        "surface-container": "#edeeea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1a1c1a",
+                        "on-background": "#1a1c1a",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "on-tertiary-container": "#7080c5",
+                        "tertiary": "#000000",
+                        "primary-container": "#191c21",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e312f",
+                        "tertiary-container": "#001452",
+                        "surface-container-highest": "#e2e3df",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "outline-variant": "#c6c6cb",
+                        "on-secondary-container": "#157160",
+                        "surface-dim": "#d9dad7",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#45474b",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#a0f2dc",
+                        "surface-tint": "#5c5e64",
+                        "surface-bright": "#f9faf6",
+                        "on-primary-container": "#81848a",
+                        "on-tertiary-fixed": "#001452",
+                        "inverse-primary": "#c4c6cd",
+                        "surface-container-high": "#e7e9e5",
+                        "surface": "#f9faf6",
+                        "secondary": "#076b5a",
+                        "on-tertiary-fixed-variant": "#314283"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "24px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "row-height-compact": "32px",
+                        "row-height-std": "48px"
+                    },
+                    "fontFamily": {
+                        "label-stamp": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"],
+                        "body-md": ["Work Sans"],
+                        "display-md": ["Instrument Sans"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "body-lg": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .perforation-pattern {
+            background-image: repeating-linear-gradient(90deg, #DBDED6, #DBDED6 2px, transparent 2px, transparent 4px);
+            height: 4px;
+            width: 100%;
+        }
+        .ecg-sparkline {
+            position: relative;
+            height: 1px;
+            background-color: #DBDED6;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ecg-icon {
+            background: #ffffff;
+            padding: 0 8px;
+            color: #076b5a;
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a1c1a !important;
+            border-width: 1.5px !important;
+        }
+        .segmented-control input:checked + label {
+            background-color: #14171C;
+            color: #FFFFFF;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-[#F2F3EF] min-h-screen flex items-center justify-center p-gutter font-body-md text-on-surface">
+<!-- Registration Card -->
+<main class="w-full max-w-[400px] bg-surface-container-lowest border border-outline-variant flex flex-col relative">
+<!-- Hospital ID Wristband Detail -->
+<div class="perforation-pattern absolute top-0 left-0"></div>
+<!-- Header -->
+<header class="pt-8 px-margin pb-6 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-secondary flex items-center justify-center rounded-[2px]">
+<span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<h1 class="font-display-md text-display-md text-primary tracking-tight">Meridian HMS</h1>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant">V 4.0.2</span>
+</header>
+<!-- Progress Tracker -->
+<div class="px-margin mb-8">
+<div class="flex items-center justify-between relative">
+<!-- Lines -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -z-10"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center border border-secondary">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+</div>
+<span class="font-label-mono text-[9px] uppercase tracking-widest text-on-secondary-container">Basic Info</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest">
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center border-2 border-primary">
+<span class="font-label-mono text-primary text-[12px]">02</span>
+</div>
+<span class="font-label-mono text-[9px] uppercase tracking-widest text-primary font-bold">Medical Info</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-2 bg-surface-container-lowest">
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center border border-outline-variant">
+<span class="font-label-mono text-outline-variant text-[12px]">03</span>
+</div>
+<span class="font-label-mono text-[9px] uppercase tracking-widest text-outline-variant">Verify</span>
+</div>
+</div>
+</div>
+<!-- Form Section -->
+<div class="px-margin flex flex-col gap-6">
+<!-- Section Title with ECG -->
+<div class="flex flex-col gap-3">
+<h2 class="font-label-mono text-label-mono uppercase tracking-[0.15em] text-on-surface-variant">Medical Information</h2>
+<div class="ecg-sparkline">
+<span class="material-symbols-outlined ecg-icon">ecg_heart</span>
+</div>
+</div>
+<!-- Fields -->
+<form class="flex flex-col gap-5">
+<!-- Full Name -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Patient Full Name</label>
+<input class="h-row-height-std px-4 border border-outline-variant rounded-lg text-body-md focus:ring-0" placeholder="e.g. Jonathan A. Doe" type="text"/>
+</div>
+<!-- DOB -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Date of Birth</label>
+<div class="relative">
+<input class="w-full h-row-height-std px-4 border border-outline-variant rounded-lg text-body-md focus:ring-0" placeholder="DD / MM / YYYY" type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">calendar_today</span>
+</div>
+</div>
+<!-- Gender -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Gender Identification</label>
+<div class="flex w-full border border-outline-variant rounded-lg overflow-hidden segmented-control">
+<input checked="" class="hidden" id="male" name="gender" type="radio"/>
+<label class="flex-1 h-10 flex items-center justify-center font-label-mono text-[10px] uppercase cursor-pointer border-r border-outline-variant hover:bg-surface-container-low transition-colors" for="male">Male</label>
+<input class="hidden" id="female" name="gender" type="radio"/>
+<label class="flex-1 h-10 flex items-center justify-center font-label-mono text-[10px] uppercase cursor-pointer border-r border-outline-variant hover:bg-surface-container-low transition-colors" for="female">Female</label>
+<input class="hidden" id="other" name="gender" type="radio"/>
+<label class="flex-1 h-10 flex items-center justify-center font-label-mono text-[10px] uppercase cursor-pointer hover:bg-surface-container-low transition-colors" for="other">Other</label>
+</div>
+</div>
+<!-- Blood Group -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Blood Group</label>
+<select class="h-row-height-std px-4 border border-outline-variant rounded-lg text-body-md focus:ring-0 appearance-none bg-white">
+<option>Select Group...</option>
+<option>A +ve</option>
+<option>A -ve</option>
+<option>B +ve</option>
+<option>B -ve</option>
+<option>O +ve</option>
+<option>O -ve</option>
+<option>AB +ve</option>
+<option>AB -ve</option>
+</select>
+</div>
+<!-- Contact Number -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Primary Contact Number</label>
+<input class="h-row-height-std px-4 border border-outline-variant rounded-lg text-body-md focus:ring-0" placeholder="+1 (000) 000-0000" type="tel"/>
+</div>
+<!-- Emergency Contact -->
+<div class="p-4 bg-surface-container rounded-lg border border-outline-variant border-dashed flex flex-col gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Emergency Contact Name</label>
+<input class="h-10 px-3 border border-outline-variant rounded-lg text-body-md focus:ring-0 bg-white" placeholder="Full Name" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Emergency Contact Phone</label>
+<input class="h-10 px-3 border border-outline-variant rounded-lg text-body-md focus:ring-0 bg-white" placeholder="Phone Number" type="tel"/>
+</div>
+</div>
+</form>
+</div>
+<!-- Footer Actions -->
+<footer class="mt-8 p-margin border-t border-outline-variant flex items-center justify-between gap-4">
+<button class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+                Back
+            </button>
+<button class="flex-1 bg-secondary text-white font-label-mono text-label-mono uppercase tracking-widest h-row-height-std rounded-lg flex items-center justify-center gap-2 hover:bg-on-secondary-container transition-all active:scale-[0.98]">
+                Continue <span class="text-lg">→</span>
+</button>
+</footer>
+</main>
+<!-- Background Decoration / "Ink Stamps" -->
+<div class="fixed top-12 left-12 opacity-10 pointer-events-none select-none">
+<div class="border-[1.5px] border-primary p-2 -rotate-[4deg] font-label-mono text-[14px] uppercase font-bold tracking-tighter">
+            Clinical Registry
+        </div>
+</div>
+<div class="fixed bottom-12 right-12 opacity-10 pointer-events-none select-none">
+<div class="border-[1.5px] border-secondary p-3 rotate-[2deg] font-label-mono text-[12px] uppercase font-bold tracking-[0.2em] text-secondary">
+            Authorized Unit 4
+        </div>
+</div>
+<script>
+        // Micro-interactions for form focus
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.style.transition = 'all 0.2s ease';
+            });
+        });
+    </script>
+</body></html>

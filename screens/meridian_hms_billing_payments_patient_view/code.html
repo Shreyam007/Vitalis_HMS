@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Billing &amp; Payments</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#001452",
+                        "surface-container": "#edeeea",
+                        "on-tertiary-container": "#7080c5",
+                        "surface-variant": "#e2e3df",
+                        "secondary-container": "#a0f2dc",
+                        "secondary": "#076b5a",
+                        "surface-container-high": "#e7e9e5",
+                        "inverse-on-surface": "#f0f1ed",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#dde1ff",
+                        "surface-tint": "#5c5e64",
+                        "primary-container": "#191c21",
+                        "on-surface-variant": "#45474b",
+                        "outline": "#76777b",
+                        "surface-bright": "#f9faf6",
+                        "on-primary-fixed": "#191c21",
+                        "on-secondary-fixed-variant": "#005143",
+                        "on-background": "#1a1c1a",
+                        "on-surface": "#1a1c1a",
+                        "on-secondary-container": "#157160",
+                        "tertiary": "#000000",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#001452",
+                        "surface-dim": "#d9dad7",
+                        "surface-container-highest": "#e2e3df",
+                        "surface": "#f9faf6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#000000",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "background": "#f9faf6",
+                        "surface-container-low": "#f3f4f0",
+                        "outline-variant": "#c6c6cb",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "on-primary-fixed-variant": "#44474d",
+                        "on-primary-container": "#81848a",
+                        "primary-fixed": "#e1e2e9",
+                        "inverse-primary": "#c4c6cd",
+                        "secondary-fixed": "#a0f2dc",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-secondary-fixed": "#00201a",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2e312f",
+                        "clinical-rust-bg": "#F6ECDC",
+                        "clinical-rust-border": "#B1631F",
+                        "clinical-paper": "#F2F3EF",
+                        "clinical-ink": "#14171C",
+                        "ward-teal": "#0F6E5D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "row-height-std": "48px",
+                        "row-height-compact": "32px",
+                        "margin": "24px",
+                        "base": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Work Sans"],
+                        "display-md": ["Instrument Sans"],
+                        "label-stamp": ["IBM Plex Mono"],
+                        "body-lg": ["Work Sans"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-lg": ["Instrument Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .stamp-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border: 1.5px solid currentColor;
+            transform: rotate(-2deg);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .ecg-sparkline {
+            height: 12px;
+            width: 32px;
+            background: currentColor;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12'%3E%3Cpath d='M0 6h8l2-4 2 8 2-4h2l2-6 2 6h2l2 4 2-8 2 4h4' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 12'%3E%3Cpath d='M0 6h8l2-4 2 8 2-4h2l2-6 2 6h2l2 4 2-8 2 4h4' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E");
+        }
+        .die-cut-tab {
+            position: relative;
+        }
+        .die-cut-tab.active::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #F2F3EF;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-clinical-paper text-on-surface font-body-md overflow-hidden h-screen flex">
+<!-- SIDE NAVIGATION RAIL -->
+<!-- Applying style_component_shape, style_bg_color, style_separation_logic from JSON -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary border-r border-outline-variant flex flex-col items-center py-6 z-50">
+<!-- Brand Logo -->
+<div class="mb-10 text-surface-container-lowest font-display-md text-display-md leading-none tracking-tighter text-center">
+            M<span class="text-secondary">H</span>
+</div>
+<nav class="flex flex-col gap-2 w-full">
+<!-- Dashboard -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150 ease-in-out cursor-pointer group">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="font-label-mono text-label-mono uppercase">Dash</span>
+</div>
+<!-- Patients -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">personal_injury</span>
+<span class="font-label-mono text-label-mono uppercase">Pts</span>
+</div>
+<!-- Vitals -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">ecg_heart</span>
+<span class="font-label-mono text-label-mono uppercase">Vitals</span>
+</div>
+<!-- Records -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">folder_managed</span>
+<span class="font-label-mono text-label-mono uppercase">Recs</span>
+</div>
+<!-- ACTIVE: Billing (Simulated) -->
+<div class="relative bg-clinical-paper text-primary border-l-4 border-secondary rounded-l-none flex flex-col items-center justify-center py-4 gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-mono text-label-mono uppercase">Billing</span>
+</div>
+<!-- Settings -->
+<div class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="font-label-mono text-label-mono uppercase">Set</span>
+</div>
+</nav>
+<div class="mt-auto flex flex-col items-center gap-6">
+<div class="w-10 h-10 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A portrait of a professional female Chief Medical Officer in her 50s, wearing a clean white clinical coat and a stethoscope, in a high-key, modern medical office environment with soft natural lighting and a minimalist, paper-grey aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdGW8RJMzMAPf62Nq03nOkTaG53wzJ1-RXNQaLQ9uRr-WnJDbmIFjnm0re3eqaYEznI2fUVXaN6iiis5INQWA49-fgRr4uQeptxxDmsF2O6fHK003N2ABGhKOe2CA2U_-IaUxlxxRBiSVELzR-Dxdh_mBb_CfOkZgE54A2pW0IWEh9I1BslPkoi2vI49g2ht7EhZmm7xI3JMjMIv1ZhplMRPDiir9kSe_E0OYn9pwUqKLuaRDnIiM"/>
+</div>
+<div class="rotate-[-90deg] whitespace-nowrap mb-4">
+<span class="font-label-mono text-label-mono text-outline-variant uppercase">Emergency 24/7</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[88px] flex-1 flex flex-col h-full overflow-hidden">
+<!-- TOP APP BAR -->
+<!-- Applying style_shell_layout, style_bg_color, style_separation_logic from JSON -->
+<header class="flex justify-between items-center w-full px-gutter h-row-height-std bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-gutter">
+<h1 class="font-display-md text-display-md text-primary tracking-tight">Billing &amp; payments</h1>
+<div class="h-6 w-[1.5px] bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">2 UNPAID INVOICES</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-secondary text-on-secondary px-3 py-1 rounded-full">
+<span class="w-2 h-2 bg-on-secondary rounded-full animate-pulse"></span>
+<span class="font-label-mono text-label-mono uppercase">Patient Ward</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">help_outline</span>
+</div>
+<div class="font-label-mono text-label-mono text-primary font-bold">WARD 402</div>
+</div>
+</header>
+<!-- CANVAS -->
+<div class="flex-1 overflow-y-auto p-margin scrollbar-hide">
+<div class="max-w-5xl mx-auto grid grid-cols-12 gap-gutter">
+<!-- OUTSTANDING BALANCE CARD -->
+<section class="col-span-12 md:col-span-4 flex flex-col gap-gutter">
+<div class="bg-clinical-rust-bg border-t-[3px] border-clinical-rust-border p-6 border-x border-b border-outline-variant flex flex-col gap-4">
+<div>
+<p class="font-label-mono text-label-mono text-clinical-rust-border uppercase tracking-widest">Total Outstanding</p>
+<h2 class="font-display-lg text-display-lg text-clinical-ink mt-2">₹1,240 <span class="text-body-md font-body-md text-on-surface-variant">due</span></h2>
+</div>
+<button class="bg-clinical-ink text-surface-container-lowest w-full py-3 px-4 flex items-center justify-center gap-2 hover:bg-primary-container transition-all duration-150 active:scale-95 group">
+<span class="font-label-mono text-label-mono uppercase">Pay Now</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</button>
+</div>
+<!-- Quick Actions / Secondary Card -->
+<div class="bg-white border border-outline-variant p-6 flex flex-col gap-4">
+<h3 class="font-label-mono text-label-mono text-outline uppercase">Statements</h3>
+<ul class="flex flex-col gap-3">
+<li class="flex items-center justify-between border-b border-outline-variant pb-2 group cursor-pointer">
+<span class="font-body-md text-on-surface">Oct 2023 Statement</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">download</span>
+</li>
+<li class="flex items-center justify-between border-b border-outline-variant pb-2 group cursor-pointer">
+<span class="font-body-md text-on-surface">Sep 2023 Statement</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">download</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- INVOICE DETAIL CARD -->
+<section class="col-span-12 md:col-span-8">
+<div class="bg-white border-t-[3px] border-ward-teal border-x border-b border-outline-variant p-gutter flex flex-col">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-display-md text-display-md text-primary">Invoice #INV-3391</h2>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mt-1">ISSUED: 14 OCT 2023 • DUE: 21 OCT 2023</p>
+</div>
+<div class="text-right">
+<p class="font-label-mono text-label-mono text-outline uppercase">Patient Reference</p>
+<p class="font-body-md text-on-surface">P-88219 (John Doe)</p>
+</div>
+</div>
+<!-- Itemized Table -->
+<div class="flex flex-col border-y border-outline-variant">
+<!-- Header -->
+<div class="flex justify-between py-3 px-2 bg-clinical-paper border-b border-outline-variant">
+<span class="font-label-mono text-label-mono text-outline uppercase">Description</span>
+<span class="font-label-mono text-label-mono text-outline uppercase">Amount</span>
+</div>
+<!-- Rows -->
+<div class="flex justify-between py-4 px-2 border-b border-outline-variant hover:bg-clinical-paper transition-colors">
+<div class="flex flex-col">
+<span class="font-body-md text-primary">Consultation charge</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Dr. Sarah Jenkins</span>
+</div>
+<span class="font-label-mono text-body-md">₹450.00</span>
+</div>
+<div class="flex justify-between py-4 px-2 border-b border-outline-variant hover:bg-clinical-paper transition-colors">
+<div class="flex flex-col">
+<span class="font-body-md text-primary">Medicine charges</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Presc #RX-9981</span>
+</div>
+<span class="font-label-mono text-body-md">₹380.00</span>
+</div>
+<div class="flex justify-between py-4 px-2 border-b border-outline-variant hover:bg-clinical-paper transition-colors">
+<div class="flex flex-col">
+<span class="font-body-md text-primary">Laboratory test</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">CBC Panel</span>
+</div>
+<span class="font-label-mono text-body-md">₹410.00</span>
+</div>
+</div>
+<!-- Totals Section -->
+<div class="flex flex-col items-end gap-2 mt-6 px-2">
+<div class="w-64 flex justify-between">
+<span class="font-label-mono text-label-mono text-outline uppercase">Subtotal</span>
+<span class="font-label-mono text-body-md">₹1,240.00</span>
+</div>
+<div class="w-64 flex justify-between">
+<span class="font-label-mono text-label-mono text-outline uppercase">Tax (5%)</span>
+<span class="font-label-mono text-body-md">₹62.00</span>
+</div>
+<div class="w-64 flex justify-between pt-4 mt-2 border-t-2 border-primary">
+<span class="font-label-mono text-body-lg text-primary uppercase font-bold">Grand Total</span>
+<span class="font-display-md text-display-md text-primary">₹1,302.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- HEARTBEAT DIVIDER -->
+<div class="col-span-12 flex items-center gap-gutter py-8">
+<div class="flex-1 h-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<div class="ecg-sparkline text-ward-teal"></div>
+<h4 class="font-label-mono text-label-mono uppercase tracking-widest">Payment History</h4>
+<div class="ecg-sparkline text-ward-teal"></div>
+</div>
+<div class="flex-1 h-[1px] bg-outline-variant"></div>
+</div>
+<!-- PAYMENT HISTORY TABLE -->
+<section class="col-span-12">
+<div class="bg-white border border-outline-variant">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-clinical-paper border-b border-outline-variant h-row-height-std">
+<th class="px-6 font-label-mono text-label-mono text-outline uppercase">Date</th>
+<th class="px-6 font-label-mono text-label-mono text-outline uppercase">Invoice #</th>
+<th class="px-6 font-label-mono text-label-mono text-outline uppercase">Amount</th>
+<th class="px-6 font-label-mono text-label-mono text-outline uppercase">Method</th>
+<th class="px-6 font-label-mono text-label-mono text-outline uppercase text-right">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="h-row-height-std border-b border-outline-variant hover:bg-clinical-paper transition-colors group">
+<td class="px-6 font-label-mono text-on-surface">12 OCT 2023</td>
+<td class="px-6 font-body-md text-primary">#INV-3102</td>
+<td class="px-6 font-label-mono text-on-surface">₹980.00</td>
+<td class="px-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">account_balance_wallet</span>
+<span class="font-body-md text-on-surface">UPI</span>
+</div>
+</td>
+<td class="px-6 text-right">
+<span class="stamp-badge text-ward-teal">PAID</span>
+</td>
+</tr>
+<tr class="h-row-height-std border-b border-outline-variant hover:bg-clinical-paper transition-colors group">
+<td class="px-6 font-label-mono text-on-surface">05 AUG 2023</td>
+<td class="px-6 font-body-md text-primary">#INV-2844</td>
+<td class="px-6 font-label-mono text-on-surface">₹1,120.00</td>
+<td class="px-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">credit_card</span>
+<span class="font-body-md text-on-surface">Card</span>
+</div>
+</td>
+<td class="px-6 text-right">
+<span class="stamp-badge text-ward-teal">PAID</span>
+</td>
+</tr>
+<tr class="h-row-height-std border-b border-outline-variant hover:bg-clinical-paper transition-colors group">
+<td class="px-6 font-label-mono text-on-surface">22 JUN 2023</td>
+<td class="px-6 font-body-md text-primary">#INV-2501</td>
+<td class="px-6 font-label-mono text-on-surface">₹2,450.00</td>
+<td class="px-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">account_balance</span>
+<span class="font-body-md text-on-surface">Net Banking</span>
+</div>
+</td>
+<td class="px-6 text-right">
+<span class="stamp-badge text-ward-teal">PAID</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+<!-- Spacer for bottom padding -->
+<div class="h-12"></div>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple hover effect for rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.classList.add('bg-surface-container-low');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('bg-surface-container-low');
+            });
+        });
+
+        // "Pay Now" micro-animation simulation
+        const payBtn = document.querySelector('button');
+        if (payBtn) {
+            payBtn.addEventListener('click', () => {
+                payBtn.innerHTML = '<span class="font-label-mono text-label-mono uppercase">Processing...</span>';
+                payBtn.classList.add('opacity-80');
+                setTimeout(() => {
+                    payBtn.innerHTML = '<span class="font-label-mono text-label-mono uppercase">Pay Now</span><span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>';
+                    payBtn.classList.remove('opacity-80');
+                }, 2000);
+            });
+        }
+    </script>
+</body></html>

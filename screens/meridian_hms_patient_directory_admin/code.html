@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Patient Directory</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design Tokens Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#a0f2dc",
+                    "primary-fixed": "#e1e2e9",
+                    "on-primary-fixed-variant": "#44474d",
+                    "on-primary": "#ffffff",
+                    "outline": "#76777b",
+                    "surface-container": "#edeeea",
+                    "on-tertiary-fixed-variant": "#314283",
+                    "on-primary-fixed": "#191c21",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#7080c5",
+                    "on-surface": "#1a1c1a",
+                    "primary-fixed-dim": "#c4c6cd",
+                    "tertiary": "#000000",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c6c6cb",
+                    "tertiary-container": "#001452",
+                    "surface-bright": "#f9faf6",
+                    "inverse-surface": "#2e312f",
+                    "surface-container-high": "#e7e9e5",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#157160",
+                    "on-surface-variant": "#45474b",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1a1c1a",
+                    "surface-container-low": "#f3f4f0",
+                    "surface": "#f9faf6",
+                    "inverse-primary": "#c4c6cd",
+                    "surface-tint": "#5c5e64",
+                    "secondary": "#076b5a",
+                    "tertiary-fixed": "#dde1ff",
+                    "surface-dim": "#d9dad7",
+                    "background": "#f9faf6",
+                    "surface-container-highest": "#e2e3df",
+                    "secondary-fixed-dim": "#84d6c1",
+                    "primary-container": "#191c21",
+                    "primary": "#000000",
+                    "surface-variant": "#e2e3df",
+                    "on-secondary-fixed": "#00201a",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#81848a",
+                    "on-tertiary-fixed": "#001452",
+                    "tertiary-fixed-dim": "#b7c4ff",
+                    "on-secondary-fixed-variant": "#005143",
+                    "secondary-fixed": "#a0f2dc",
+                    "inverse-on-surface": "#f0f1ed",
+                    "ward-admin": "#B1631F"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "row-height-std": "48px",
+                    "base": "4px",
+                    "margin": "24px",
+                    "row-height-compact": "32px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Instrument Sans"],
+                    "label-stamp": ["IBM Plex Mono"],
+                    "body-md": ["Work Sans"],
+                    "display-md": ["Instrument Sans"],
+                    "body-lg": ["Work Sans"],
+                    "label-mono": ["IBM Plex Mono"]
+            },
+            "fontSize": {
+                    "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ecg-spark {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 10 L40 10 L45 0 L55 20 L60 10 L100 10' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+        .active-tab-indicator {
+            box-shadow: 0 0 8px #B1631F;
+        }
+        body {
+            background-color: #F2F3EF;
+        }
+        .paper-sheet {
+            background-color: #FFFFFF;
+            border: 1px solid #DBDED6;
+        }
+        .divider-ecg {
+            position: relative;
+            height: 1px;
+            background-color: #DBDED6;
+        }
+        .divider-ecg::after {
+            content: ' ';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 12px;
+            background-color: #F2F3EF;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 10 L40 10 L45 0 L55 20 L60 10 L100 10' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+            mask-repeat: no-repeat;
+            background-color: #DBDED6;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar Navigation Rail -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary flex flex-col items-center py-margin border-r border-outline-variant z-50">
+<div class="mb-10">
+<span class="font-display-md text-surface-container-lowest tracking-tighter">M.</span>
+</div>
+<nav class="flex flex-col gap-2 w-full">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-mono text-[9px] uppercase">Dash</span>
+</a>
+<!-- Patients (ACTIVE) -->
+<a class="relative flex flex-col items-center justify-center bg-surface text-primary border-l-4 border-ward-admin py-4 gap-1" href="#">
+<div class="absolute top-2 right-2 w-1.5 h-1.5 bg-ward-admin rounded-full active-tab-indicator"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">personal_injury</span>
+<span class="font-label-mono text-[9px] uppercase">Patients</span>
+</a>
+<!-- Vitals -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">ecg_heart</span>
+<span class="font-label-mono text-[9px] uppercase">Vitals</span>
+</a>
+<!-- Records -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">folder_managed</span>
+<span class="font-label-mono text-[9px] uppercase">Records</span>
+</a>
+<!-- Staff -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-label-mono text-[9px] uppercase">Staff</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container hover:text-on-primary-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-[9px] uppercase">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 flex flex-col items-center gap-6">
+<button class="bg-error text-on-error w-10 h-10 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined">emergency</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A formal professional headshot of a Chief Medical Officer in a sharp white lab coat, standing against a clean clinical background with soft directional lighting. The aesthetic is high-fidelity and professional, reflecting an institutional medical environment with a neutral, paper-grey and charcoal color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5g7VAlrj25z8WySek3h_uhaPF08hIyixMkz7zVScPFE0FVKLRDRD7AHdfVrtsvhGQE8AxkGLx6EZ4_LdGlyMTsmIJbODZYbVl8WnJG03bJcRbqs4CXEmNlgpDZbVBE-bkjRK3e3GphUBPIBAO8AESimNEn1oVLWyetnikH7EJw5_06tY8BmZp8vCcfHOjICZsgddOgTJCQldwBaz3ctgVUG_xw-s9Q34h7PSF5TA7-LluVhRqFMU"/>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[88px] min-h-screen">
+<!-- Top Chartbar -->
+<header class="flex justify-between items-center w-full px-gutter h-row-height-std bg-surface border-b border-outline-variant">
+<div class="flex flex-col">
+<h1 class="font-display-md text-primary leading-none">Patient Directory</h1>
+<p class="font-label-mono text-on-surface-variant uppercase text-[9px]">3,184 registered patients</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-ward-admin/10 px-3 py-1 rounded-full border border-ward-admin/30">
+<span class="w-2 h-2 bg-ward-admin rounded-full"></span>
+<span class="font-label-mono text-ward-admin font-bold text-[10px] uppercase">Admin Ward</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-margin">
+<!-- Filter Row -->
+<section class="flex flex-wrap items-center gap-3 mb-6">
+<div class="relative flex-grow max-w-sm">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-[18px]">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant px-10 py-2 text-body-md focus:border-primary focus:ring-0 rounded-sm" placeholder="Search by name or ID" type="text"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 font-label-mono text-[9px] text-outline">CMD+F</span>
+</div>
+<div class="flex items-center border border-outline-variant bg-surface-container-lowest px-3 py-2 rounded-sm gap-2 cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Blood Group:</span>
+<span class="font-label-mono text-[10px] font-bold">ALL</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+<div class="flex items-center border border-outline-variant bg-surface-container-lowest px-3 py-2 rounded-sm gap-2 cursor-pointer hover:bg-surface-container-low transition-colors">
+<span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Age Range:</span>
+<span class="font-label-mono text-[10px] font-bold">ANY</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+<div class="ml-auto flex items-center gap-2">
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant px-4 py-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span class="font-label-mono text-[10px] uppercase font-bold">Filters</span>
+</button>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 hover:bg-on-primary-fixed-variant transition-colors rounded-sm">
+<span class="font-label-mono text-[10px] uppercase font-bold">Register New</span>
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</section>
+<!-- Table Container (Paper Sheet) -->
+<div class="paper-sheet overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest">Patient</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest">Patient ID</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest text-center">Age/Sex</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest text-center">Blood</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest">Contact</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest">Last Visit</th>
+<th class="px-6 py-4 font-label-mono text-[11px] uppercase text-on-surface-variant font-bold tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="A portrait of a senior man with salt-and-pepper hair, wearing a casual sweater. The lighting is soft and natural, emphasizing textures like a physical film photograph. Minimalist studio background in soft grey, maintaining the clinical hospital registry aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgecI2optYSuFvlKLpCfcRuZjvMAVE1qSwUsecd90tipHljYAhKMfBPSNvNF9IWqsphGsndEW9x1p3Z4_SepwaM4DYwgj4A1S0S336yRAp8APXEAy2JoF0fZL4zNZi1lg3Jem2_kpFCrDX5kFAhyyM3MVlZuy-6JhmHkHowzX5Bkqx6WzTskzF_61RfH_zpvl6Vbm_oxlS8lAg5NJ8ElFuc_n_WDENFF7G5lGs4MSzDinSNHkdtig"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Arthur J. Sterling</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-40922</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">68 / M</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold text-error">O+</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 202 555 0143</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">12 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young woman with a calm expression, wearing a neutral colored t-shirt. Clinical, clean lighting. The background is a soft beige tone. The image has a crisp, detailed quality similar to professional medical photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_nTXTaWs5R3202aiJCl5_VNqjQ2ULt3rTyT50e34MV4prhdsuDDq_B0KYT6MxFq0-T0wykU9klzBhcg2CWjGIKPCkdkd3X7jJI-BJJqFaHhrntjnmdSeZ_uzKPU0OnNsN20TMlsXTorIGzS4H7IDZY158-BZhmg39BR5Mhsaw5kDV6iAMbeYyBYzWWzHQXFJtpIXqHuzc6Z_auJh0ipSwJKM7DT-S5wMOd79fRNWsVcYuND0Jg_A"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-41005</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">32 / F</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold">A-</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 212 555 0982</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">28 SEP 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of a middle-aged man with glasses and a friendly demeanor. He is wearing a button-down shirt. The style is clear, sharp, and realistic, following the clinical, high-utility aesthetic of a modern medical registry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8DGFzynzJV5dHBp42OcLH2tGuJU6B0UIweGR1Aorbm80QJPk6Axq9CiClQVix-TzLDFnaL9dKN0TtVXaUA4ow0L3j_89BwC7WWflu6MsJYyRdUiA6pN6yiImOO3jkudPORDDAOSPMgNOBTvRC5nhSm3ZkmuiPBLyN6P8YxanNML51wG2In24Yz6P3uaM8Tw0KNMyQ4xN7ynX91oIkoIKx_sTsAMN208TNt9uJgsA1bKKGW4Rv0Lw"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Marcus Thorne</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-39821</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">45 / M</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold">B+</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 305 555 2210</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">15 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young boy with curly hair, smiling slightly. The shot is well-lit with soft, even light suitable for medical ID documentation. The background is a clean white, emphasizing the subject's clarity and presence in the registry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB88s3Dyn9NgOKVhxkERwue-FsIc9m8VHisSJFfLQuWY-bznXu0p9atp8K35YXVc4cVjuqPKcrXxdC1wIJkt9iTUpj7YEneMu7ESyr9yF2xm7Dafd0rzFuKl1YLFlc05CNqcXTOVeznFrm2H8K-5DpZ2FBD-2ufULMO8mJUtlrsrAXZpw54IR0YwnSj3hTu4GebU4OcUTWhsP3Pmtol9Uqb_61UpfzAU4Il0TTCjnAkwEtVuuYUwyw"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Leo Nakamura</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-42110</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">09 / M</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold text-secondary">AB+</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 415 555 6711</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">01 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="A portrait of a woman in her 50s with professional styling, wearing a silk blouse. She has an assertive but calm gaze. Shot in a high-key lighting style that fits the clean, industrial aesthetic of a modern medical facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk5Ncf13SqKHELYVgJAPVru7qRZOYQ68D8X5tamtA9WdIn80tNkX8sE-qbofjjk1P_5nCWOIqYbsBXFOejadkqj7HkdPtWWTyWPBNhlXDl0XDfIUvRKzJ3hlsRoSKAB3ZyzBSScoBIPj7G9E3196N4iN8KswDPxSSk1M0P-ejxRJ15azrYHboN89Mon6yS37WPT_ONH1DFXCmchggAKq3WlbZgMbRWTLmCTeIusRaZFFqJ80itw60"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Sarah Jenkins-Smith</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-41553</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">54 / F</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold text-error">O-</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 617 555 8890</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">14 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of an older woman with graying hair and kind eyes, wearing a simple cardigan. The image is rendered with analog-like precision, focusing on natural skin tones and a clean, clinical background. The aesthetic is warm yet institutional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy_9Bf5Diu5KWlELakgqCc6CKES3eTCm_l9eZPXWKv65MjPqxgytyjIoC_-Feq5To6YkEypDHiHrH9iu3C6-MSlkPrU1pDc96Xrh4sVMwgNFsKTiIc1j9copVEkfkk8OCOmPEGlFA0D2njMBX9dL98XB-olXfhxIkKt_KJmu3BwoLb6NyOWFrzUygKM3k7NEMe2EPC9Y6jWZGq-h6aZ2W2axDqU2X4ioEfd1xMngK5-ZlLzij4gpM"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">Miriam G. Cohen</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-38119</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">76 / F</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold">A+</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 215 555 4432</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">11 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young adult man with dark hair and a serious expression. He is wearing a plain grey sweatshirt. The style is sharp, clean, and highly detailed, perfectly matching a professional medical interface for patient identification." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE8LliFgi-8riHt2M5TXQERPBk5i3JROFGJo4IEEA8lc2po-HhYkCHsO5l3-fh7fpeKpjJPb_9WB87TbXDtnsUwRpcYsemdjo4CaniaZxVObkenznFqYFXfUNhLyD1OO8x4TOUbrEbH-cyOy6Bvhr2a0QxJaT2yawjMiCPNDLEi-com3l3TqysqFpEyCt9o4cCv_X8f2Lu6OMcHvOV6tpwS5xdqjhCcRb1oPZ7riRuHzAM8YigLiQ"/>
+</div>
+<span class="font-display-md text-[16px] text-primary">David Wu</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] px-2 py-1 border border-outline-variant bg-surface-container-low rounded-sm">PID-42201</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px]">24 / M</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="font-label-mono text-[12px] font-bold">B-</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] text-on-surface-variant">+1 503 555 9901</span>
+</td>
+<td class="px-6 py-4">
+<span class="font-label-mono text-[11px] uppercase">13 OCT 2023</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="font-label-mono text-[10px] border border-outline-variant px-3 py-1 hover:bg-primary hover:text-on-primary transition-all uppercase">View Record</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination / Footer -->
+<div class="flex items-center justify-between px-6 py-4 bg-surface-container-low border-t border-outline-variant">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">Showing 7 of 3,184 Records</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:bg-surface-container-lowest text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-on-primary font-label-mono text-[10px]">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:bg-surface-container-lowest font-label-mono text-[10px]">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:bg-surface-container-lowest font-label-mono text-[10px]">3</button>
+<span class="font-label-mono text-[10px] mx-2">...</span>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:bg-surface-container-lowest font-label-mono text-[10px]">455</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:bg-surface-container-lowest text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ECG Sparkline Decorative Element -->
+<div class="mt-margin flex items-center gap-4">
+<div class="flex-grow h-[1px] bg-outline-variant relative">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-4 bg-background px-2">
+<div class="w-full h-full ecg-spark bg-outline-variant"></div>
+</div>
+</div>
+</div>
+<span class="font-label-mono text-[9px] text-outline uppercase tracking-[0.2em]">End of Registry</span>
+<div class="flex-grow h-[1px] bg-outline-variant relative">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-4 bg-background px-2">
+<div class="w-full h-full ecg-spark bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Tooltip Mockup -->
+<div class="fixed bottom-6 right-6 paper-sheet px-4 py-2 flex items-center gap-3 z-[60] border-l-4 border-secondary" id="active-user-indicator">
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<div>
+<p class="font-label-mono text-[9px] uppercase leading-none text-on-surface-variant mb-1">System Health</p>
+<p class="font-label-mono text-[11px] font-bold leading-none uppercase">Meridian Core Online</p>
+</div>
+</div>
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Search highlight simulation
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 2) {
+                searchInput.classList.add('border-secondary');
+            } else {
+                searchInput.classList.remove('border-secondary');
+            }
+        });
+    </script>
+</body></html>

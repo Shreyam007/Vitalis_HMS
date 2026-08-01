@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Sans:ital,wght@0,600;0,700;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #F2F3EF;
+  --surface: #FFFFFF;
+  --ink: #14171C;
+  --sub: #5B6058;
+  --faint: #8B9089;
+  --line: #DBDED6;
+  --line-strong: #C4C8BE;
+
+  --teal: #0F6E5D;
+  --teal-deep: #0B4F43;
+  --teal-tint: #E4F0EC;
+
+  --indigo: #3A4B8C;
+  --indigo-deep: #2B3868;
+  --indigo-tint: #E8EAF5;
+
+  --rust: #B1631F;
+  --rust-deep: #8C4E17;
+  --rust-tint: #F6ECDC;
+
+  --red: #B33A2E;
+  --red-tint: #F7E7E4;
+
+  --amber: #C68A1E;
+  --amber-tint: #F8EEDA;
+}
+
+/* Professional Responsive Dual-Layer Clinical Grid Background */
+html,
+body,
+#root,
+main,
+.bg-grid-pattern,
+.clinical-grid {
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(to right, rgba(219, 222, 214, 0.65) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(219, 222, 214, 0.65) 1px, transparent 1px),
+    linear-gradient(to right, rgba(196, 200, 190, 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(196, 200, 190, 0.45) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: 'Work Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Section & Card Level Subtle Grid Texture */
+.surface-grid {
+  background-color: var(--surface);
+  background-image: 
+    linear-gradient(to right, rgba(237, 238, 234, 0.55) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(237, 238, 234, 0.55) 1px, transparent 1px);
+  background-size: 16px 16px;
+}

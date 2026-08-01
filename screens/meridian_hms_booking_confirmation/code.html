@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Booking Confirmation | Meridian HMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#191c21",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001452",
+                        "background": "#f2f3ef",
+                        "secondary": "#076b5a",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#76777b",
+                        "inverse-primary": "#c4c6cd",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-secondary-fixed-variant": "#005143",
+                        "secondary-fixed": "#a0f2dc",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-background": "#1a1c1a",
+                        "surface-variant": "#e2e3df",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f0f1ed",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "on-tertiary-container": "#7080c5",
+                        "inverse-surface": "#2e312f",
+                        "on-surface-variant": "#45474b",
+                        "on-surface": "#1a1c1a",
+                        "on-primary-fixed-variant": "#44474d",
+                        "on-secondary-fixed": "#00201a",
+                        "surface-container-highest": "#e2e3df",
+                        "surface-container-high": "#e7e9e5",
+                        "secondary-container": "#a0f2dc",
+                        "on-primary-container": "#81848a",
+                        "on-error": "#ffffff",
+                        "tertiary": "#000000",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f9faf6",
+                        "tertiary-container": "#001452",
+                        "tertiary-fixed": "#dde1ff",
+                        "surface-dim": "#d9dad7",
+                        "primary-fixed": "#e1e2e9",
+                        "primary": "#000000",
+                        "surface-tint": "#5c5e64",
+                        "outline-variant": "#c6c6cb",
+                        "surface": "#f9faf6",
+                        "surface-container": "#edeeea",
+                        "on-secondary-container": "#157160",
+                        "on-primary-fixed": "#191c21",
+                        "surface-container-low": "#f3f4f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "row-height-compact": "32px",
+                        "margin": "24px",
+                        "base": "4px",
+                        "row-height-std": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Work Sans"],
+                        "label-stamp": ["IBM Plex Mono"],
+                        "label-mono": ["IBM Plex Mono"],
+                        "display-md": ["Instrument Sans"],
+                        "display-lg": ["Instrument Sans"],
+                        "body-md": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                        "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .zigzag-bottom {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 95% 100%, 90% calc(100% - 10px), 85% 100%, 80% calc(100% - 10px), 75% 100%, 70% calc(100% - 10px), 65% 100%, 60% calc(100% - 10px), 55% 100%, 50% calc(100% - 10px), 45% 100%, 40% calc(100% - 10px), 35% 100%, 30% calc(100% - 10px), 25% 100%, 20% calc(100% - 10px), 15% 100%, 10% calc(100% - 10px), 5% 100%, 0 calc(100% - 10px));
+        }
+        .ecg-line {
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='20' viewBox='0 0 40 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10h10l2-5 3 10 3-15 2 10h10' stroke='%23DBDED6' fill='transparent' stroke-width='1'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-position: center;
+            height: 20px;
+            width: 100%;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<!-- Sidebar Navigation Rail -->
+<aside class="fixed left-0 top-0 h-full w-[88px] bg-primary border-r border-outline-variant flex flex-col py-margin items-center z-50">
+<div class="mb-8">
+<span class="font-display-md text-display-md text-surface-container-lowest tracking-tighter">M</span>
+</div>
+<nav class="flex flex-col gap-2 w-full">
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-mono text-label-mono uppercase">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="personal_injury">personal_injury</span>
+<span class="font-label-mono text-label-mono uppercase">Patients</span>
+</a>
+<!-- Active State: Visits (mapped from Vitals in JSON but contextualized here) -->
+<a class="relative bg-surface text-primary border-l-4 border-secondary py-4 flex flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined text-secondary" data-icon="ecg_heart" style="font-variation-settings: 'FILL' 1;">ecg_heart</span>
+<span class="font-label-mono text-label-mono uppercase text-secondary">Visits</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="folder_managed">folder_managed</span>
+<span class="font-label-mono text-label-mono uppercase">Records</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="font-label-mono text-label-mono uppercase">Staff</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant py-4 gap-1 hover:bg-primary-container transition-all mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-mono text-label-mono uppercase">Admin</span>
+</a>
+</nav>
+</aside>
+<!-- Top AppBar -->
+<header class="flex justify-between items-center w-full px-gutter h-row-height-std ml-[88px] bg-surface border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<h1 class="font-display-md text-display-md text-primary">Booking Confirmed</h1>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">REF ID: APT-99201 · 12 OCT 2023</span>
+<span class="px-2 py-0.5 bg-secondary-container text-secondary text-[10px] font-label-mono flex items-center gap-1 border border-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Patient Ward
+                </span>
+</div>
+</div>
+<div class="flex items-center gap-6 pr-[88px]">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">help_outline</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="text-right">
+<p class="font-label-mono text-label-mono text-primary leading-none">WARD 402</p>
+<p class="text-[10px] text-on-surface-variant font-label-mono">CHIEF MEDICAL OFFICER</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female doctor in a white clinical coat, wearing a stethoscope, against a neutral medical office background with soft lighting. The photo has a clean, high-resolution, professional clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk4ARan2hmhHKUkn-UmS8tAtwMMxjnG3l-EOh00vsUiE-Zrdj4fllDrUtNRUYxvnwqawlaGuXE4tYmEJ7HgBw1568xzs2BEweke_gU8YAoCA9pcwfj2B4xZlVz_Fr7nql6imP8f7Z01GA3rOgpBNVqt_6PfGm9b8ot0Dts5lu5DH2q3VJoHmE7x9r0ynjSYY04OgIjnx-Gf2Wjo968mCJYf3ZjJgbbHmD69OsZisX7VwHRd0GvVXc"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[88px] min-h-[calc(100vh-48px)] p-margin flex flex-col items-center">
+<!-- Progress Tracker -->
+<div class="w-full max-w-4xl mb-12 px-12">
+<div class="relative flex justify-between items-center">
+<!-- Line -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 bg-secondary flex items-center justify-center text-white border border-secondary">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-mono text-label-mono text-secondary uppercase">Details</span>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 bg-secondary flex items-center justify-center text-white border border-secondary">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-mono text-label-mono text-secondary uppercase">Review</span>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 bg-surface border-2 border-primary flex items-center justify-center text-primary">
+<span class="font-label-mono text-xs">03</span>
+</div>
+<span class="font-label-mono text-label-mono text-primary uppercase font-bold">Confirm</span>
+</div>
+</div>
+</div>
+<!-- Receipt Card Container -->
+<section class="relative w-[450px] bg-white border border-outline-variant zigzag-bottom pb-10 flex flex-col">
+<!-- Receipt Top Border -->
+<div class="w-full h-[3px] bg-secondary"></div>
+<div class="p-8 flex flex-col items-center text-center">
+<!-- Doctor Info -->
+<div class="mb-6">
+<h2 class="font-display-md text-display-md text-primary mb-1">Dr. Sarah Jenkins</h2>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Cardiology · Senior Registrar</p>
+</div>
+<!-- ECG Divider -->
+<div class="ecg-line mb-6 opacity-50"></div>
+<!-- Detail Row -->
+<div class="w-full grid grid-cols-3 gap-2 mb-8 border-y border-outline-variant py-4">
+<div class="flex flex-col">
+<span class="font-label-mono text-[9px] text-on-surface-variant uppercase mb-1">Date</span>
+<span class="font-label-mono text-body-lg text-primary">WED 12 OCT</span>
+</div>
+<div class="flex flex-col border-x border-outline-variant">
+<span class="font-label-mono text-[9px] text-on-surface-variant uppercase mb-1">Time</span>
+<span class="font-label-mono text-body-lg text-primary">10:00 AM</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono text-[9px] text-on-surface-variant uppercase mb-1">Room</span>
+<span class="font-label-mono text-body-lg text-primary">B-204</span>
+</div>
+</div>
+<!-- Status Diagram -->
+<div class="flex w-full mb-8 items-center gap-0.5">
+<div class="flex-1 bg-surface-container-high py-1.5 px-2 font-label-mono text-[9px] text-on-surface-variant clip-path-[polygon(0%_0%,_90%_0%,_100%_50%,_90%_100%,_0%_100%)]">PENDING</div>
+<div class="flex-1 bg-secondary py-1.5 px-2 font-label-mono text-[9px] text-white flex items-center justify-center">CONFIRMED</div>
+<div class="flex-1 border border-outline-variant py-1 px-2 font-label-mono text-[9px] text-outline-variant">COMPLETED</div>
+<div class="flex-1 border border-outline-variant py-1 px-2 font-label-mono text-[9px] text-outline-variant">CANCELLED</div>
+</div>
+<!-- Confirmed Stamp -->
+<div class="relative w-full h-16 mb-6 flex justify-center items-center">
+<div class="border-2 border-secondary px-6 py-2 -rotate-[3deg] inline-block opacity-80 mix-blend-multiply">
+<span class="font-label-mono text-display-md text-secondary tracking-[0.2em] font-extrabold uppercase">Confirmed</span>
+</div>
+</div>
+<!-- QR Code Check-in -->
+<div class="mb-10 flex flex-col items-center">
+<div class="w-32 h-32 p-2 border border-outline-variant bg-white mb-2">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center relative">
+<div class="absolute inset-2 border border-dashed border-outline opacity-20"></div>
+<span class="material-symbols-outlined text-outline-variant text-4xl" data-icon="qr_code_2">qr_code_2</span>
+</div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Check-in QR Placeholder</span>
+</div>
+<!-- Footer Actions -->
+<div class="w-full flex flex-col gap-4">
+<button class="w-full border border-primary py-3 px-4 font-label-mono text-label-mono uppercase hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_add_on</span>
+                        Add to calendar
+                    </button>
+<a class="font-label-mono text-label-mono text-secondary uppercase underline underline-offset-4 hover:text-on-secondary-container transition-colors" href="#">
+                        View my visits
+                    </a>
+</div>
+</div>
+</section>
+<!-- Decorative elements -->
+<div class="mt-12 text-center max-w-xs">
+<p class="font-label-mono text-[10px] text-outline tracking-tight leading-relaxed uppercase">
+                Meridian Health Management Systems — Automated Validation Protocol v4.0.2. Digital copy only. Please present at Ward 402 entrance upon arrival.
+            </p>
+</div>
+</main>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.classList.add('scale-95');
+            });
+            el.addEventListener('mouseup', () => {
+                el.classList.remove('scale-95');
+            });
+        });
+
+        // Simple animation for the "Confirmed" stamp entrance
+        window.addEventListener('load', () => {
+            const stamp = document.querySelector('.border-2.border-secondary');
+            stamp.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            stamp.style.transform = 'scale(1.5) rotate(-15deg)';
+            stamp.style.opacity = '0';
+            
+            setTimeout(() => {
+                stamp.style.transform = 'scale(1) rotate(-3deg)';
+                stamp.style.opacity = '0.8';
+            }, 500);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS — New Prescription</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100..900&family=Instrument+Sans:wght@100..900&family=Work+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#005143",
+                    "on-tertiary-fixed": "#001452",
+                    "on-secondary-fixed": "#00201a",
+                    "tertiary-fixed": "#dde1ff",
+                    "surface-container": "#edeeea",
+                    "secondary": "#076b5a",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#45474b",
+                    "surface-container-high": "#e7e9e5",
+                    "primary-container": "#191c21",
+                    "on-primary-container": "#81848a",
+                    "tertiary-fixed-dim": "#b7c4ff",
+                    "surface-variant": "#e2e3df",
+                    "secondary-container": "#a0f2dc",
+                    "on-secondary-container": "#157160",
+                    "on-primary-fixed-variant": "#44474d",
+                    "inverse-on-surface": "#f0f1ed",
+                    "primary": "#000000",
+                    "surface-container-highest": "#e2e3df",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c6c6cb",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f2f3ef",
+                    "secondary-fixed-dim": "#84d6c1",
+                    "surface-bright": "#f9faf6",
+                    "on-background": "#1a1c1a",
+                    "primary-fixed-dim": "#c4c6cd",
+                    "tertiary-container": "#001452",
+                    "on-surface": "#14171c",
+                    "inverse-primary": "#c4c6cd",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#191c21",
+                    "surface-dim": "#d9dad7",
+                    "surface": "#f9faf6",
+                    "primary-fixed": "#e1e2e9",
+                    "tertiary": "#3a4b8c",
+                    "inverse-surface": "#2e312f",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#a0f2dc",
+                    "surface-container-low": "#f3f4f0",
+                    "on-secondary": "#ffffff",
+                    "ward-indigo": "#3a4b8c",
+                    "ink": "#14171c",
+                    "chart-border": "#c4c8be"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "4px",
+                    "xl": "4px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "24px",
+                    "row-height-compact": "32px",
+                    "base": "4px",
+                    "row-height-std": "48px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-stamp": ["IBM Plex Mono"],
+                    "display-lg": ["Instrument Sans"],
+                    "display-md": ["Instrument Sans"],
+                    "body-md": ["Work Sans"],
+                    "label-mono": ["IBM Plex Mono"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "label-stamp": ["10px", {"lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-mono": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .ecg-sparkline {
+            height: 1px;
+            background: linear-gradient(90deg, #c4c8be 0%, #c4c8be 45%, #14171c 48%, #14171c 50%, #c4c8be 52%, #c4c8be 100%);
+            position: relative;
+        }
+        .ecg-sparkline::after {
+            content: 'medical_services';
+            font-family: 'Material Symbols Outlined';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 0 8px;
+            font-size: 14px;
+            color: #3a4b8c;
+        }
+        .stamp-urgent {
+            border: 1.5px solid #ba1a1a;
+            color: #ba1a1a;
+            padding: 2px 6px;
+            transform: rotate(-2deg);
+            display: inline-block;
+        }
+        .paper-dashed {
+            background-image: linear-gradient(to right, #c4c8be 50%, rgba(255, 255, 255, 0) 0%);
+            background-position: top;
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-width: 1.5px !important;
+            border-color: #14171c !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-ward-indigo selection:text-white">
+<!-- SIDE NAVIGATION RAIL -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r border-outline-variant bg-ward-indigo flex flex-col z-50">
+<div class="px-6 py-8">
+<h1 class="font-display-md text-display-md font-bold text-white tracking-tighter">Meridian HMS</h1>
+<p class="font-label-mono text-label-mono text-white/60 mt-1 uppercase">Ward: General Medicine</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Navigation Items mapped from JSON logic -->
+<a class="flex items-center px-6 py-4 text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="relative bg-white/10 border-l-4 border-secondary-fixed text-white font-bold flex items-center px-6 py-4" href="#">
+<span class="material-symbols-outlined mr-4">patient_list</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Patients</span>
+</a>
+<a class="flex items-center px-6 py-4 text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4">medical_services</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Doctors</span>
+</a>
+<a class="flex items-center px-6 py-4 text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4">assignment_ind</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Admissions</span>
+</a>
+<a class="flex items-center px-6 py-4 text-white/70 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/10">
+<button class="w-full bg-white text-ward-indigo font-label-mono text-label-mono py-3 rounded-lg font-bold uppercase tracking-widest hover:bg-surface-container-high transition-transform active:scale-95">
+                Emergency Entry
+            </button>
+<div class="mt-6 flex flex-col gap-3">
+<a class="flex items-center text-white/60 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px] mr-2">help</span>
+<span class="font-label-mono text-label-mono uppercase">Support</span>
+</a>
+<a class="flex items-center text-white/60 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px] mr-2">logout</span>
+<span class="font-label-mono text-label-mono uppercase">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TOP APP BAR / CHART BAR -->
+<header class="h-row-height-std px-margin flex justify-between items-center bg-white border-b border-chart-border sticky top-0 z-40">
+<div class="flex flex-col">
+<h2 class="font-display-md text-display-md text-ink leading-tight">New prescription — Ananya Iyer</h2>
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
+                    MR-08841 · DOB 14 MAR 1998 · DR. ARIS THORNE
+                </p>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-2 bg-ward-indigo text-white px-3 py-1 rounded-full font-label-mono text-[10px] font-bold tracking-tighter">
+<span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                    DOCTOR WARD
+                </span>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-ward-indigo transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-ward-indigo transition-colors">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+</div>
+</header>
+<!-- PRESCRIPTION CANVAS -->
+<section class="flex-1 p-12 flex justify-center items-start">
+<!-- PHYSICAL PAD CARD -->
+<div class="w-full max-w-4xl bg-white border border-chart-border relative flex flex-col overflow-hidden transition-all duration-300">
+<!-- Tear-off edge -->
+<div class="h-4 paper-dashed w-full opacity-40"></div>
+<div class="p-10 flex flex-col gap-8">
+<!-- Patient Info Header -->
+<div class="flex flex-wrap justify-between items-center border-b border-chart-border pb-4 gap-4">
+<div class="font-label-mono text-label-mono text-ink tracking-widest">
+                            PATIENT: <span class="font-bold">ANANYA IYER</span> | ID: <span class="font-bold">MR-08841</span>
+</div>
+<div class="font-label-mono text-label-mono text-ink tracking-widest">
+                            AGE: <span class="font-bold">25</span> | DATE: <span class="font-bold">24 OCT 2023</span>
+</div>
+</div>
+<!-- Clinical Rx Header -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-label-mono text-label-mono font-bold text-ward-indigo tracking-[0.2em] uppercase">Rx DETAILS</h3>
+<div class="stamp-urgent font-label-stamp text-label-stamp">VALID 72HRS</div>
+</div>
+<div class="ecg-sparkline w-full"></div>
+</div>
+<!-- Medicine List Grid -->
+<div class="flex flex-col gap-6">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-4 items-end">
+<div class="col-span-5">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">MEDICINE</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white" type="text" value="Amlodipine Besylate"/>
+</div>
+<div class="col-span-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">DOSAGE</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white text-center" type="text" value="5mg"/>
+</div>
+<div class="col-span-3">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">FREQUENCY</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white" type="text" value="Once daily, morning"/>
+</div>
+<div class="col-span-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">DURATION</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white text-center" type="text" value="90 Days"/>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-4 items-end">
+<div class="col-span-5">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">MEDICINE</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white" type="text" value="Cetirizine HCl"/>
+</div>
+<div class="col-span-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">DOSAGE</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white text-center" type="text" value="10mg"/>
+</div>
+<div class="col-span-3">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">FREQUENCY</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white" type="text" value="As needed"/>
+</div>
+<div class="col-span-2">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1">DURATION</label>
+<input class="w-full font-body-md text-body-md border border-chart-border px-3 py-2 bg-white text-center" type="text" value="14 Days"/>
+</div>
+</div>
+<!-- Add Button -->
+<div class="flex justify-start">
+<button class="flex items-center gap-2 px-3 py-2 text-ward-indigo hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span class="font-label-mono text-label-mono uppercase font-bold">+ ADD MEDICINE</span>
+</button>
+</div>
+</div>
+<!-- Instructions -->
+<div class="mt-4">
+<label class="font-label-mono text-label-mono text-on-surface-variant block mb-1 uppercase tracking-widest">Additional instructions</label>
+<textarea class="w-full font-body-md text-body-md border border-chart-border px-4 py-3 bg-white resize-none" placeholder="Enter patient-specific notes or lifestyle advice..." rows="4"></textarea>
+</div>
+<!-- Footer Info -->
+<div class="mt-8 pt-8 border-t border-chart-border flex justify-between items-end">
+<div class="flex flex-col gap-1">
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Digital Signature Hash</p>
+<p class="font-label-mono text-[10px] text-ink/40">MRD-HASH-9981-AXT-992-KLR</p>
+</div>
+<div class="text-right">
+<p class="font-label-mono text-label-mono text-ink italic opacity-50 mb-1">Signed,</p>
+<p class="font-display-md text-display-md text-ward-indigo font-bold tracking-tighter">Dr. Aris Thorne</p>
+<p class="font-label-mono text-[9px] text-on-surface-variant uppercase">Senior Consultant, Internal Medicine</p>
+</div>
+</div>
+</div>
+<!-- PAD HOLES DECORATION -->
+<div class="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-12 opacity-10 pointer-events-none">
+<div class="w-3 h-3 rounded-full bg-ink"></div>
+<div class="w-3 h-3 rounded-full bg-ink"></div>
+<div class="w-3 h-3 rounded-full bg-ink"></div>
+<div class="w-3 h-3 rounded-full bg-ink"></div>
+</div>
+</div>
+</section>
+<!-- ACTION FOOTER -->
+<footer class="h-20 px-margin flex justify-end items-center bg-white border-t border-chart-border gap-4 sticky bottom-0 z-40">
+<button class="px-6 py-3 border border-ward-indigo text-ward-indigo hover:bg-surface-container transition-colors font-label-mono text-label-mono font-bold uppercase tracking-widest">
+                Save as Draft
+            </button>
+<button class="px-8 py-3 bg-ward-indigo text-white hover:bg-primary-container transition-all active:scale-95 font-label-mono text-label-mono font-bold uppercase tracking-widest flex items-center gap-3">
+                Issue Prescription 
+                <span class="material-symbols-outlined text-[18px]">trending_flat</span>
+</button>
+</footer>
+</main>
+<script>
+        // Micro-interactions for form focus
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('scale-[1.01]');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Simulating the "Add Medicine" functionality (Visual only)
+        const addBtn = document.querySelector('button:has(span:contains("+ ADD MEDICINE"))');
+        if(addBtn) {
+            addBtn.addEventListener('click', () => {
+                console.log('Adding new medication row...');
+                // This would trigger a state change in a real app
+            });
+        }
+    </script>
+</body></html>

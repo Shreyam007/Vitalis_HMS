@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meridian HMS | Secure Checkout</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&amp;family=Work+Sans:wght@400;500&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "primary-fixed": "#e1e2e9",
+                        "on-primary-container": "#81848a",
+                        "surface-container-high": "#e7e9e5",
+                        "on-error-container": "#93000a",
+                        "secondary": "#076b5a", // Ward Teal #0F6E5D approx
+                        "inverse-surface": "#2e312f",
+                        "on-background": "#1a1c1a",
+                        "secondary-fixed": "#a0f2dc",
+                        "on-secondary-container": "#157160",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#14171C", // Charcoal Ink
+                        "on-tertiary-fixed-variant": "#314283",
+                        "on-primary-fixed": "#191c21",
+                        "on-secondary-fixed": "#00201a",
+                        "surface-variant": "#e2e3df",
+                        "on-secondary-fixed-variant": "#005143",
+                        "surface-bright": "#f9faf6",
+                        "primary-fixed-dim": "#c4c6cd",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#dde1ff",
+                        "surface": "#f2f3ef", // Clinical Paper Grey
+                        "on-surface": "#1a1c1a",
+                        "on-primary-fixed-variant": "#44474d",
+                        "inverse-primary": "#c4c6cd",
+                        "secondary-container": "#a0f2dc",
+                        "tertiary-container": "#001452",
+                        "secondary-fixed-dim": "#84d6c1",
+                        "background": "#f2f3ef",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dbded6", // Hairline Border color
+                        "primary-container": "#191c21",
+                        "surface-container": "#edeeea",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f0f1ed",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#5c5e64",
+                        "surface-dim": "#d9dad7",
+                        "surface-container-low": "#f3f4f0",
+                        "outline": "#76777b",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "8px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "row-height-std": "48px",
+                        "gutter": "16px",
+                        "row-height-compact": "32px",
+                        "margin": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["IBM Plex Mono", "monospace"],
+                        "body-lg": ["Work Sans", "sans-serif"],
+                        "label-stamp": ["IBM Plex Mono", "monospace"],
+                        "display-lg": ["Instrument Sans", "sans-serif"],
+                        "display-md": ["Instrument Sans", "sans-serif"],
+                        "body-md": ["Work Sans", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["11px", { "lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                        "label-stamp": ["10px", { "lineHeight": "1", "letterSpacing": "0.06em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-md": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .stamp-badge {
+            transform: rotate(-2deg);
+        }
+        .die-cut-tab {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 5% 50%);
+        }
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-secondary-fixed">
+<div class="flex h-screen w-full">
+<!-- SIDE NAV RAIL -->
+<aside class="w-64 h-full bg-primary flex flex-col py-margin z-50 border-r border-outline-variant">
+<div class="px-6 mb-12">
+<h1 class="font-display-md text-display-md font-bold text-secondary">Meridian HMS</h1>
+<p class="font-label-mono text-label-mono text-outline uppercase mt-1">Ward 4B - Bed 12</p>
+</div>
+<nav class="flex-1 flex flex-col space-y-1">
+<!-- Dashboard -->
+<div class="group flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined mr-4">clinical_notes</span>
+<span class="font-label-mono text-label-mono text-on-primary">Dashboard</span>
+</div>
+<!-- Vitals -->
+<div class="group flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined mr-4">vital_signs</span>
+<span class="font-label-mono text-label-mono text-on-primary">Vitals</span>
+</div>
+<!-- Medical Records -->
+<div class="group flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined mr-4">folder_managed</span>
+<span class="font-label-mono text-label-mono text-on-primary">Medical Records</span>
+</div>
+<!-- Billing (ACTIVE) -->
+<div class="relative flex items-center px-6 py-3 bg-background text-primary border-y border-l border-outline-variant -mr-[1px] font-bold z-10">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary shadow-[0_0_8px_rgba(7,107,90,0.6)]"></div>
+<span class="material-symbols-outlined mr-4 text-secondary">payments</span>
+<span class="font-label-mono text-label-mono flex items-center">
+                        Billing &amp; Payments
+                        <span class="ml-2 w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
+</span>
+</div>
+<!-- Settings -->
+<div class="group flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-label-mono text-label-mono text-on-primary">Settings</span>
+</div>
+</nav>
+<div class="mt-auto px-6">
+<div class="flex items-center gap-3 p-3 bg-surface-container-highest/10 rounded">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="object-cover w-full h-full" data-alt="A close-up high-resolution portrait of a medical professional wearing clinical scrubs and a stethoscope. The lighting is clean and bright, reflecting an institutional hospital environment with a soft clinical paper-grey background. The aesthetic is sharp, professional, and reliable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApGPjgILlRO29dNuF2K7yQ0cOpbp-p2C6OH5RBzfuaek7g-Dd11SFzk_oYeUuHNiUHsr2BAUCN8a29NtHUYqPu17F2LaEI7YkE_uwilMWeP4Gjga09C6SsUY9atB8p36MCpV7pWQ57NVh72yGv7EhXBTFJh3VVrPgLfNILjh12H2c-iNcQ_A1yzGN7OUzEigvLHoaqVgXTnovh8PZLDTaVmBk_GMB-yaz6XydT_hPupteVAQ_9ANU"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono text-label-mono text-on-primary">Dr. Aris Thorne</span>
+<span class="text-[10px] text-outline font-label-mono">CHIEF RESIDENT</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="flex-1 flex flex-col relative overflow-y-auto no-scrollbar">
+<!-- TOP CHARTBAR -->
+<header class="sticky top-0 w-full h-row-height-std bg-background border-b border-outline-variant flex items-center justify-between px-margin z-40">
+<div class="flex items-center gap-4">
+<span class="font-display-md text-display-md text-primary">Secure Checkout</span>
+<span class="h-4 w-px bg-outline-variant"></span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">INVOICE #INV-3391 · DUE TODAY</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-secondary/10 border border-secondary/20 px-3 py-1 rounded-full">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+<span class="font-label-mono text-[10px] text-secondary tracking-wider">PATIENT WARD</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">print</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">help</span>
+</div>
+</div>
+</header>
+<!-- WORKSPACE -->
+<div class="flex-1 flex items-center justify-center p-12">
+<!-- PATIENT WRISTBAND / CHECKOUT CARD -->
+<div class="w-full max-w-[480px] bg-white border border-outline-variant overflow-hidden flex flex-col">
+<!-- Header Section -->
+<div class="p-8 pb-6 text-center">
+<p class="font-label-mono text-label-mono text-outline uppercase mb-2">TOTAL DUE</p>
+<h2 class="font-display-lg text-[48px] text-primary tracking-tight">₹1,240</h2>
+<div class="mt-4 inline-block px-3 py-1 border-[1.5px] border-secondary stamp-badge">
+<span class="font-label-stamp text-label-stamp text-secondary">PENDING ADMISSION CLEARANCE</span>
+</div>
+</div>
+<!-- Heartbeat Divider -->
+<div class="relative flex items-center justify-center w-full my-4">
+<div class="absolute inset-0 flex items-center px-8">
+<div class="w-full border-t border-outline-variant border-dashed"></div>
+</div>
+<div class="relative bg-white px-4 flex items-center gap-3">
+<svg class="text-secondary opacity-40" fill="none" height="16" viewbox="0 0 48 16" width="48">
+<path d="M0 8H10L13 2L18 14L21 8H48" stroke="currentColor" stroke-width="1.5"></path>
+</svg>
+<span class="font-label-mono text-label-mono text-outline">PAYMENT METHOD</span>
+</div>
+</div>
+<!-- Payment Options Grid -->
+<div class="px-8 pt-4 pb-2">
+<div class="grid grid-cols-3 gap-px bg-outline-variant border border-outline-variant">
+<!-- Card (Active) -->
+<button class="bg-secondary/5 p-4 flex flex-col items-center gap-2 border-[1.5px] border-secondary -m-[1px] relative z-10 transition-all">
+<span class="material-symbols-outlined text-secondary">credit_card</span>
+<span class="font-label-mono text-[10px] text-secondary font-bold">CARD</span>
+</button>
+<!-- UPI -->
+<button class="bg-white p-4 flex flex-col items-center gap-2 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-outline">account_balance_wallet</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant">UPI</span>
+</button>
+<!-- Net Banking -->
+<button class="bg-white p-4 flex flex-col items-center gap-2 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-outline">account_balance</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant">NET BANKING</span>
+</button>
+</div>
+</div>
+<!-- Card Form -->
+<div class="p-8 space-y-6">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono text-on-surface-variant">CARD NUMBER</label>
+<div class="relative group">
+<input class="w-full h-row-height-std px-4 bg-white border border-outline-variant rounded-none font-label-mono text-body-lg focus:ring-0 focus:border-primary transition-all outline-none" placeholder="XXXX XXXX XXXX 4022" type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2">
+<span class="w-8 h-5 bg-surface-container-high rounded-sm"></span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono text-on-surface-variant">EXPIRY DATE</label>
+<input class="w-full h-row-height-std px-4 bg-white border border-outline-variant rounded-none font-label-mono text-body-lg focus:ring-0 focus:border-primary outline-none" placeholder="MM / YY" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-mono text-label-mono text-on-surface-variant">CVV</label>
+<input class="w-full h-row-height-std px-4 bg-white border border-outline-variant rounded-none font-label-mono text-body-lg focus:ring-0 focus:border-primary outline-none" placeholder="***" type="password"/>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full h-row-height-std bg-secondary text-white font-label-mono text-body-md uppercase flex items-center justify-center gap-2 group active:scale-[0.98] transition-transform">
+                                PAY ₹1,240
+                                <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Footer Details -->
+<div class="bg-surface-container-low px-8 py-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-label-mono text-[9px] uppercase tracking-tighter">256-bit encrypted · PCI-DSS compliant</span>
+</div>
+<div class="opacity-30">
+<span class="font-display-md text-primary text-[12px] font-bold">MERIDIAN SECURE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ATMOSPHERIC DECORATION -->
+<div class="absolute bottom-8 left-8">
+<div class="stamp-badge border-[1.5px] border-outline-variant/30 p-2 opacity-20 pointer-events-none">
+<p class="font-label-mono text-[9px] text-outline uppercase">Certified Hospital Ledger <br/> Instance ID: 7729-00</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Mock interaction
+                if(this.textContent.includes('PAY')) {
+                    this.innerHTML = `<span class="animate-spin material-symbols-outlined">progress_activity</span> PROCESSING...`;
+                    this.style.opacity = '0.7';
+                    this.style.pointerEvents = 'none';
+                    setTimeout(() => {
+                        this.innerHTML = `SUCCESS <span class="material-symbols-outlined">check_circle</span>`;
+                        this.classList.replace('bg-secondary', 'bg-on-background');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body></html>
