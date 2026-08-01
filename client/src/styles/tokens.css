@@ -82,3 +82,47 @@ main,
 tr, card, button, a {
   transition: all 0.15s ease-in-out;
 }
+
+/* Dedicated Print Styles for Realistic Ticket & Clinical Document Output */
+@media print {
+  @page {
+    size: auto;
+    margin: 15mm;
+  }
+
+  body, html, #root, main {
+    background: #FFFFFF !important;
+    background-image: none !important;
+    color: #14171C !important;
+  }
+
+  aside, 
+  header, 
+  .no-print,
+  .no-print * {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+  }
+
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .print-ticket-wrapper {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-ticket-card {
+    border: 2px solid #14171C !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    page-break-inside: avoid;
+  }
+}
