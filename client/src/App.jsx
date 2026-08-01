@@ -17,6 +17,7 @@ import SecureCheckout from './pages/patient/SecureCheckout.jsx';
 
 // Doctor Ward Pages
 import DoctorQueue from './pages/doctor/DoctorQueue.jsx';
+import DoctorRecords from './pages/doctor/DoctorRecords.jsx';
 import PatientChartRecord from './pages/doctor/PatientChartRecord.jsx';
 import NewPrescription from './pages/doctor/NewPrescription.jsx';
 import AttachTestReport from './pages/doctor/AttachTestReport.jsx';
@@ -63,6 +64,7 @@ export default function App() {
               <ProtectedRoute allowedRoles={['doctor']}>
                 <Routes>
                   <Route path="queue" element={<DoctorQueue />} />
+                  <Route path="records" element={<DoctorRecords />} />
                   <Route path="patients/:id/record" element={<PatientChartRecord />} />
                   <Route path="patients/:id/prescribe" element={<NewPrescription />} />
                   <Route path="patients/:id/attach-report" element={<AttachTestReport />} />

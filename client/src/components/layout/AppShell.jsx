@@ -51,7 +51,7 @@ export default function AppShell({ children, role = 'patient' }) {
     ],
     doctor: [
       { label: 'QUEUE', icon: Calendar, path: '/doctor/queue' },
-      { label: 'RECORDS', icon: FileText, path: '/doctor/patients/my-history/record' },
+      { label: 'RECORDS', icon: FileText, path: '/doctor/records' },
     ],
     admin: [
       { label: 'OVERVIEW', icon: Activity, path: '/admin/overview' },
