@@ -6,6 +6,16 @@ import Prescription from '../models/Prescription.js';
 import TestReport from '../models/TestReport.js';
 import { eventBus } from '../sse/eventBus.js';
 
+// Get all patients for clinical lookup (doctor/admin)
+export const getAllPatientsClinical = async (req, res) => {
+  try {
+    const patients = await Patient.find().populate('userId', 'name email createdAt');
+    res.status(200).json(patients);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch clinical patient directory', error: err.message });
+  }
+};
+
 // Get today's queue for doctor
 export const getDoctorQueue = async (req, res) => {
   try {

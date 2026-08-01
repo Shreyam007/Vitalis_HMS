@@ -19,7 +19,7 @@ export default function DoctorRecords() {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await fetch('/api/admin/patients', {
+        const res = await fetch('/api/clinical/patients', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

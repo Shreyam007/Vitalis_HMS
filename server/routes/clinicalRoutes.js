@@ -1,5 +1,6 @@
 import express from 'express';
 import { 
+  getAllPatientsClinical,
   getDoctorQueue, 
   getPatientHistory, 
   createMedicalRecord, 
@@ -12,6 +13,7 @@ import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
 
+router.get('/patients', verifyToken, roleGuard('doctor', 'admin'), getAllPatientsClinical);
 router.get('/doctor/queue', verifyToken, roleGuard('doctor'), getDoctorQueue);
 router.get('/patient-history/:patientId', verifyToken, getPatientHistory);
 router.post('/medical-records', verifyToken, roleGuard('doctor'), createMedicalRecord);
