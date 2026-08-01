@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   Home, Calendar, FileText, CreditCard, Users, UserCheck, 
-  Activity, Settings, Bell, HelpCircle, LogOut 
+  Activity, Settings, Bell, HelpCircle, LogOut, Clock 
 } from 'lucide-react';
 import vitalisLogo from '../../assets/vitalis-logo.png';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -11,6 +11,27 @@ export default function AppShell({ children, role = 'patient' }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live 24-Hour Indian Standard Time (IST) Clock
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const formatted = now.toLocaleTimeString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      setCurrentTime(`${formatted} IST`);
+    };
+
+    updateClock();
+    const timerId = setInterval(updateClock, 1000);
+    return () => clearInterval(timerId);
+  }, []);
 
   const wardColorMap = {
     patient: { name: 'teal', border: 'border-l-teal', dot: 'bg-teal', text: 'text-teal', wardPill: '● Patient Ward', bgTint: 'bg-teal-tint' },
@@ -137,8 +158,14 @@ export default function AppShell({ children, role = 'patient' }) {
             </div>
           </div>
 
-          {/* Right Icons & Ward Pill */}
+          {/* Right Icons, Live 24H Clock & Ward Pill */}
           <div className="flex items-center gap-4">
+            {/* Live 24-Hour Real-Time Clock Badge */}
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-bg border border-line rounded font-mono text-[11px] font-bold text-ink tracking-wider shadow-inner">
+              <Clock className="w-3.5 h-3.5 text-teal animate-pulse" />
+              <span>{currentTime}</span>
+            </div>
+
             <span className={`hidden sm:inline-block px-3 py-1 border rounded-full font-mono text-[10.5px] font-semibold tracking-wider ${currentWard.bgTint} ${currentWard.text}`}>
               {currentWard.wardPill}
             </span>
