@@ -64,14 +64,14 @@ export default function AppShell({ children, role = 'patient' }) {
                 <Link
                   key={item.label}
                   to={item.path}
-                  className={`w-full py-3 flex flex-col items-center justify-center relative transition-all group ${
+                  className={`w-full py-3 flex flex-col items-center justify-center relative transition-all duration-200 group ${
                     isActive 
                       ? `bg-surface/10 border-l-[4px] ${currentWard.border} text-surface` 
                       : 'text-faint hover:text-surface hover:bg-surface/5 border-l-[4px] border-transparent'
                   }`}
                 >
                   <div className="relative">
-                    <Icon className="w-5 h-5 mb-1" />
+                    <Icon className="w-5 h-5 mb-1 transition-transform group-hover:scale-110" />
                     {isActive && (
                       <span className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${currentWard.dot} animate-pulse`} />
                     )}
@@ -160,8 +160,8 @@ export default function AppShell({ children, role = 'patient' }) {
           </div>
         </header>
 
-        {/* Dynamic Page Content with Responsive Grid Canvas */}
-        <main className="flex-1 overflow-y-auto bg-grid-pattern">
+        {/* Dynamic Page Content with Responsive Grid Canvas & Smooth Page Transitions */}
+        <main className="flex-1 overflow-y-auto bg-grid-pattern animate-fade-in">
           {children}
         </main>
       </div>
