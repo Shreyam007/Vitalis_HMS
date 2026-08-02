@@ -27,7 +27,6 @@ export const seedInitialUsers = async () => {
       adminUser.password = adminPass;
       await adminUser.save();
     }
-    console.log('Admin account ready: admin@vitalis.hms / admin123');
 
     // 2. Seed / Reset Doctor Accounts (8 Doctors)
     const doctorsData = [
@@ -67,7 +66,6 @@ export const seedInitialUsers = async () => {
         });
       }
     }
-    console.log('8 Doctor accounts ready: password doctor123');
 
     // 3. Seed / Reset Patient Accounts (10 Patients)
     const patientsData = [
@@ -108,13 +106,86 @@ export const seedInitialUsers = async () => {
         });
       }
     }
-    console.log('10 Patient accounts ready: password patient123');
 
-    // 4. Seed / Reset Clinical Records & Appointments
-    const primaryDoc = await Doctor.findOne();
+    // 4. Seed Clinical Invoices for Ananya Sharma (patient@vitalis.hms) & Others
     const primaryPat = await Patient.findOne({ patientId: 'PAT-08841' });
+    const primaryDoc = await Doctor.findOne();
 
-    if (primaryDoc && primaryPat) {
+    if (primaryPat && primaryDoc) {
+      // Clear old single invoice if needed or ensure multiple exist
+      const sampleInvoices = [
+        {
+          invoiceId: 'INV-2026-101',
+          amount: 850,
+          status: 'unpaid',
+          lineItems: [
+            { description: 'Cardiology Follow-up OPD Consultation', amount: 200 },
+            { description: 'Echocardiogram (2D Echo) Diagnostic Scan', amount: 450 },
+            { description: 'Pharmacy Prescription Medication Stub', amount: 200 }
+          ]
+        },
+        {
+          invoiceId: 'INV-2026-098',
+          amount: 1450,
+          status: 'unpaid',
+          lineItems: [
+            { description: '24-Hour Holter Cardiac Monitoring', amount: 950 },
+            { description: 'Serum Electrolytes & Biomarker Panel', amount: 300 },
+            { description: 'Clinical Administrative Fee', amount: 200 }
+          ]
+        },
+        {
+          invoiceId: 'INV-2026-075',
+          amount: 650,
+          status: 'paid',
+          paymentDate: new Date('2026-07-28'),
+          paymentMethod: 'UPI / Instant QR',
+          lineItems: [
+            { description: 'Comprehensive Lipid & Cholesterol Panel', amount: 450 },
+            { description: 'Phlebotomy & Sample Collection Fee', amount: 200 }
+          ]
+        },
+        {
+          invoiceId: 'INV-2026-052',
+          amount: 1800,
+          status: 'paid',
+          paymentDate: new Date('2026-07-15'),
+          paymentMethod: 'Credit Card',
+          lineItems: [
+            { description: 'Emergency Room Triage & Stabilization', amount: 1000 },
+            { description: '12-Lead Electrocardiogram (ECG)', amount: 600 },
+            { description: 'Medication Administration', amount: 200 }
+          ]
+        },
+        {
+          invoiceId: 'INV-2026-031',
+          amount: 400,
+          status: 'paid',
+          paymentDate: new Date('2026-06-30'),
+          paymentMethod: 'Insurance Claim',
+          lineItems: [
+            { description: 'Routine General OPD Health Checkup', amount: 200 },
+            { description: 'CBC (Complete Blood Count) Lab Test', amount: 200 }
+          ]
+        }
+      ];
+
+      for (const inv of sampleInvoices) {
+        let existing = await Invoice.findOne({ invoiceId: inv.invoiceId });
+        if (!existing) {
+          await Invoice.create({
+            invoiceId: inv.invoiceId,
+            patientId: primaryPat._id,
+            amount: inv.amount,
+            lineItems: inv.lineItems,
+            status: inv.status,
+            paymentDate: inv.paymentDate,
+            paymentMethod: inv.paymentMethod
+          });
+        }
+      }
+
+      // Also seed appointments & medical records for primaryPat if missing
       let apt1 = await Appointment.findOne({ appointmentId: 'APT-92041' });
       if (!apt1) {
         apt1 = await Appointment.create({
@@ -127,21 +198,6 @@ export const seedInitialUsers = async () => {
           chiefComplaint: 'Intermittent chest tightness after physical exertion & palpitations',
           status: 'confirmed',
           queuePosition: 1
-        });
-      }
-
-      let apt2 = await Appointment.findOne({ appointmentId: 'APT-84092' });
-      if (!apt2) {
-        apt2 = await Appointment.create({
-          appointmentId: 'APT-84092',
-          patientId: primaryPat._id,
-          doctorId: primaryDoc._id,
-          date: '2026-08-06',
-          slotTime: '02:00 PM',
-          specialization: 'Cardiology',
-          chiefComplaint: 'Follow-up consultation for blood pressure regulation',
-          status: 'pending',
-          queuePosition: 2
         });
       }
 
@@ -158,41 +214,8 @@ export const seedInitialUsers = async () => {
           clinicalNotes: 'ECG shows normal sinus rhythm. Advised low sodium diet, daily walking, and started Metoprolol 25mg daily.'
         });
       }
-
-      let rx = await Prescription.findOne({ prescriptionId: 'RX-80291' });
-      if (!rx) {
-        await Prescription.create({
-          prescriptionId: 'RX-80291',
-          patientId: primaryPat._id,
-          doctorId: primaryDoc._id,
-          appointmentId: apt1._id,
-          medicines: [
-            { name: 'Metoprolol Succinate 25mg', dosage: '1 Tablet', frequency: 'Once daily (1-0-0)', duration: '30 Days', instructions: 'Take in morning' },
-            { name: 'Atorvastatin 10mg', dosage: '1 Tablet', frequency: 'Once daily (0-0-1)', duration: '30 Days', instructions: 'Take at bedtime' },
-            { name: 'Aspirin Low-Dose 75mg', dosage: '1 Tablet', frequency: 'Once daily (1-0-0)', duration: '30 Days', instructions: 'After breakfast' }
-          ],
-          notes: 'Avoid high-cholesterol foods, re-check lipid profile in 30 days.',
-          status: 'active'
-        });
-      }
-
-      let inv1 = await Invoice.findOne({ invoiceId: 'INV-2026-084' });
-      if (!inv1) {
-        await Invoice.create({
-          invoiceId: 'INV-2026-084',
-          patientId: primaryPat._id,
-          appointmentId: apt1._id,
-          amount: 1240,
-          lineItems: [
-            { description: 'Cardiology Specialist OPD Consultation Fee', amount: 200 },
-            { description: '12-Lead Electrocardiogram (ECG) Diagnostics', amount: 840 },
-            { description: 'Hospital Pharmacy Service Fee', amount: 200 }
-          ],
-          status: 'unpaid'
-        });
-      }
     }
-    console.log('Seeding verification & password sync complete.');
+    console.log('Seeded multiple paid & unpaid invoices for patient ledger.');
   } catch (err) {
     console.error('Seeding error:', err.message);
   }
