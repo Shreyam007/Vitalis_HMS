@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AppShell from '../../components/layout/AppShell.jsx';
 import ChartBar from '../../components/layout/ChartBar.jsx';
-import StatCard from '../../components/ui/StatCard.jsx';
 import PulseDivider from '../../components/ui/PulseDivider.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { Download, FileText, Calendar, Loader2, AlertCircle, CheckCircle, Database } from 'lucide-react';
+import { Download, FileText, Loader2, AlertCircle } from 'lucide-react';
 
 export default function ReportsExport() {
   const { token } = useAuth();
@@ -15,25 +14,6 @@ export default function ReportsExport() {
 
   const [downloading, setDownloading] = useState(false);
   const [zeroRecordsNote, setZeroRecordsNote] = useState('');
-  const [totalExports24h, setTotalExports24h] = useState(0);
-
-  const fetchStats = async () => {
-    try {
-      const res = await fetch('/api/admin/export/stats', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setTotalExports24h(data.totalExports24h || 0);
-      }
-    } catch (err) {
-      console.error('Fetch export stats error:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchStats();
-  }, [token]);
 
   const handleDownload = async () => {
     setZeroRecordsNote('');
@@ -76,9 +56,6 @@ export default function ReportsExport() {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-
-      // Refresh export log count
-      fetchStats();
     } catch (err) {
       console.error('CSV Download error:', err);
       setZeroRecordsNote('Failed to download CSV report. Please try again.');
@@ -95,29 +72,7 @@ export default function ReportsExport() {
         ward="rust"
       />
 
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
-        {/* Real-time 24h Export Stats Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard
-            title="TOTAL EXPORTS (24H)"
-            value={totalExports24h.toString()}
-            subtitle="Logged export audit events"
-            ward="rust"
-          />
-          <StatCard
-            title="CSV ENCODING"
-            value="UTF-8 BOM"
-            subtitle="Excel symbol compatible"
-            ward="rust"
-          />
-          <StatCard
-            title="DATASET AUDIT"
-            value="3 SCHEMAS"
-            subtitle="Indexed sequential rows"
-            ward="rust"
-          />
-        </div>
-
+      <div className="p-6 max-w-3xl mx-auto space-y-6">
         <div className="bg-surface border-2 border-line p-8 rounded-sm shadow-sm space-y-6 animate-fade-in">
           <div>
             <h3 className="font-display font-bold text-xl text-ink">Generate System Audit Report</h3>
