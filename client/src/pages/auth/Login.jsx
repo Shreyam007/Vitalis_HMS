@@ -15,18 +15,8 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleQuickFill = (role) => {
+  const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    if (role === 'patient') {
-      setEmail('patient@vitalis.hms');
-      setPassword('patient123');
-    } else if (role === 'doctor') {
-      setEmail('doctor@vitalis.hms');
-      setPassword('doctor123');
-    } else if (role === 'admin') {
-      setEmail('admin@vitalis.hms');
-      setPassword('admin123');
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -74,7 +64,7 @@ export default function Login() {
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
-                onClick={() => handleQuickFill('patient')}
+                onClick={() => handleRoleSelect('patient')}
                 className={`p-3 border rounded flex flex-col items-center gap-1 transition-all ${
                   selectedRole === 'patient' ? roleTileStyles.patient : 'border-line text-sub hover:border-line-strong'
                 }`}
@@ -85,7 +75,7 @@ export default function Login() {
 
               <button
                 type="button"
-                onClick={() => handleQuickFill('doctor')}
+                onClick={() => handleRoleSelect('doctor')}
                 className={`p-3 border rounded flex flex-col items-center gap-1 transition-all ${
                   selectedRole === 'doctor' ? roleTileStyles.doctor : 'border-line text-sub hover:border-line-strong'
                 }`}
@@ -96,7 +86,7 @@ export default function Login() {
 
               <button
                 type="button"
-                onClick={() => handleQuickFill('admin')}
+                onClick={() => handleRoleSelect('admin')}
                 className={`p-3 border rounded flex flex-col items-center gap-1 transition-all ${
                   selectedRole === 'admin' ? roleTileStyles.admin : 'border-line text-sub hover:border-line-strong'
                 }`}
@@ -124,8 +114,9 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@vitalis.hms"
-                className="w-full px-3 py-2 border border-line rounded text-sm font-body text-ink focus:outline-none focus:border-ink"
+                placeholder="doctor@vitalis.hms"
+                autoComplete="email"
+                className="w-full px-3 py-2 border border-line rounded text-sm font-body text-ink focus:outline-none focus:border-ink placeholder:text-faint/60"
               />
             </div>
 
@@ -139,7 +130,8 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3 py-2 border border-line rounded text-sm font-body text-ink focus:outline-none focus:border-ink"
+                autoComplete="current-password"
+                className="w-full px-3 py-2 border border-line rounded text-sm font-body text-ink focus:outline-none focus:border-ink placeholder:text-faint/60"
               />
             </div>
 
@@ -150,7 +142,7 @@ export default function Login() {
               disabled={loading}
               className="w-full mt-2"
             >
-              {loading ? 'AUTHENTICATING...' : `LOG IN TO ${selectedRole.toUpperCase()} WARD`}
+              {loading ? 'AUTHENTICATING...' : `LOG IN TO ${selectedRole.toUpperCase()} WARD →`}
             </Button>
           </form>
 
