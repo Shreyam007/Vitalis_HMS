@@ -6,7 +6,10 @@ import {
   updateDoctor, 
   deleteDoctor, 
   getAllPatientsAdmin, 
-  exportReportCSV 
+  getExportStats,
+  exportAppointmentsCSV,
+  exportPatientsCSV,
+  exportDoctorsCSV
 } from '../controllers/adminController.js';
 import { verifyToken } from '../middleware/auth.js';
 import { roleGuard } from '../middleware/roleGuard.js';
@@ -21,6 +24,11 @@ router.post('/doctors', createDoctor);
 router.put('/doctors/:id', updateDoctor);
 router.delete('/doctors/:id', deleteDoctor);
 router.get('/patients', getAllPatientsAdmin);
-router.get('/reports/export', exportReportCSV);
+
+// Export Engine Endpoints
+router.get('/export/stats', getExportStats);
+router.get('/export/appointments', exportAppointmentsCSV);
+router.get('/export/patients', exportPatientsCSV);
+router.get('/export/doctors', exportDoctorsCSV);
 
 export default router;

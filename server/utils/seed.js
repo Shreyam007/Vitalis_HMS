@@ -7,6 +7,7 @@ import MedicalRecord from '../models/MedicalRecord.js';
 import Prescription from '../models/Prescription.js';
 import TestReport from '../models/TestReport.js';
 import Invoice from '../models/Invoice.js';
+import ExportLog from '../models/ExportLog.js';
 
 export const seedInitialUsers = async () => {
   try {
@@ -17,7 +18,7 @@ export const seedInitialUsers = async () => {
     // 1. Seed / Reset Admin Account
     let adminUser = await User.findOne({ email: 'admin@vitalis.hms' });
     if (!adminUser) {
-      await User.create({
+      adminUser = await User.create({
         name: 'Chief Admin',
         email: 'admin@vitalis.hms',
         password: adminPass,
@@ -107,12 +108,11 @@ export const seedInitialUsers = async () => {
       }
     }
 
-    // 4. Seed Clinical Invoices for Ananya Sharma (patient@vitalis.hms) & Others
+    // 4. Seed Clinical Invoices
     const primaryPat = await Patient.findOne({ patientId: 'PAT-08841' });
     const primaryDoc = await Doctor.findOne();
 
     if (primaryPat && primaryDoc) {
-      // Clear old single invoice if needed or ensure multiple exist
       const sampleInvoices = [
         {
           invoiceId: 'INV-2026-101',
@@ -185,7 +185,6 @@ export const seedInitialUsers = async () => {
         }
       }
 
-      // Also seed appointments & medical records for primaryPat if missing
       let apt1 = await Appointment.findOne({ appointmentId: 'APT-92041' });
       if (!apt1) {
         apt1 = await Appointment.create({
@@ -215,7 +214,20 @@ export const seedInitialUsers = async () => {
         });
       }
     }
-    console.log('Seeded multiple paid & unpaid invoices for patient ledger.');
+
+    // 5. Seed ExportLog Initial Audit Record
+    const exportLogCount = await ExportLog.countDocuments();
+    if (exportLogCount === 0 && adminUser) {
+      await ExportLog.create({
+        adminUserId: adminUser._id,
+        dataset: 'appointments',
+        startDate: '2026-08-01',
+        endDate: '2026-08-02',
+        recordCount: 5
+      });
+    }
+
+    console.log('Seeding process verified cleanly.');
   } catch (err) {
     console.error('Seeding error:', err.message);
   }
