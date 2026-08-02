@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitalis HMS — Codebase Architecture & Technical Reference Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Sans:ital,wght@0,600;0,700;1,600&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+    :root {
+      --bg: #F2F3EF;
+      --surface: #FFFFFF;
+      --ink: #14171C;
+      --sub: #5B6058;
+      --faint: #8B9089;
+      --line: #DBDED6;
+      --teal: #0F6E5D;
+      --teal-tint: #E4F0EC;
+      --indigo: #3A4B8C;
+      --indigo-tint: #E8EAF5;
+      --rust: #B1631F;
+      --rust-tint: #F6ECDC;
+      --red: #B33A2E;
+      --red-tint: #F7E7E4;
+      --amber: #C68A1E;
+      --amber-tint: #F8EEDA;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    /* Header & Cover */
+    .cover {
+      padding: 60px 48px;
+      background: linear-gradient(135deg, #14171C 0%, #1F242C 100%);
+      color: #FFFFFF;
+      border-bottom: 4px solid var(--teal);
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .cover-logo {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cover-logo span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--teal);
+      background: rgba(15, 110, 93, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--teal);
+    }
+
+    .cover-title {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.8px;
+    }
+
+    .cover-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: #9DA39A;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 32px;
+    }
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .meta-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      color: #D2D6CE;
+    }
+
+    .content {
+      padding: 48px;
+    }
+
+    h2 {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 8px;
+      margin-top: 48px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    h2 .section-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--teal);
+      background: var(--teal-tint);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    h3 {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--sub);
+      margin-bottom: 16px;
+    }
+
+    /* Code & File Paths */
+    code, pre {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .file-path {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--indigo);
+      background: var(--indigo-tint);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(58, 75, 140, 0.2);
+      display: inline-block;
+    }
+
+    .line-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--rust);
+      background: var(--rust-tint);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #F8F9F6;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ink);
+    }
+
+    tr:nth-child(even) {
+      background-color: #FAFAFAF8;
+    }
+
+    /* Component & Page Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .doc-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 16px;
+      border-radius: 4px;
+      border-left: 4px solid var(--teal);
+    }
+
+    .doc-card.doctor { border-left-color: var(--indigo); }
+    .doc-card.admin { border-left-color: var(--rust); }
+
+    .doc-card-title {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .doc-card-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--sub);
+      margin-bottom: 8px;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 24px;
+      border-radius: 4px;
+      margin-bottom: 36px;
+    }
+
+    .toc-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 24px;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .toc-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* Print Specific Styles */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+      }
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+      }
+      .page-break {
+        page-break-before: always !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 15mm;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .cover {
+        padding: 40px 0 !important;
+        background: #FFFFFF !important;
+        color: #14171C !important;
+        border-bottom: 3px solid #14171C !important;
+      }
+      .cover-title {
+        color: #14171C !important;
+      }
+      .cover-subtitle {
+        color: #5B6058 !important;
+      }
+      .meta-badge {
+        background: #F2F3EF !important;
+        color: #14171C !important;
+        border-color: #DBDED6 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div className="container">
+  <!-- Cover Header -->
+  <header className="cover">
+    <div className="cover-top">
+      <div className="cover-logo">
+        Vitalis HMS <span>v1.0 OFFICIAL</span>
+      </div>
+      <div className="font-mono text-xs text-faint">PDF / PRINT READY GUIDE</div>
+    </div>
+    <h1 className="cover-title">Codebase Architecture & Technical Reference Guide</h1>
+    <div className="cover-subtitle">Complete File Directory, Database Schemas, State Map & API Routes</div>
+    
+    <div className="meta-badges">
+      <span className="meta-badge">Frontend: React 18 + Vite + TailwindCSS</span>
+      <span className="meta-badge">Backend: Node.js + Express + SSE</span>
+      <span className="meta-badge">Database: Mongoose + MongoDB Atlas</span>
+      <span className="meta-badge">18 Routes</span>
+      <span className="meta-badge">9 Database Schemas</span>
+    </div>
+  </header>
+
+  <div className="content">
+    <!-- Table of Contents -->
+    <div className="toc">
+      <div className="toc-title">Table of Contents</div>
+      <ul className="toc-list">
+        <li><a href="#section-1">1. System Architecture & Tech Stack</a></li>
+        <li><a href="#section-2">2. Directory Tree & File Inventory</a></li>
+        <li><a href="#section-3">3. Mongoose Database Schemas</a></li>
+        <li><a href="#section-4">4. State Management & Real-Time SSE</a></li>
+        <li><a href="#section-5">5. Express REST API Endpoints</a></li>
+        <li><a href="#section-6">6. React Router & Component Map</a></li>
+        <li><a href="#section-7">7. Design System & Micro-Interactions</a></li>
+        <li><a href="#section-8">8. Printable PDF Verification Checklist</a></li>
+      </ul>
+    </div>
+
+    <!-- Section 1: Architecture -->
+    <section id="section-1">
+      <h2>1. System Architecture & Tech Stack <span className="section-tag">OVERVIEW</span></h2>
+      <p>Vitalis HMS is built using a modern decoupled MERN architecture featuring modular role-based wards (Patient Ward, Doctor Ward, Admin Ward), real-time Server-Sent Events (SSE), and a clinical graph design system.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Primary Responsibility</th>
+            <th>Root Path</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Client Application</strong></td>
+            <td>React 18, Vite 6, TailwindCSS, React Router 6</td>
+            <td>Single Page Application with 18 ward routes & live SSE dispatching</td>
+            <td><span className="file-path">client/</span></td>
+          </tr>
+          <tr>
+            <td><strong>Backend Server</strong></td>
+            <td>Node.js, Express, Multer, JWT, SSE EventBus</td>
+            <td>REST API controllers, SSE broadcast channels, Multer file storage</td>
+            <td><span className="file-path">server/</span></td>
+          </tr>
+          <tr>
+            <td><strong>Database Layer</strong></td>
+            <td>MongoDB Atlas (Mongoose ODM) + Local Fallback</td>
+            <td>Cloud document persistence for 9 clinical data schemas</td>
+            <td><span className="file-path">server/models/</span></td>
+          </tr>
+          <tr>
+            <td><strong>Real-Time SSE</strong></td>
+            <td>Express EventBus (In-Memory Publisher/Subscriber)</td>
+            <td>Broadcasts <code>queue:update</code> and <code>invoice:paid</code> events</td>
+            <td><span className="file-path">server/sse/eventBus.js</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 2: Directory Tree -->
+    <section id="section-2" className="page-break">
+      <h2>2. Directory Tree & Complete File Inventory <span className="section-tag">PROJECT FILES</span></h2>
+      <p>Below is the complete file structure mapping every source file and component location in the codebase.</p>
+      
+      <pre style="background: #14171C; color: #E4F0EC; padding: 20px; border-radius: 4px; font-size: 12px; overflow-x: auto;">
+Vitalis_HMS/
+├── .env                                # Root environment variables (MONGODB_URI, JWT_ACCESS_SECRET, PORT)
+├── .env.example                        # Environment variables template placeholder
+├── .gitignore                          # Excludes .env, node_modules/, dist/, uploads/
+├── ANTIGRAVITY_BUILD_PLAN.md           # Master build plan & engineering guidelines
+├── vitalis_hms_codebase_guide.html     # This comprehensive printable technical guide
+├── vitalis-logo.png                    # Brand logo mark asset
+│
+├── server/                             # Node.js + Express Backend
+│   ├── package.json                    # Backend dependencies (express, mongoose, jsonwebtoken, multer)
+│   ├── server.js                       # Express app mounting routes, CORS, DB fallback & SSE [L1 - L72]
+│   ├── controllers/                    # Business Logic Controllers
+│   │   ├── authController.js           # Login, Register Patient, Current User [L1 - L95]
+│   │   ├── doctorController.js         # Doctor Profile CRUD & Queue Management [L1 - L65]
+│   │   ├── appointmentController.js    # Visit Booking, Slot Allocation & Status Flow [L1 - L110]
+│   │   ├── clinicalController.js       # Medical Chart, Diagnosis, Prescriptions, Reports [L1 - L210]
+│   │   ├── adminController.js          # Admin Dashboard, Doctor CRUD, CSV Exporters [L1 - L380]
+│   │   └── billingController.js        # Invoice Generation, Payments & SSE Broadcast [L1 - L90]
+│   ├── models/                         # Mongoose Database Schemas
+│   │   ├── User.js                     # Base Auth User Schema [L1 - L12]
+│   │   ├── Patient.js                  # Patient Demographic & Clinical Profile [L1 - L21]
+│   │   ├── Doctor.js                   # Physician Specialty & Department Profile [L1 - L18]
+│   │   ├── Appointment.js              # Visit Booking & Queue Status [L1 - L21]
+│   │   ├── MedicalRecord.js            # Clinical Chart & Vitals Log [L1 - L26]
+│   │   ├── Prescription.js             # Itemized Medication Prescription [L1 - L24]
+│   │   ├── TestReport.js               # Diagnostic Lab Reports & Attachments [L1 - L20]
+│   │   ├── Invoice.js                  # Patient Financial Billing Ledger [L1 - L24]
+│   │   └── ExportLog.js                # CSV Data Export Audit Event Log [L1 - L28]
+│   ├── middleware/                     # Express Middlewares
+│   │   ├── auth.js                     # JWT Token Verification Middleware [L1 - L25]
+│   │   ├── roleGuard.js                # Ward Role Guard Middleware [L1 - L20]
+│   │   └── upload.js                   # Multer Disk Storage Upload Middleware [L1 - L22]
+│   ├── sse/                            # Real-Time EventBus Channel
+│   │   └── eventBus.js                 # SSE In-Memory Client Tracker & Dispatcher [L1 - L35]
+│   ├── routes/                         # Express REST API Route Handlers
+│   │   ├── authRoutes.js               # /api/auth routes [L1 - L15]
+│   │   ├── doctorRoutes.js             # /api/doctors routes [L1 - L18]
+│   │   ├── appointmentRoutes.js        # /api/appointments routes [L1 - L20]
+│   │   ├── clinicalRoutes.js           # /api/clinical routes [L1 - L22]
+│   │   ├── adminRoutes.js              # /api/admin routes [L1 - L30]
+│   │   ├── billingRoutes.js            # /api/billing routes [L1 - L14]
+│   │   └── sseRoutes.js                # /api/events SSE route [L1 - L12]
+│   └── utils/                          # Utility & Seeding Scripts
+│       └── seed.js                     # Seed Initial Users, Doctors, Patients & Invoices [L1 - L220]
+│
+└── client/                             # React 18 + Vite + Tailwind Frontend
+    ├── package.json                    # Client dependencies (react-router-dom, lucide-react)
+    ├── vite.config.js                  # Vite server config & /api proxy target [L1 - L16]
+    ├── tailwind.config.js              # Tailwind custom colors & typography tokens [L1 - L25]
+    ├── index.html                      # HTML entry point [L1 - L15]
+    └── src/
+        ├── main.jsx                    # React Root Entry Point [L1 - L12]
+        ├── App.jsx                     # Master React Router Specification (18 Routes) [L1 - L100]
+        ├── styles/
+        │   └── tokens.css              # Design System CSS Tokens, Grid & Stamp Animations [L1 - L120]
+        ├── context/
+        │   └── AuthContext.jsx         # React Auth State Provider (User, Token, Login) [L1 - L85]
+        ├── hooks/
+        │   └── useSSE.js               # SSE Event Source React Hook [L1 - L25]
+        ├── components/
+        │   ├── layout/
+        │   │   ├── AppShell.jsx        # Left Nav Rail, Top Header & 24H IST Clock [L1 - L175]
+        │   │   ├── ChartBar.jsx        # Clinical Ward Header Banner [L1 - L30]
+        │   │   └── ProtectedRoute.jsx  # Ward Access Protection Component [L1 - L20]
+        │   └── ui/
+        │       ├── Button.jsx          # Ward-themed Primary & Ghost Buttons [L1 - L40]
+        │       ├── DataTable.jsx       # Standard Clinical Table Component [L1 - L50]
+        │       ├── PulseDivider.jsx    # Section Divider with Pulse Animation [L1 - L20]
+        │       ├── StampBadge.jsx      # Rubber Stamp Impact Badge Component [L1 - L28]
+        │       └── StatCard.jsx        # Analytic Summary Metric Card [L1 - L30]
+        └── pages/                      # Page Views (18 Screens)
+            ├── auth/
+            │   ├── Login.jsx           # Screen 1: Role Selection & Login Form [L1 - L165]
+            │   └── Register.jsx        # Screen 2: 3-Step Patient Wristband Self-Registration [L1 - L360]
+            ├── patient/
+            │   ├── PatientDashboard.jsx# Screen 3: Patient Ward Home Dashboard [L1 - L140]
+            │   ├── BookVisit.jsx       # Screen 4: 3-Step Clinical Slot Booking [L1 - L180]
+            │   ├── BookingConfirmation.jsx # Screen 5: Admission Slip & Printable Ticket [L1 - L180]
+            │   ├── PrescriptionView.jsx# Screen 14: Detail Medicine Rx View [L1 - L130]
+            │   ├── BillingPayments.jsx # Screen 15: Financial Ledger & Invoices [L1 - L140]
+            │   └── SecureCheckout.jsx  # Screen 16: Encrypted Payment Gateway Accordion [L1 - L240]
+            ├── doctor/
+            │   ├── DoctorQueue.jsx     # Screen 6: OPD Today's Clinical Queue [L1 - L150]
+            │   ├── DoctorRecords.jsx   # Screen 9B: Doctor Patient Master Index [L1 - L130]
+            │   ├── PatientChartRecord.jsx # Screen 10 & 11: Clinical Chart & Diagnosis Pad [L1 - L230]
+            │   ├── NewPrescription.jsx # Screen 13: Physician Prescription Pad [L1 - L190]
+            │   └── AttachTestReport.jsx# Screen 12: Diagnostic Report File Upload [L1 - L140]
+            └── admin/
+                ├── AdminOverview.jsx   # Screen 17: Executive Hospital Analytics Dashboard [L1 - L180]
+                ├── DoctorDirectory.jsx # Screen 7: Staff Physician Directory & CRUD [L1 - L160]
+                ├── DoctorForm.jsx      # Screen 8: Create / Edit Physician Profile [L1 - L200]
+                ├── PatientDirectory.jsx# Screen 9: Master Patient Index (Admin View) [L1 - L130]
+                └── ReportsExport.jsx   # Screen 18: CSV Data Export Engine & Audit Logs [L1 - L170]
+      </pre>
+    </section>
+
+    <!-- Section 3: Database Schemas -->
+    <section id="section-3" className="page-break">
+      <h2>3. Mongoose Database Schemas <span className="section-tag">DATABASE DATA DICTIONARY</span></h2>
+      <p>Below is the specification of all 9 Mongoose schemas including exact file locations, line ranges, fields, types, and indexes.</p>
+
+      <h3>1. User Schema <span className="file-path">server/models/User.js</span> <span className="line-tag">Lines 1 - 12</span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Validation / Enum Constraints</th>
+            <th>Index / Unique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>String</td><td>Required</td><td>None</td></tr>
+          <tr><td><code>email</code></td><td>String</td><td>Required, Lowercase, Trim</td><td>Unique Index</td></tr>
+          <tr><td><code>password</code></td><td>String</td><td>Required (Bcrypt Hash)</td><td>None</td></tr>
+          <tr><td><code>role</code></td><td>String</td><td>Required, Enum: <code>['patient', 'doctor', 'admin']</code></td><td>None</td></tr>
+          <tr><td><code>avatarUrl</code></td><td>String</td><td>Optional</td><td>None</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Patient Schema <span className="file-path">server/models/Patient.js</span> <span className="line-tag">Lines 1 - 21</span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Validation / Details</th>
+            <th>Index / Unique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>userId</code></td><td>ObjectId</td><td>Required, Ref: <code>User</code></td><td>Foreign Key</td></tr>
+          <tr><td><code>patientId</code></td><td>String</td><td>Required (e.g. <code>PAT-08841</code>)</td><td>Unique Index</td></tr>
+          <tr><td><code>wristbandCode</code></td><td>String</td><td>Wristband barcode identifier</td><td>None</td></tr>
+          <tr><td><code>dateOfBirth</code></td><td>Date</td><td>Birthdate for age calculation</td><td>None</td></tr>
+          <tr><td><code>gender</code></td><td>String</td><td>Enum: <code>['male', 'female', 'other']</code></td><td>None</td></tr>
+          <tr><td><code>bloodGroup</code></td><td>String</td><td>Enum: <code>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']</code></td><td>None</td></tr>
+          <tr><td><code>allergies</code></td><td>Array of Strings</td><td>Clinical allergy alerts</td><td>None</td></tr>
+          <tr><td><code>preExistingConditions</code></td><td>Array of Strings</td><td>Medical history conditions</td><td>None</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. Doctor Schema <span className="file-path">server/models/Doctor.js</span> <span className="line-tag">Lines 1 - 18</span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Validation / Details</th>
+            <th>Index / Unique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>userId</code></td><td>ObjectId</td><td>Required, Ref: <code>User</code></td><td>Foreign Key</td></tr>
+          <tr><td><code>doctorId</code></td><td>String</td><td>Required (e.g. <code>DOC-3021</code>)</td><td>Unique Index</td></tr>
+          <tr><td><code>specialization</code></td><td>String</td><td>Required (Cardiology, Neurology, etc.)</td><td>None</td></tr>
+          <tr><td><code>department</code></td><td>String</td><td>Required (Cardiology Ward, OPD-1, etc.)</td><td>None</td></tr>
+          <tr><td><code>consultationFee</code></td><td>Number</td><td>Required OPD consultation charge</td><td>None</td></tr>
+          <tr><td><code>roomNo</code></td><td>String</td><td>Assigned consultation room</td><td>None</td></tr>
+          <tr><td><code>availableDays</code></td><td>Array of Strings</td><td><code>['Mon', 'Tue', 'Wed', 'Thu', 'Fri']</code></td><td>None</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4. Appointment Schema <span className="file-path">server/models/Appointment.js</span> <span className="line-tag">Lines 1 - 21</span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Validation / Details</th>
+            <th>Index / Unique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>appointmentId</code></td><td>String</td><td>Required (e.g. <code>APT-92041</code>)</td><td>Unique Index</td></tr>
+          <tr><td><code>patientId</code></td><td>ObjectId</td><td>Required, Ref: <code>Patient</code></td><td>Foreign Key</td></tr>
+          <tr><td><code>doctorId</code></td><td>ObjectId</td><td>Required, Ref: <code>Doctor</code></td><td>Foreign Key</td></tr>
+          <tr><td><code>date</code></td><td>String</td><td>Required (Format: <code>YYYY-MM-DD</code>)</td><td>None</td></tr>
+          <tr><td><code>slotTime</code></td><td>String</td><td>Required (e.g. <code>10:30 AM</code>)</td><td>None</td></tr>
+          <tr><td><code>status</code></td><td>String</td><td>Enum: <code>['pending', 'confirmed', 'completed', 'cancelled']</code></td><td>Default: <code>pending</code></td></tr>
+          <tr><td><code>queuePosition</code></td><td>Number</td><td>OPD daily queue sequence number</td><td>None</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5. ExportLog Schema <span className="file-path">server/models/ExportLog.js</span> <span className="line-tag">Lines 1 - 28</span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Validation / Details</th>
+            <th>Index / Unique</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>timestamp</code></td><td>Date</td><td>Default: <code>Date.now</code></td><td>Indexed</td></tr>
+          <tr><td><code>adminUserId</code></td><td>ObjectId</td><td>Required, Ref: <code>User</code></td><td>Foreign Key</td></tr>
+          <tr><td><code>dataset</code></td><td>String</td><td>Enum: <code>['appointments', 'patients', 'doctors']</code></td><td>None</td></tr>
+          <tr><td><code>startDate</code> / <code>endDate</code></td><td>String</td><td>Date filter parameters</td><td>None</td></tr>
+          <tr><td><code>recordCount</code></td><td>Number</td><td>Exported rows count</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 4: State Management -->
+    <section id="section-4" className="page-break">
+      <h2>4. State Management & Real-Time SSE <span className="section-tag">REACT CONTEXT & EVENTBUS</span></h2>
+      
+      <div className="doc-card" style="margin-bottom: 20px;">
+        <div className="doc-card-title">1. Authentication Context <span className="file-path">client/src/context/AuthContext.jsx</span> <span className="line-tag">Lines 1 - 85</span></div>
+        <p>Manages active user state, JWT access token in <code>localStorage</code>, role verification, and login/register methods.</p>
+        <pre style="background: #F8F9F6; padding: 12px; font-size: 11px;">
+const [user, setUser] = useState(null);
+const [token, setToken] = useState(localStorage.getItem('vitalis_token') || null);
+
+// Key methods exposed via useContext(AuthContext):
+// - login(email, password)
+// - registerPatient(formData)
+// - logout()
+        </pre>
+      </div>
+
+      <div className="doc-card doctor" style="margin-bottom: 20px;">
+        <div className="doc-card-title">2. Real-Time Server-Sent Events Hook <span className="file-path">client/src/hooks/useSSE.js</span> <span className="line-tag">Lines 1 - 25</span></div>
+        <p>Opens a persistent HTTP connection to <code>/api/events?token=...</code>. Automatically dispatches incoming events (<code>queue:update</code>, <code>invoice:paid</code>, <code>prescription:issued</code>) to React components without polling.</p>
+      </div>
+
+      <div className="doc-card admin">
+        <div className="doc-card-title">3. Server EventBus Channel <span className="file-path">server/sse/eventBus.js</span> <span className="line-tag">Lines 1 - 35</span></div>
+        <p>In-memory publisher/subscriber mapping connected response clients. Supports targeted single-user emit via <code>emitToUser(userId, event, payload)</code> and global broadcasts via <code>broadcast(event, payload)</code>.</p>
+      </div>
+    </section>
+
+    <!-- Section 5: API Endpoints -->
+    <section id="section-5" className="page-break">
+      <h2>5. Express REST API Endpoints Map <span className="section-tag">API ROUTE DIRECTORY</span></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Endpoint URL</th>
+            <th>Controller Handler & File</th>
+            <th>Auth / Role Guard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/auth/login</code></td>
+            <td><code>login</code> (<span className="file-path">authController.js</span>: L12)</td>
+            <td>Public</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/auth/register-patient</code></td>
+            <td><code>registerPatient</code> (<span className="file-path">authController.js</span>: L45)</td>
+            <td>Public</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/appointments/slots</code></td>
+            <td><code>getAvailableSlots</code> (<span className="file-path">appointmentController.js</span>: L15)</td>
+            <td><code>verifyToken</code> (Patient)</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/appointments/book</code></td>
+            <td><code>bookAppointment</code> (<span className="file-path">appointmentController.js</span>: L45)</td>
+            <td><code>verifyToken</code> (Patient)</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/clinical/patients</code></td>
+            <td><code>getAllPatientsClinical</code> (<span className="file-path">clinicalController.js</span>: L10)</td>
+            <td><code>verifyToken</code> (Doctor / Admin)</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/clinical/doctor/queue</code></td>
+            <td><code>getDoctorQueue</code> (<span className="file-path">clinicalController.js</span>: L25)</td>
+            <td><code>verifyToken</code> (Doctor)</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/clinical/medical-records</code></td>
+            <td><code>createMedicalRecord</code> (<span className="file-path">clinicalController.js</span>: L90)</td>
+            <td><code>verifyToken</code> (Doctor)</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/admin/overview</code></td>
+            <td><code>getAdminOverview</code> (<span className="file-path">adminController.js</span>: L27)</td>
+            <td><code>verifyToken</code> (Admin)</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/admin/export/appointments</code></td>
+            <td><code>exportAppointmentsCSV</code> (<span className="file-path">adminController.js</span>: L190)</td>
+            <td><code>verifyToken</code> (Admin)</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/billing/pay/:id</code></td>
+            <td><code>payInvoice</code> (<span className="file-path">billingController.js</span>: L55)</td>
+            <td><code>verifyToken</code> (Patient)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 6: Frontend Routes -->
+    <section id="section-6" className="page-break">
+      <h2>6. React Router & Component Map <span className="section-tag">FRONTEND 18 ROUTES</span></h2>
+      
+      <div className="card-grid">
+        <div className="doc-card">
+          <div className="doc-card-title">Patient Ward Screens</div>
+          <div className="doc-card-sub">Base URL: /patient/</div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 12px;">
+            <li><code>/patient/home</code> — PatientDashboard.jsx</li>
+            <li><code>/patient/book</code> — BookVisit.jsx</li>
+            <li><code>/patient/book/confirm/:id</code> — BookingConfirmation.jsx</li>
+            <li><code>/patient/records/:id</code> — PatientChartRecord.jsx</li>
+            <li><code>/patient/prescriptions/:id</code> — PrescriptionView.jsx</li>
+            <li><code>/patient/billing</code> — BillingPayments.jsx</li>
+            <li><code>/patient/billing/pay/:invoiceId</code> — SecureCheckout.jsx</li>
+          </ul>
+        </div>
+
+        <div className="doc-card doctor">
+          <div className="doc-card-title">Doctor Ward Screens</div>
+          <div className="doc-card-sub">Base URL: /doctor/</div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 12px;">
+            <li><code>/doctor/queue</code> — DoctorQueue.jsx</li>
+            <li><code>/doctor/records</code> — DoctorRecords.jsx</li>
+            <li><code>/doctor/patients/:id/record</code> — PatientChartRecord.jsx</li>
+            <li><code>/doctor/patients/:id/prescribe</code> — NewPrescription.jsx</li>
+            <li><code>/doctor/patients/:id/attach-report</code> — AttachTestReport.jsx</li>
+          </ul>
+        </div>
+
+        <div className="doc-card admin" style="grid-column: span 2;">
+          <div className="doc-card-title">Admin Ward Screens & Authentication</div>
+          <div className="doc-card-sub">Base URLs: /admin/ and /</div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 12px; display: grid; grid-template-columns: repeat(2, 1fr);">
+            <li><code>/login</code> — Login.jsx</li>
+            <li><code>/register</code> — Register.jsx</li>
+            <li><code>/admin/overview</code> — AdminOverview.jsx</li>
+            <li><code>/admin/doctors</code> — DoctorDirectory.jsx</li>
+            <li><code>/admin/doctors/new</code> — DoctorForm.jsx</li>
+            <li><code>/admin/patients</code> — PatientDirectory.jsx</li>
+            <li><code>/admin/reports</code> — ReportsExport.jsx</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Design System -->
+    <section id="section-7">
+      <h2>7. Design System & CSS Utility Tokens <span className="section-tag">UI & ANIMATIONS</span></h2>
+      <p>Styles defined in <span className="file-path">client/src/styles/tokens.css</span> providing clinical grid backgrounds and rubber stamp animations.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>CSS Utility / Animation Class</th>
+            <th>Visual Property / Effect</th>
+            <th>Primary Application</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>.bg-grid-pattern</code></td>
+            <td>Dual-layer clinical paper graph grid (24px micro + 120px major lines)</td>
+            <td><code>html</code>, <code>body</code>, <code>#root</code>, <code>AppShell</code> canvas</td>
+          </tr>
+          <tr>
+            <td><code>.animate-fade-in</code></td>
+            <td>Cubic-bezier entrance transition (opacity 0 to 1, translate 6px to 0)</td>
+            <td>Page containers and route transitions</td>
+          </tr>
+          <tr>
+            <td><code>.animate-stamp</code></td>
+            <td>Scale overshoot rubber stamp impact (scale 2.2 -> 0.92 -> 1, rotate -2deg)</td>
+            <td><code>StampBadge.jsx</code> (Confirmed, Paid, Completed)</td>
+          </tr>
+          <tr>
+            <td><code>@media print</code></td>
+            <td>Hides sidebar/header, forces white paper background, formats clean A4 ticket</td>
+            <td>Official OPD ticket printing & PDF save</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 8: Checklist -->
+    <section id="section-8" className="page-break" style="margin-bottom: 40px;">
+      <h2>8. Verification & PDF Printing Instructions <span className="section-tag">VERIFICATION</span></h2>
+      
+      <div style="background: #F8F9F6; border: 1px solid var(--line); padding: 20px; border-radius: 4px; font-size: 13px;">
+        <h4 style="margin: 0 0 10px 0; font-family: 'Instrument Sans', sans-serif; font-size: 16px;">How to Save / Print this Guide as PDF:</h4>
+        <ol style="margin: 0; padding-left: 20px; color: var(--sub);">
+          <li>Open <code>vitalis_hms_codebase_guide.html</code> in Google Chrome, Edge, or Firefox.</li>
+          <li>Press <kbd style="background: #FFF; border: 1px solid #CCC; padding: 2px 6px; border-radius: 3px;">Ctrl + P</kbd> (or <kbd style="background: #FFF; border: 1px solid #CCC; padding: 2px 6px; border-radius: 3px;">Cmd + P</kbd> on macOS).</li>
+          <li>Set Destination to <strong>Save as PDF</strong>.</li>
+          <li>Ensure Paper Size is set to <strong>A4</strong> and Background Graphics is checked.</li>
+          <li>Click <strong>Save</strong> to generate your official PDF handbook.</li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>
