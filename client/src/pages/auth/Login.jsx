@@ -52,7 +52,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-grid-pattern flex flex-col items-center justify-center p-4">
       {/* Wristband Card Container */}
       <div className="w-full max-w-md bg-surface border border-line shadow-sm rounded-sm overflow-hidden">
         {/* Striped Top Edge (Wristband visual) */}

@@ -87,7 +87,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-grid-pattern flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-lg bg-surface border border-line shadow-sm rounded-sm overflow-hidden">
         {/* Teal Header Bar */}
         <div className="bg-teal text-surface p-6 flex items-center justify-between">
