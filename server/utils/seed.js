@@ -41,6 +41,7 @@ export const seedInitialUsers = async () => {
       { name: 'Dr. Priya Sundaram', email: 'priya.sundaram@vitalis.hms', spec: 'Neurology', qual: 'DM (Neurology)', exp: 13, dept: 'Neurology Ward-B', fee: 240, room: 'Room 408' }
     ];
 
+    const doctorInstances = [];
     for (const d of doctorsData) {
       let user = await User.findOne({ email: d.email });
       if (!user) {
@@ -53,7 +54,7 @@ export const seedInitialUsers = async () => {
       let doc = await Doctor.findOne({ userId: user._id });
       if (!doc) {
         const docIdNum = Math.floor(1000 + Math.random() * 9000);
-        await Doctor.create({
+        doc = await Doctor.create({
           userId: user._id,
           doctorId: `DOC-${docIdNum}`,
           name: d.name,
@@ -66,6 +67,7 @@ export const seedInitialUsers = async () => {
           availableDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
         });
       }
+      doctorInstances.push(doc);
     }
 
     // 3. Seed / Reset Patient Accounts (10 Patients)
@@ -82,6 +84,7 @@ export const seedInitialUsers = async () => {
       { name: 'Siddharth Joshi', email: 'siddharth.joshi@vitalis.hms', dob: '1994-05-19', gender: 'male', phone: '+91 98910 88201', bg: 'A+', patId: 'PAT-92018', wb: 'WB-92018', alg: ['Pollen'], cond: ['Rhinitis'] }
     ];
 
+    const patientInstances = [];
     for (const p of patientsData) {
       let user = await User.findOne({ email: p.email });
       if (!user) {
@@ -93,7 +96,7 @@ export const seedInitialUsers = async () => {
 
       let pat = await Patient.findOne({ userId: user._id });
       if (!pat) {
-        await Patient.create({
+        pat = await Patient.create({
           userId: user._id,
           patientId: p.patId,
           wristbandCode: p.wb,
@@ -106,13 +109,42 @@ export const seedInitialUsers = async () => {
           emergencyContact: { name: 'Family Emergency', phone: p.phone, relation: 'Spouse/Parent' }
         });
       }
+      patientInstances.push(pat);
     }
 
-    // 4. Seed Clinical Invoices
-    const primaryPat = await Patient.findOne({ patientId: 'PAT-08841' });
-    const primaryDoc = await Doctor.findOne();
+    // 4. Seed Appointments Log (8+ appointments across status)
+    const todayStr = new Date().toISOString().split('T')[0];
+    const sampleAppointments = [
+      { aptId: 'APT-92041', patIdx: 0, docIdx: 0, date: todayStr, time: '10:30 AM', spec: 'Cardiology', complaint: 'Intermittent chest tightness after physical exertion & palpitations', status: 'confirmed', q: 1 },
+      { aptId: 'APT-84092', patIdx: 1, docIdx: 1, date: todayStr, time: '11:15 AM', spec: 'Cardiology', complaint: 'Follow-up consultation for blood pressure regulation', status: 'pending', q: 2 },
+      { aptId: 'APT-71029', patIdx: 2, docIdx: 2, date: todayStr, time: '02:00 PM', spec: 'Neurology', complaint: 'Severe recurring migraine headache with aura', status: 'pending', q: 3 },
+      { aptId: 'APT-60918', patIdx: 3, docIdx: 3, date: todayStr, time: '03:30 PM', spec: 'Pediatrics', complaint: 'High grade fever & persistent nocturnal cough', status: 'pending', q: 4 },
+      { aptId: 'APT-59201', patIdx: 4, docIdx: 4, date: '2026-08-04', time: '09:00 AM', spec: 'Orthopedics', complaint: 'Right knee joint pain after jogging', status: 'confirmed', q: 5 },
+      { aptId: 'APT-48201', patIdx: 5, docIdx: 5, date: '2026-08-05', time: '10:00 AM', spec: 'General Medicine', complaint: 'Routine diabetic checkup & HbA1c review', status: 'completed', q: 6 },
+      { aptId: 'APT-30192', patIdx: 6, docIdx: 6, date: '2026-08-05', time: '11:30 AM', spec: 'Dermatology', complaint: 'Skin allergic rash on forearms', status: 'completed', q: 7 },
+      { aptId: 'APT-21098', patIdx: 7, docIdx: 7, date: '2026-08-06', time: '04:00 PM', spec: 'Neurology', complaint: 'Chronic insomnia & fatigue consultation', status: 'confirmed', q: 8 }
+    ];
 
-    if (primaryPat && primaryDoc) {
+    for (const apt of sampleAppointments) {
+      let existing = await Appointment.findOne({ appointmentId: apt.aptId });
+      if (!existing && patientInstances[apt.patIdx] && doctorInstances[apt.docIdx]) {
+        await Appointment.create({
+          appointmentId: apt.aptId,
+          patientId: patientInstances[apt.patIdx]._id,
+          doctorId: doctorInstances[apt.docIdx]._id,
+          date: apt.date,
+          slotTime: apt.time,
+          specialization: apt.spec,
+          chiefComplaint: apt.complaint,
+          status: apt.status,
+          queuePosition: apt.q
+        });
+      }
+    }
+
+    // 5. Seed Clinical Invoices for Ledger
+    const primaryPat = patientInstances[0];
+    if (primaryPat) {
       const sampleInvoices = [
         {
           invoiceId: 'INV-2026-101',
@@ -184,38 +216,9 @@ export const seedInitialUsers = async () => {
           });
         }
       }
-
-      let apt1 = await Appointment.findOne({ appointmentId: 'APT-92041' });
-      if (!apt1) {
-        apt1 = await Appointment.create({
-          appointmentId: 'APT-92041',
-          patientId: primaryPat._id,
-          doctorId: primaryDoc._id,
-          date: new Date().toISOString().split('T')[0],
-          slotTime: '10:30 AM',
-          specialization: 'Cardiology',
-          chiefComplaint: 'Intermittent chest tightness after physical exertion & palpitations',
-          status: 'confirmed',
-          queuePosition: 1
-        });
-      }
-
-      let rec = await MedicalRecord.findOne({ recordId: 'REC-10492' });
-      if (!rec) {
-        await MedicalRecord.create({
-          recordId: 'REC-10492',
-          patientId: primaryPat._id,
-          doctorId: primaryDoc._id,
-          appointmentId: apt1._id,
-          diagnosis: 'Essential Hypertension & Mild Angina',
-          symptoms: ['Chest tightness', 'Fatigue', 'Mild dyspnea'],
-          vitals: { bloodPressure: '138/88', heartRate: 78, temperature: 98.4, weightKg: 68, oxygenSaturation: 99 },
-          clinicalNotes: 'ECG shows normal sinus rhythm. Advised low sodium diet, daily walking, and started Metoprolol 25mg daily.'
-        });
-      }
     }
 
-    // 5. Seed ExportLog Initial Audit Record
+    // 6. Seed ExportLog Initial Audit Record
     const exportLogCount = await ExportLog.countDocuments();
     if (exportLogCount === 0 && adminUser) {
       await ExportLog.create({
@@ -223,11 +226,11 @@ export const seedInitialUsers = async () => {
         dataset: 'appointments',
         startDate: '2026-08-01',
         endDate: '2026-08-02',
-        recordCount: 5
+        recordCount: 8
       });
     }
 
-    console.log('Seeding process verified cleanly.');
+    console.log('Seeded 8+ appointments, 10 patients, 8 doctors, and full financial ledger.');
   } catch (err) {
     console.error('Seeding error:', err.message);
   }

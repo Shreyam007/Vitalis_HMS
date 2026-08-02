@@ -4,6 +4,7 @@ import Doctor from '../models/Doctor.js';
 import Patient from '../models/Patient.js';
 import Appointment from '../models/Appointment.js';
 import Prescription from '../models/Prescription.js';
+import Invoice from '../models/Invoice.js';
 import ExportLog from '../models/ExportLog.js';
 
 // Helper to calculate age from DOB
@@ -31,17 +32,26 @@ export const getAdminOverview = async (req, res) => {
     const totalAppointments = await Appointment.countDocuments();
     const pendingConfirmations = await Appointment.countDocuments({ status: 'pending' });
     const completedVisits = await Appointment.countDocuments({ status: 'completed' });
+    const confirmedVisits = await Appointment.countDocuments({ status: 'confirmed' });
 
     // Department Breakdown
     const deptBreakdown = await Doctor.aggregate([
       { $group: { _id: '$department', count: { $sum: 1 } } }
     ]);
 
-    // Recent pending appointments
+    // Aggregate gross revenue from paid invoices + consultation fees
+    const invoicePaidAgg = await Invoice.aggregate([
+      { $match: { status: 'paid' } },
+      { $group: { _id: null, total: { $sum: '$amount' } } }
+    ]);
+
+    const paidInvoiceTotal = invoicePaidAgg[0]?.total || 0;
+    const grossRevenue = paidInvoiceTotal + ((completedVisits + confirmedVisits) * 200);
+
+    // Recent pending appointments for confirmation table
     const recentPending = await Appointment.find({ status: 'pending' })
       .populate({ path: 'patientId', populate: { path: 'userId', select: 'name' } })
       .populate({ path: 'doctorId', populate: { path: 'userId', select: 'name' } })
-      .limit(5)
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -51,7 +61,7 @@ export const getAdminOverview = async (req, res) => {
         totalAppointments,
         pendingConfirmations,
         completedVisits,
-        totalRevenue: completedVisits * 150
+        totalRevenue: grossRevenue
       },
       deptBreakdown,
       recentPending
