@@ -7,7 +7,7 @@ import PulseDivider from '../../components/ui/PulseDivider.jsx';
 import Button from '../../components/ui/Button.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useSSE } from '../../hooks/useSSE.js';
-import { Printer, ArrowRight, ShieldCheck, QrCode } from 'lucide-react';
+import { Printer, ArrowRight } from 'lucide-react';
 import vitalisLogo from '../../assets/vitalis-logo.png';
 
 export default function BookingConfirmation() {
@@ -71,6 +71,9 @@ export default function BookingConfirmation() {
     );
   }
 
+  const stageNumber = appointment.status === 'completed' ? 4 : appointment.status === 'confirmed' ? 3 : appointment.status === 'pending' ? 2 : 1;
+  const progressPercent = stageNumber === 4 ? '100%' : stageNumber === 3 ? '66%' : stageNumber === 2 ? '33%' : '15%';
+
   return (
     <AppShell role="patient">
       <div className="no-print">
@@ -82,8 +85,8 @@ export default function BookingConfirmation() {
       </div>
 
       <div className="p-6 max-w-2xl mx-auto space-y-6 print-ticket-wrapper">
-        {/* Ticket Card Element (Isolated for Print) */}
-        <div className="bg-surface border-2 border-line rounded-sm overflow-hidden shadow-sm print-ticket-card">
+        {/* Ticket Card Element (Fades/Slides in first, Stamp fires ~150ms later) */}
+        <div className="bg-surface border-2 border-line rounded-sm overflow-hidden shadow-sm print-ticket-card animate-fade-in">
           {/* Top Wristband Edge */}
           <div className="h-2.5 w-full bg-[repeating-linear-gradient(45deg,#0F6E5D,#0F6E5D_10px,#3A4B8C_10px,#3A4B8C_20px,#B1631F_20px,#B1631F_30px)]" />
 
@@ -99,7 +102,8 @@ export default function BookingConfirmation() {
                   </p>
                 </div>
               </div>
-              <StampBadge status={appointment.status} />
+              {/* Stamp Impact Badge with 150ms delay */}
+              <StampBadge status={appointment.status} delayed={true} />
             </div>
 
             {/* Ticket Details Grid */}
@@ -136,21 +140,31 @@ export default function BookingConfirmation() {
               <p className="font-body text-ink font-medium">{appointment.chiefComplaint}</p>
             </div>
 
-            <PulseDivider label="CLINICAL OPD WORKFLOW STAGE" />
+            <PulseDivider label="LIVE STATUS WORKFLOW" />
 
-            {/* Status Workflow Bar */}
-            <div className="grid grid-cols-4 gap-2 text-center font-mono text-[10px] uppercase font-semibold">
-              <div className="p-2 border rounded border-teal bg-teal-tint text-teal">
-                1. Booked
+            {/* Animated Connector Progress Line Flow */}
+            <div className="relative space-y-3">
+              <div className="h-1.5 w-full bg-line rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-teal transition-all duration-700 ease-out rounded-full"
+                  style={{ width: progressPercent }}
+                />
               </div>
-              <div className={`p-2 border rounded ${['confirmed', 'completed'].includes(appointment.status) ? 'border-teal bg-teal-tint text-teal' : 'border-line text-faint'}`}>
-                2. Confirmed
-              </div>
-              <div className={`p-2 border rounded ${['confirmed'].includes(appointment.status) ? 'border-indigo bg-indigo-tint text-indigo' : 'border-line text-faint'}`}>
-                3. In Queue
-              </div>
-              <div className={`p-2 border rounded ${['completed'].includes(appointment.status) ? 'border-indigo bg-indigo-tint text-indigo' : 'border-line text-faint'}`}>
-                4. Consulted
+
+              {/* Status Workflow Cards */}
+              <div className="grid grid-cols-4 gap-2 text-center font-mono text-[10px] uppercase font-semibold">
+                <div className="p-2 border rounded border-teal bg-teal-tint text-teal">
+                  1. Booked
+                </div>
+                <div className={`p-2 border rounded transition-all duration-300 ${['confirmed', 'completed'].includes(appointment.status) ? 'border-teal bg-teal-tint text-teal' : 'border-line text-faint'}`}>
+                  2. Confirmed
+                </div>
+                <div className={`p-2 border rounded transition-all duration-300 ${['confirmed'].includes(appointment.status) ? 'border-indigo bg-indigo-tint text-indigo' : 'border-line text-faint'}`}>
+                  3. In Queue
+                </div>
+                <div className={`p-2 border rounded transition-all duration-300 ${['completed'].includes(appointment.status) ? 'border-indigo bg-indigo-tint text-indigo' : 'border-line text-faint'}`}>
+                  4. Consulted
+                </div>
               </div>
             </div>
 
